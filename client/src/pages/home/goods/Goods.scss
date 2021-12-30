@@ -1,0 +1,15 @@
+.goods {
+  padding: 0 30px;
+
+  &_title {
+    padding-left: 25px;
+    padding-top: 10px;
+    font-weight: 500;
+  }
+}
+
+.goods_box {
+  display: flex;
+
+  flex-wrap: wrap;
+}

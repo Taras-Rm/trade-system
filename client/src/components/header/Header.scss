@@ -1,0 +1,17 @@
+.header {
+  width: 100%;
+  min-height: 80px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  justify-content: space-between;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.72);
+
+  &_right {
+    float: right;
+  }
+}
