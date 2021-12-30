@@ -1,7 +1,0 @@
-port: 8080
-
-app:
-  dbUser: postgres
-  dbPass: post1235
-  dbName: tradeApp
-  dbHost: localhost
