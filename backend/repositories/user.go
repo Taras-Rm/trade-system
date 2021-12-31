@@ -10,6 +10,7 @@ type UserRepository interface {
 	CreateUser(user *models.User) (*models.User, error)
 	FindUserByEmail(email string) (*models.User, error)
 	FindUserByPhone(phone string) (*models.User, error)
+	GetUserByID(userID string) (*models.User, error)
 }
 
 type userRepository struct {
@@ -47,4 +48,14 @@ func (r *userRepository) FindUserByPhone(phone string) (*models.User, error) {
 	}
 
 	return &user, err
+}
+
+func (r *userRepository) GetUserByID(userID string) (*models.User, error) {
+	var user models.User
+	err := r.db.First(&user, "id=?", userID).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

@@ -50,3 +50,21 @@ func GetDBHost() string {
 
 	return res
 }
+
+func GetTimeAccess() string {
+	res, ok := os.LookupEnv("TIME_ACCESS")
+	if !ok {
+		logrus.Error("Can`t read .env file")
+	}
+
+	return res
+}
+
+func GetTimeRefresh() string {
+	res, ok := os.LookupEnv("TIME_REFRESH")
+	if !ok {
+		logrus.Error("Can`t read .env file")
+	}
+
+	return res
+}

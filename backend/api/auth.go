@@ -11,6 +11,7 @@ func InjectAuth(gr *gin.RouterGroup, userService services.UserService) {
 	handler := gr.Group("auth")
 
 	handler.POST("register", register(userService))
+	handler.POST("login", login(userService))
 }
 
 func register(userService services.UserService) gin.HandlerFunc {
@@ -36,5 +37,24 @@ func register(userService services.UserService) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{"message": "user is created", "user": &user})
 
+	}
+}
+
+func login(userService services.UserService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var request *services.UserLogin
+		err := c.BindJSON(&request)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "bad request", "error": err.Error()})
+			return
+		}
+
+		loginResp, err := userService.LoginUser(request)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "server error", "error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "success autorized", "data": &loginResp})
 	}
 }

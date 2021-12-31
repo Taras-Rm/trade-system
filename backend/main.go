@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
 		panic(err)
@@ -19,6 +20,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// redisClient, err := setup.RedisInit()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// Server handler
 	handler := setup.StartServer()
