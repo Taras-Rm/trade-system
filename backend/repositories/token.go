@@ -17,7 +17,7 @@ type tokenRepository struct {
 	rc *redis.Client
 }
 
-func newTokenRepository(db *redis.Client) TokenRepository {
+func NewTokenRepository(db *redis.Client) TokenRepository {
 	return &tokenRepository{rc: db}
 }
 

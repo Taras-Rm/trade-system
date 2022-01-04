@@ -41,7 +41,8 @@ type UserService interface {
 }
 
 type userService struct {
-	userRepository repositories.UserRepository
+	userRepository  repositories.UserRepository
+	tokenRepository repositories.TokenRepository
 }
 
 func NewUserService(userRepo repositories.UserRepository) UserService {
@@ -117,7 +118,11 @@ func (s *userService) LoginUser(userData *UserLogin) (*LoginResponse, error) {
 		return nil, err
 	}
 
-	// store in redissssssss a token//////////////////////////////////////////////////////////////
+	// save tokens information in redis
+	//err = s.tokenRepository.SaveTokenInfo(user.ID, tokenInfo.AccessTExpires, tokenInfo.RefreshTExpires, tokenInfo.AccessTokenUuid, tokenInfo.RefreshTokenUuid)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	res := &LoginResponse{
 		FirstName:    user.FirstName,
