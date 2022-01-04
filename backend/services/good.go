@@ -15,8 +15,8 @@ type GoodRequest struct {
 
 type GoodService interface {
 	AddGood(good *GoodRequest) (*models.Good, error)
-	//GetAllGoods() ([]models.Good, error)
-	//GetUserGoods(userId uint) ([]models.Good, error)
+	GetAllGoods() ([]models.Good, error)
+	GetAllUserGoods(userId uint) ([]models.Good, error)
 }
 
 type goodService struct {
@@ -39,7 +39,7 @@ func (s *goodService) AddGood(good *GoodRequest) (*models.Good, error) {
 		Description: good.Description,
 		Price:       price,
 		Category:    good.Category,
-		UserID:      1, // get current user ID !!!!!!!!!!!!!!!!!!!!!!
+		UserID:      2, // get current user ID !!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	res, err := s.goodRepository.AddGood(&newGood)
@@ -50,21 +50,21 @@ func (s *goodService) AddGood(good *GoodRequest) (*models.Good, error) {
 	return res, err
 }
 
-// func (s *goodService) GetAllGoods() ([]models.Good, error) {
-// 	res, err := s.goodRepository.GetAllGoods()
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func (s *goodService) GetAllGoods() ([]models.Good, error) {
+	res, err := s.goodRepository.GetAllGoods()
+	if err != nil {
+		return nil, err
+	}
 
-// 	return res, err
-// }
+	return res, err
+}
 
-// func (s *goodService) GetUserGoods(userId uint) ([]models.Good, error) {
+func (s *goodService) GetAllUserGoods(userId uint) ([]models.Good, error) {
 
-// 	res, err := s.goodRepository.GetUserGoods(userId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	res, err := s.goodRepository.GetAllUserGoods(userId)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return res, err
-// }
+	return res, err
+}

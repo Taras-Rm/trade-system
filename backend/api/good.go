@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
@@ -12,8 +13,8 @@ func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 
 	//handler.Use(middleware.AuthMiddleware)
 	handler.POST("", addGood(goodService))
-	//handler.GET("", getAllGoods(goodService))
-	//handler.GET("/goods/:id", getUserGoods(goodService))
+	handler.GET("", getAllGoods(goodService))
+	handler.GET("/goods/:id", getAllUserGoods(goodService))
 }
 
 func addGood(goodService services.GoodService) gin.HandlerFunc {
@@ -43,41 +44,38 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 	}
 }
 
-// func getAllGoods(goodService services.GoodService) gin.HandlerFunc {
-// 	return func(c *gin.Context) {
+func getAllGoods(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
 
-// 		goods, err := goodService.GetAllGoods()
-// 		if err != nil {
-// 			c.JSON(http.StatusInternalServerError, gin.H{
-// 				"message": "Server error",
-// 			})
-// 			return
-// 		}
+		goods, err := goodService.GetAllGoods()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error()})
+			return
+		}
 
-// 		c.JSON(http.StatusOK, gin.H{
-// 			"goods": goods,
-// 		})
-// 	}
-// }
+		c.JSON(http.StatusOK, gin.H{
+			"goods": goods,
+		})
+	}
+}
 
-// func getUserGoods(goodService services.GoodService) gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		id := c.Param("id")
-// 		userId, _ := strconv.ParseUint(id, 10, 64)
-// 		userIdUint := uint(userId)
+func getAllUserGoods(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		userId, _ := strconv.ParseUint(id, 10, 64)
+		userIdUint := uint(userId)
 
-// 		fmt.Println(userIdUint)
+		goods, err := goodService.GetAllUserGoods(userIdUint)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
 
-// 		goods, err := goodService.GetUserGoods(userIdUint)
-// 		if err != nil {
-// 			c.JSON(http.StatusInternalServerError, gin.H{
-// 				"message": "Server error",
-// 			})
-// 			return
-// 		}
-
-// 		c.JSON(http.StatusOK, gin.H{
-// 			"goods": goods,
-// 		})
-// 	}
-// }
+		c.JSON(http.StatusOK, gin.H{
+			"goods": goods,
+		})
+	}
+}

@@ -9,7 +9,7 @@ import (
 type GoodRepository interface {
 	AddGood(good *models.Good) (*models.Good, error)
 	GetAllGoods() ([]models.Good, error)
-	GetUserGoods(id uint) ([]models.Good, error)
+	GetAllUserGoods(id uint) ([]models.Good, error)
 }
 
 type goodRepository struct {
@@ -27,12 +27,12 @@ func (r *goodRepository) AddGood(good *models.Good) (*models.Good, error) {
 
 func (r *goodRepository) GetAllGoods() ([]models.Good, error) {
 	var goods []models.Good
-	res := r.db.Find(&goods)
+	res := r.db.Preload("Comments").Find(&goods)
 	return goods, res.Error
 }
 
-func (r *goodRepository) GetUserGoods(id uint) ([]models.Good, error) {
+func (r *goodRepository) GetAllUserGoods(id uint) ([]models.Good, error) {
 	var goods []models.Good
-	res := r.db.Where("user_id = ?", id).Find(&goods)
+	res := r.db.Where("user_id = ?", id).Preload("Comments").Find(&goods)
 	return goods, res.Error
 }
