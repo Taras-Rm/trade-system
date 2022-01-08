@@ -23,7 +23,7 @@ func CreateToken(userID uint) (*TokenDetails, error) {
 	// get time of access token
 	timeAccessStr, ok := os.LookupEnv("TIME_ACCESS")
 	if !ok {
-		logrus.Error("Can`t read .env file")
+		logrus.Error("Can`t read .env file ")
 	}
 	timeAccess, err := time.ParseDuration(timeAccessStr)
 	if err != nil {

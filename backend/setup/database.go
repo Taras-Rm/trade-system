@@ -11,14 +11,14 @@ import (
 )
 
 func ConnectDB() (*gorm.DB, error) {
-	var DB *gorm.DB
+	var DB *gorm.DB 
 	dbHost, isHost := os.LookupEnv("DB_HOST")
 	dbUser, isUser := os.LookupEnv("DB_USER")
 	dbPass, isPass := os.LookupEnv("DB_PASS")
 	dbName, isName := os.LookupEnv("DB_NAME")
 
 	if !isHost || !isName || !isPass || !isUser {
-		logrus.Error("Can`t read .env file")
+		logrus.Error("Can`t read .env file !")
 	}
 
 	DbURL := fmt.Sprintf("host=%s user=%s password=%s dbname=%s   sslmode=disable", dbHost, dbUser, dbPass, dbName)
