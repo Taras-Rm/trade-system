@@ -45,8 +45,8 @@ type userService struct {
 	tokenRepository repositories.TokenRepository
 }
 
-func NewUserService(userRepo repositories.UserRepository) UserService {
-	return &userService{userRepository: userRepo}
+func NewUserService(userRepo repositories.UserRepository, tokenRepo repositories.TokenRepository) UserService {
+	return &userService{userRepository: userRepo, tokenRepository: tokenRepo}
 }
 
 func (s *userService) CreateUser(user *UserRegister) (*models.User, error) {
@@ -118,11 +118,11 @@ func (s *userService) LoginUser(userData *UserLogin) (*LoginResponse, error) {
 		return nil, err
 	}
 
-	// save tokens information in redis
-	//err = s.tokenRepository.SaveTokenInfo(user.ID, tokenInfo.AccessTExpires, tokenInfo.RefreshTExpires, tokenInfo.AccessTokenUuid, tokenInfo.RefreshTokenUuid)
-	//if err != nil {
-	//	return nil, err
-	//}
+	//save tokens information in redis
+	err = s.tokenRepository.SaveTokenInfo(user.ID, tokenInfo.AccessTExpires, tokenInfo.RefreshTExpires, tokenInfo.AccessTokenUuid, tokenInfo.RefreshTokenUuid)
+	if err != nil {
+		return nil, err
+	}
 
 	res := &LoginResponse{
 		FirstName:    user.FirstName,

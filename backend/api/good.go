@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"tradeApp/middleware"
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,8 @@ import (
 func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 	handler := gr.Group("good")
 
-	//handler.Use(middleware.AuthMiddleware)
+	handler.Use(middleware.AuthMiddleware)
+
 	handler.POST("", addGood(goodService))
 	handler.GET("", getAllGoods(goodService))
 	handler.GET("/goods/:id", getAllUserGoods(goodService))

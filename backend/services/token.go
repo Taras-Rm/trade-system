@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -81,4 +82,61 @@ func CreateToken(userID uint) (*TokenDetails, error) {
 	}
 
 	return td, nil
+}
+
+func TokenValidation(inpToken, secret string) error {
+	_, err := VerifyToken(inpToken, secret)
+	if err != nil {
+		return err
+	}
+	// if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
+	// 	return err
+	// }
+	return nil
+}
+
+func VerifyToken(inpToken, secret string) (*jwt.Token, error) {
+	token, err := jwt.Parse(inpToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(secret), nil
+	})
+	if err != nil {
+		fmt.Println("err", err)
+		return nil, err
+	}
+	return token, nil
+}
+
+func GetUuidFromToken(inpToken, secret string) (string, error) {
+	claims, err := GetClaimsFromToken(inpToken, secret)
+	if err != nil {
+		return "", err
+	}
+	uuid := claims["uuid"]
+	return uuid.(string), nil
+}
+
+func GetUserIdFromToken(inpToken, secret string) (uint, error) {
+	claims, err := GetClaimsFromToken(inpToken, secret)
+	if err != nil {
+		return 0, err
+	}
+	uuid := claims["user_id"]
+	return uuid.(uint), nil
+}
+
+func GetClaimsFromToken(inpToken, secret string) (jwt.MapClaims, error) {
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(inpToken, claims, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return claims, err
 }
