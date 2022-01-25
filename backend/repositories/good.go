@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"tradeApp/models"
 
 	"gorm.io/gorm"
@@ -15,6 +14,7 @@ type GoodRepository interface {
 	GetGoodByID(goodID uint) (*models.Good, error)
 	GetGoodsForSale(userID uint) ([]models.Good, error)
 	GetBuyedGoods(userID uint) ([]models.Good, error)
+	DeleteGoodByID(goodID uint) error
 }
 
 type goodRepository struct {
@@ -76,7 +76,11 @@ func (r *goodRepository) GetBuyedGoods(userID uint) ([]models.Good, error) {
 	if err.Error != nil {
 		return nil, err.Error
 	}
-	fmt.Println(goods)
 
 	return goods, nil
+}
+
+func (r *goodRepository) DeleteGoodByID(goodID uint) error {
+	res := r.db.Where(goodID).Delete(&models.Good{})
+	return res.Error
 }
