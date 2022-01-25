@@ -14,7 +14,7 @@ type GoodRequest struct {
 }
 
 type GoodService interface {
-	AddGood(good *GoodRequest) (*models.Good, error)
+	AddGood(good *GoodRequest, userID uint) (*models.Good, error)
 	GetAllGoods() ([]models.Good, error)
 	GetAllUserGoods(userId uint) ([]models.Good, error)
 }
@@ -27,7 +27,7 @@ func NewGoodService(goodRepo repositories.GoodRepository) GoodService {
 	return &goodService{goodRepository: goodRepo}
 }
 
-func (s *goodService) AddGood(good *GoodRequest) (*models.Good, error) {
+func (s *goodService) AddGood(good *GoodRequest, userID uint) (*models.Good, error) {
 	// converting price
 	price, err := strconv.Atoi(good.Price)
 	if err != nil {
@@ -39,7 +39,7 @@ func (s *goodService) AddGood(good *GoodRequest) (*models.Good, error) {
 		Description: good.Description,
 		Price:       price,
 		Category:    good.Category,
-		UserID:      2, // get current user ID !!!!!!!!!!!!!!!!!!!!!!
+		UserID:      userID,
 	}
 
 	res, err := s.goodRepository.AddGood(&newGood)

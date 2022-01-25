@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"net/mail"
+	"tradeApp/config"
 	"tradeApp/models"
 	"tradeApp/repositories"
 
@@ -23,6 +24,11 @@ type UserLogin struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type TokensRequest struct {
+	AccessToken  string `json:"accessToken" binding:"required"`
+	RefreshToken string `json:"refreshToken" binding:"required"`
+}
+
 type LoginResponse struct {
 	FirstName    string `json:"firstName"`
 	LastName     string `json:"lastName"`
@@ -38,6 +44,7 @@ type UserService interface {
 	CreateUser(user *UserRegister) (*models.User, error)
 	IsValidCreateUserData(user *UserRegister) error
 	LoginUser(userData *UserLogin) (*LoginResponse, error)
+	LogoutUser(tokensReq *TokensRequest) error
 }
 
 type userService struct {
@@ -136,4 +143,32 @@ func (s *userService) LoginUser(userData *UserLogin) (*LoginResponse, error) {
 	}
 
 	return res, nil
+}
+
+func (s *userService) LogoutUser(tokensReq *TokensRequest) error {
+	accessSecret := config.GetSecretAccess()
+
+	refreshSecret := config.GetSecretRefresh()
+
+	accessUuid, err := GetUuidFromToken(tokensReq.AccessToken, accessSecret)
+	if err != nil {
+		return err
+	}
+
+	refreshUuid, err := GetUuidFromToken(tokensReq.RefreshToken, refreshSecret)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.tokenRepository.DeleteTokenInfo(accessUuid)
+	if err != nil {
+		return errors.New("can`t logout user")
+	}
+
+	_, err = s.tokenRepository.DeleteTokenInfo(refreshUuid)
+	if err != nil {
+		return errors.New("can`t logout user")
+	}
+
+	return nil
 }

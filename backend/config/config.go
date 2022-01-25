@@ -68,3 +68,21 @@ func GetTimeRefresh() string {
 
 	return res
 }
+
+func GetSecretAccess() string {
+	res, ok := os.LookupEnv("JWT_ACCESS_SECRET")
+	if !ok {
+		logrus.Error("Can`t read .env file")
+	}
+
+	return res
+}
+
+func GetSecretRefresh() string {
+	res, ok := os.LookupEnv("JWT_REFRESH_SECRET")
+	if !ok {
+		logrus.Error("Can`t read .env file")
+	}
+
+	return res
+}

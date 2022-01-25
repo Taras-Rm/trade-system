@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -29,17 +28,13 @@ func (r *tokenRepository) SaveTokenInfo(userID uint, AtExp, RtExp int64, AtUuid,
 
 	err := r.rc.Set(AtUuid, strconv.Itoa(int(userID)), at.Sub(now)).Err()
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	err = r.rc.Set(RtUuid, strconv.Itoa(int(userID)), rt.Sub(now)).Err()
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-
-	fmt.Println("data save to Redis")
 
 	return nil
 
@@ -48,7 +43,6 @@ func (r *tokenRepository) SaveTokenInfo(userID uint, AtExp, RtExp int64, AtUuid,
 func (r *tokenRepository) GetTokenInfo(givenUuid string) (string, error) {
 	result, err := r.rc.Get(givenUuid).Result()
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 	return result, nil

@@ -1,15 +1,15 @@
 package middleware
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
-	"os"
+	"strconv"
 	"strings"
+	"tradeApp/config"
 	"tradeApp/repositories"
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -30,29 +30,20 @@ func auth(r repositories.TokenRepository) gin.HandlerFunc {
 		}
 
 		token := getToken(c)
-		secret, ok := os.LookupEnv("JWT_ACCESS_SECRET")
-		if !ok {
-			logrus.Error("Can`t read .env file")
-		}
-		fmt.Println(token, secret)
+		secret := config.GetSecretAccess()
 
 		err := services.TokenValidation(token, secret)
 		if err != nil {
-			fmt.Println(1)
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
 		uuid, err := services.GetUuidFromToken(token, secret)
 		if err != nil {
-			fmt.Println(2)
-
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
 		userID, err := r.GetTokenInfo(uuid)
 		if err != nil {
-			fmt.Println(3)
-
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
@@ -71,4 +62,16 @@ func getToken(c *gin.Context) string {
 		return accessToken[1]
 	}
 	return token
+}
+
+func GetUserId(c *gin.Context) (uint, error) {
+	userID, ok := c.Get(UserIdKey)
+	if !ok {
+		return 0, errors.New("can`t get user ID")
+	}
+	uintUserID, err := strconv.Atoi(userID.(string))
+	if err != nil {
+		return 0, errors.New("can`t get user ID")
+	}
+	return uint(uintUserID), nil
 }

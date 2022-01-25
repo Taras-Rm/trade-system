@@ -5,9 +5,6 @@ import "github.com/gin-gonic/gin"
 func StartServer() *gin.Engine {
 	r := gin.Default()
 
-	r.Use(gin.Recovery())
-	r.Use(gin.Logger())
-
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")

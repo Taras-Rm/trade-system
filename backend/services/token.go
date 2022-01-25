@@ -2,8 +2,8 @@ package services
 
 import (
 	"fmt"
-	"os"
 	"time"
+	"tradeApp/config"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sirupsen/logrus"
@@ -22,19 +22,15 @@ type TokenDetails struct {
 func CreateToken(userID uint) (*TokenDetails, error) {
 	td := &TokenDetails{}
 	// get time of access token
-	timeAccessStr, ok := os.LookupEnv("TIME_ACCESS")
-	if !ok {
-		logrus.Error("Can`t read .env file ")
-	}
+	timeAccessStr := config.GetTimeAccess()
+
 	timeAccess, err := time.ParseDuration(timeAccessStr)
 	if err != nil {
 		logrus.Error("Can`t parse timeAccess")
 	}
 	// get time of refresh token
-	timeRefreshStr, ok := os.LookupEnv("TIME_REFRESH")
-	if !ok {
-		logrus.Error("Can`t read .env file")
-	}
+	timeRefreshStr := config.GetTimeRefresh()
+
 	timeRefresh, err := time.ParseDuration(timeRefreshStr)
 	if err != nil {
 		logrus.Error("Can`t parse timeRefresh")
@@ -48,10 +44,7 @@ func CreateToken(userID uint) (*TokenDetails, error) {
 	td.RefreshTokenUuid = uuid.NewV4().String()
 
 	// creating access token
-	secretA, ok := os.LookupEnv("JWT_ACCESS_SECRET")
-	if !ok {
-		logrus.Error("Can`t read .env file")
-	}
+	secretA := config.GetSecretAccess()
 
 	atClaims := jwt.MapClaims{}
 	atClaims["user_id"] = userID
@@ -65,10 +58,7 @@ func CreateToken(userID uint) (*TokenDetails, error) {
 	}
 
 	// creating refresh token
-	secretR, ok := os.LookupEnv("JWT_REFRESH_SECRET")
-	if !ok {
-		logrus.Error("Can`t read .env file")
-	}
+	secretR := config.GetSecretRefresh()
 
 	rtClaims := jwt.MapClaims{}
 	rtClaims["user_id"] = userID
@@ -103,7 +93,6 @@ func VerifyToken(inpToken, secret string) (*jwt.Token, error) {
 		return []byte(secret), nil
 	})
 	if err != nil {
-		fmt.Println("err", err)
 		return nil, err
 	}
 	return token, nil

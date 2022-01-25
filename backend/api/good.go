@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"strconv"
 	"tradeApp/middleware"
 	"tradeApp/services"
 
@@ -16,7 +15,7 @@ func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 
 	handler.POST("", addGood(goodService))
 	handler.GET("", getAllGoods(goodService))
-	handler.GET("/goods/:id", getAllUserGoods(goodService))
+	handler.GET("/goods", getAllUserGoods(goodService))
 }
 
 func addGood(goodService services.GoodService) gin.HandlerFunc {
@@ -31,7 +30,15 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 			return
 		}
 
-		res, err := goodService.AddGood(good)
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		res, err := goodService.AddGood(good, userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
@@ -64,11 +71,15 @@ func getAllGoods(goodService services.GoodService) gin.HandlerFunc {
 
 func getAllUserGoods(goodService services.GoodService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id := c.Param("id")
-		userId, _ := strconv.ParseUint(id, 10, 64)
-		userIdUint := uint(userId)
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
 
-		goods, err := goodService.GetAllUserGoods(userIdUint)
+		goods, err := goodService.GetAllUserGoods(userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
