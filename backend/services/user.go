@@ -40,20 +40,34 @@ type LoginResponse struct {
 	RefreshToken string  `json:"refreshToken"`
 }
 
+type UserResponse struct {
+	FirstName    string `json:"firstName"`
+	LastName     string `json:"lastName"`
+	Email        string `json:"email"`
+	Age          string `json:"age"`
+	Phone        string `json:"phone" binding:"required"`
+	CountForSale int    `json:"countForSale"`
+	CountOfBuyed int    `json:"countOfBuyed"`
+	PriceForSale int    `json:"priceForSale"`
+	PriceOfBuyed int    `json:"priceOfBuyed"`
+}
+
 type UserService interface {
 	CreateUser(user *UserRegister) (*models.User, error)
 	IsValidCreateUserData(user *UserRegister) error
 	LoginUser(userData *UserLogin) (*LoginResponse, error)
 	LogoutUser(tokensReq *TokensRequest) error
+	GetUserProfile(userID uint) (*UserResponse, error)
 }
 
 type userService struct {
 	userRepository  repositories.UserRepository
 	tokenRepository repositories.TokenRepository
+	goodRepository  repositories.GoodRepository
 }
 
-func NewUserService(userRepo repositories.UserRepository, tokenRepo repositories.TokenRepository) UserService {
-	return &userService{userRepository: userRepo, tokenRepository: tokenRepo}
+func NewUserService(userRepo repositories.UserRepository, tokenRepo repositories.TokenRepository, goodRepo repositories.GoodRepository) UserService {
+	return &userService{userRepository: userRepo, tokenRepository: tokenRepo, goodRepository: goodRepo}
 }
 
 func (s *userService) CreateUser(user *UserRegister) (*models.User, error) {
@@ -171,4 +185,45 @@ func (s *userService) LogoutUser(tokensReq *TokensRequest) error {
 	}
 
 	return nil
+}
+
+func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
+	user, err := s.userRepository.GetUserByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var countForSale, countOfBuyed, priceForSale, priceOfBuyed int
+
+	goodsForSale, err := s.goodRepository.GetGoodsForSale(userID)
+	if err != nil {
+		return nil, err
+	}
+	countForSale = len(goodsForSale)
+	for _, val := range goodsForSale {
+		priceForSale += int(val.Price)
+	}
+
+	goodsBuyed, err := s.goodRepository.GetBuyedGoods(userID)
+	if err != nil {
+		return nil, err
+	}
+	countOfBuyed = len(goodsBuyed)
+	for _, val := range goodsBuyed {
+		priceOfBuyed += int(val.Price)
+	}
+
+	userResp := &UserResponse{
+		FirstName:    user.FirstName,
+		LastName:     user.LastName,
+		Email:        user.Email,
+		Age:          user.Age,
+		Phone:        user.Phone,
+		CountForSale: countForSale,
+		PriceForSale: priceForSale,
+		CountOfBuyed: countOfBuyed,
+		PriceOfBuyed: priceOfBuyed,
+	}
+
+	return userResp, nil
 }

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"tradeApp/models"
 
 	"gorm.io/gorm"
@@ -12,6 +13,8 @@ type GoodRepository interface {
 	GetAllUserGoods(id uint) ([]models.Good, error)
 	BuyGood(goodID uint, customerID uint) error
 	GetGoodByID(goodID uint) (*models.Good, error)
+	GetGoodsForSale(userID uint) ([]models.Good, error)
+	GetBuyedGoods(userID uint) ([]models.Good, error)
 }
 
 type goodRepository struct {
@@ -53,4 +56,27 @@ func (r *goodRepository) GetGoodByID(goodID uint) (*models.Good, error) {
 	}
 
 	return &good, nil
+}
+
+func (r *goodRepository) GetGoodsForSale(userID uint) ([]models.Good, error) {
+	var goods []models.Good
+
+	err := r.db.Where("user_id = ? AND is_selled = ?", userID, false).Find(&goods)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+
+	return goods, nil
+}
+
+func (r *goodRepository) GetBuyedGoods(userID uint) ([]models.Good, error) {
+	var goods []models.Good
+
+	err := r.db.Where("customer_id = ? AND is_selled = ?", userID, true).Find(&goods)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+	fmt.Println(goods)
+
+	return goods, nil
 }

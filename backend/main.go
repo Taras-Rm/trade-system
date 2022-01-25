@@ -33,16 +33,17 @@ func main() {
 	gr := handler.Group("api")
 	// Token
 	tokenRepository := repositories.NewTokenRepository(redisClient)
-	middleware.InitAuthMiddleware(tokenRepository)
-	// Goods
+	goodRepository := repositories.NewGoodRepository(db)
 	userRepository := repositories.NewUserRepository(db)
 
-	goodRepository := repositories.NewGoodRepository(db)
+	middleware.InitAuthMiddleware(tokenRepository)
+
 	goodService := services.NewGoodService(goodRepository, userRepository)
+	userService := services.NewUserService(userRepository, tokenRepository, goodRepository)
+
 	api.InjectGood(gr, goodService)
-	// User
-	userService := services.NewUserService(userRepository, tokenRepository)
 	api.InjectAuth(gr, userService)
+	api.InjectUser(gr, userService)
 
 	handler.Run()
 }
