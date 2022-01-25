@@ -15,6 +15,7 @@ type GoodRepository interface {
 	GetGoodsForSale(userID uint) ([]models.Good, error)
 	GetBuyedGoods(userID uint) ([]models.Good, error)
 	DeleteGoodByID(goodID uint) error
+	UpdateGood(good *models.Good, goodID uint) error
 }
 
 type goodRepository struct {
@@ -83,4 +84,9 @@ func (r *goodRepository) GetBuyedGoods(userID uint) ([]models.Good, error) {
 func (r *goodRepository) DeleteGoodByID(goodID uint) error {
 	res := r.db.Where(goodID).Delete(&models.Good{})
 	return res.Error
+}
+
+func (r *goodRepository) UpdateGood(good *models.Good, goodID uint) error {
+	err := r.db.Model(&models.Good{}).Where("id = ?", goodID).Updates(&good).Error
+	return err
 }

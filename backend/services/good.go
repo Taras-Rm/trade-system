@@ -19,6 +19,7 @@ type GoodService interface {
 	GetAllUserGoods(userId uint) ([]models.Good, error)
 	BuyGood(goodID, customerID uint) error
 	DeleteGood(goodID uint) error
+	UpdateGood(good *GoodRequest, goodID uint) error
 }
 
 type goodService struct {
@@ -116,6 +117,22 @@ func (s *goodService) BuyGood(goodID, customerID uint) error {
 
 func (s *goodService) DeleteGood(goodID uint) error {
 	err := s.goodRepository.DeleteGoodByID(goodID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *goodService) UpdateGood(good *GoodRequest, goodID uint) error {
+
+	updatedGood := &models.Good{
+		Name:        good.Name,
+		Description: good.Description,
+		Price:       good.Price,
+		Category:    good.Category,
+	}
+	err := s.goodRepository.UpdateGood(updatedGood, goodID)
 	if err != nil {
 		return err
 	}

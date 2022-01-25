@@ -19,6 +19,7 @@ func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 	handler.GET("/goods", getAllUserGoods(goodService))
 	handler.POST("/buy/:id", buyGood(goodService))
 	handler.DELETE(":id", deleteGood(goodService))
+	handler.PUT(":id", updateGood(goodService))
 }
 
 func addGood(goodService services.GoodService) gin.HandlerFunc {
@@ -150,6 +151,41 @@ func deleteGood(goodService services.GoodService) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "good has been deleted",
+		})
+	}
+}
+
+func updateGood(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var good *services.GoodRequest
+
+		err := c.BindJSON(&good)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "bad request", "error": err.Error(),
+			})
+			return
+		}
+
+		goodID := c.Param("id")
+		uintGoodID, err := strconv.ParseUint(goodID, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		err = goodService.UpdateGood(good, uint(uintGoodID))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "good has been updated",
 		})
 	}
 }
