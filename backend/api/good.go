@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 	"tradeApp/middleware"
 	"tradeApp/services"
 
@@ -16,6 +17,7 @@ func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 	handler.POST("", addGood(goodService))
 	handler.GET("", getAllGoods(goodService))
 	handler.GET("/goods", getAllUserGoods(goodService))
+	handler.POST("/buy/:id", buyGood(goodService))
 }
 
 func addGood(goodService services.GoodService) gin.HandlerFunc {
@@ -89,6 +91,39 @@ func getAllUserGoods(goodService services.GoodService) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"goods": goods,
+		})
+	}
+}
+
+func buyGood(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		goodID := c.Param("id")
+		uintGoodID, err := strconv.ParseUint(goodID, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		err = goodService.BuyGood(uint(uintGoodID), userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "success good buying",
 		})
 	}
 }

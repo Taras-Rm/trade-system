@@ -10,7 +10,8 @@ type UserRepository interface {
 	CreateUser(user *models.User) (*models.User, error)
 	FindUserByEmail(email string) (*models.User, error)
 	FindUserByPhone(phone string) (*models.User, error)
-	GetUserByID(userID string) (*models.User, error)
+	GetUserByID(userID uint) (*models.User, error)
+	BuyGood(goodID, customerID uint, userNewAmount, customerNewAmount float64) error
 }
 
 type userRepository struct {
@@ -50,7 +51,7 @@ func (r *userRepository) FindUserByPhone(phone string) (*models.User, error) {
 	return &user, err
 }
 
-func (r *userRepository) GetUserByID(userID string) (*models.User, error) {
+func (r *userRepository) GetUserByID(userID uint) (*models.User, error) {
 	var user models.User
 	err := r.db.First(&user, "id=?", userID).Error
 	if err != nil {
@@ -58,4 +59,24 @@ func (r *userRepository) GetUserByID(userID string) (*models.User, error) {
 	}
 
 	return &user, nil
+}
+
+func (r *userRepository) BuyGood(userID, customerID uint, userNewAmount, customerNewAmount float64) error {
+	var owner, customer *models.User
+
+	tx := r.db.Begin()
+
+	err := tx.Model(&customer).Where("id", customerID).Update("amount", customerNewAmount)
+	if err.Error != nil {
+		tx.Rollback()
+		return err.Error
+	}
+
+	err = tx.Model(&owner).Where("id", userID).Update("amount", userNewAmount)
+	if err.Error != nil {
+		tx.Rollback()
+		return err.Error
+	}
+
+	return tx.Commit().Error
 }

@@ -30,14 +30,14 @@ type TokensRequest struct {
 }
 
 type LoginResponse struct {
-	FirstName    string `json:"firstName"`
-	LastName     string `json:"lastName"`
-	Email        string `json:"email"`
-	Age          string `json:"age"`
-	Phone        string `json:"phone"`
-	Amount       int    `json:"amount"`
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+	FirstName    string  `json:"firstName"`
+	LastName     string  `json:"lastName"`
+	Email        string  `json:"email"`
+	Age          string  `json:"age"`
+	Phone        string  `json:"phone"`
+	Amount       float64 `json:"amount"`
+	AccessToken  string  `json:"accessToken"`
+	RefreshToken string  `json:"refreshToken"`
 }
 
 type UserService interface {
@@ -79,7 +79,7 @@ func (s *userService) CreateUser(user *UserRegister) (*models.User, error) {
 		Email:     user.Email,
 		Age:       user.Age,
 		Phone:     user.Phone,
-		Amount:    0,
+		Amount:    50000,
 		Password:  string(hashedPassword),
 	})
 

@@ -35,11 +35,12 @@ func main() {
 	tokenRepository := repositories.NewTokenRepository(redisClient)
 	middleware.InitAuthMiddleware(tokenRepository)
 	// Goods
+	userRepository := repositories.NewUserRepository(db)
+
 	goodRepository := repositories.NewGoodRepository(db)
-	goodService := services.NewGoodService(goodRepository)
+	goodService := services.NewGoodService(goodRepository, userRepository)
 	api.InjectGood(gr, goodService)
 	// User
-	userRepository := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepository, tokenRepository)
 	api.InjectAuth(gr, userService)
 
