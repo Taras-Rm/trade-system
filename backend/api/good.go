@@ -16,10 +16,12 @@ func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
 
 	handler.POST("", addGood(goodService))
 	handler.GET("", getAllGoods(goodService))
-	handler.GET("/goods", getAllUserGoods(goodService))
 	handler.POST("/buy/:id", buyGood(goodService))
 	handler.DELETE(":id", deleteGood(goodService))
 	handler.PUT(":id", updateGood(goodService))
+	handler.GET("/goods/sale", getAllUserGoodsForSale(goodService))
+	handler.GET("/goods/buy", getAllUserBuyedGoods(goodService))
+	handler.GET("/goods/sold", getAllUserSoldGoods(goodService))
 }
 
 func addGood(goodService services.GoodService) gin.HandlerFunc {
@@ -64,30 +66,6 @@ func getAllGoods(goodService services.GoodService) gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error()})
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"goods": goods,
-		})
-	}
-}
-
-func getAllUserGoods(goodService services.GoodService) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userID, err := middleware.GetUserId(c)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "server error", "error": err.Error(),
-			})
-			return
-		}
-
-		goods, err := goodService.GetAllUserGoods(userID)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "server error", "error": err.Error(),
-			})
 			return
 		}
 
@@ -194,6 +172,78 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "good has been updated",
+		})
+	}
+}
+
+func getAllUserGoodsForSale(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		goods, err := goodService.GetAllUserGoodsForSale(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"goods": goods,
+		})
+	}
+}
+
+func getAllUserBuyedGoods(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		goods, err := goodService.GetAllUserBuyedGoods(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"goods": goods,
+		})
+	}
+}
+
+func getAllUserSoldGoods(goodService services.GoodService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		goods, err := goodService.GetAllUserSoldGoods(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"goods": goods,
 		})
 	}
 }

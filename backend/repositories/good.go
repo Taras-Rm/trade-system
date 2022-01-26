@@ -9,13 +9,13 @@ import (
 type GoodRepository interface {
 	AddGood(good *models.Good) (*models.Good, error)
 	GetAllGoods() ([]models.Good, error)
-	GetAllUserGoods(id uint) ([]models.Good, error)
 	BuyGood(goodID uint, customerID uint) error
 	GetGoodByID(goodID uint) (*models.Good, error)
-	GetGoodsForSale(userID uint) ([]models.Good, error)
-	GetBuyedGoods(userID uint) ([]models.Good, error)
 	DeleteGoodByID(goodID uint) error
 	UpdateGood(good *models.Good, goodID uint) error
+	GetAllUserGoodsForSale(userID uint) ([]models.Good, error)
+	GetAllUserBuyedGoods(userID uint) ([]models.Good, error)
+	GetAllUserSoldGoods(userID uint) ([]models.Good, error)
 }
 
 type goodRepository struct {
@@ -37,12 +37,6 @@ func (r *goodRepository) GetAllGoods() ([]models.Good, error) {
 	return goods, res.Error
 }
 
-func (r *goodRepository) GetAllUserGoods(id uint) ([]models.Good, error) {
-	var goods []models.Good
-	res := r.db.Where("user_id = ?", id).Preload("Comments").Find(&goods)
-	return goods, res.Error
-}
-
 func (r *goodRepository) BuyGood(goodID uint, customerID uint) error {
 	var good *models.Good
 	res := r.db.Model(&good).Where("id", goodID).Update("customer_id", customerID).Update("is_selled", true)
@@ -59,7 +53,7 @@ func (r *goodRepository) GetGoodByID(goodID uint) (*models.Good, error) {
 	return &good, nil
 }
 
-func (r *goodRepository) GetGoodsForSale(userID uint) ([]models.Good, error) {
+func (r *goodRepository) GetAllUserGoodsForSale(userID uint) ([]models.Good, error) {
 	var goods []models.Good
 
 	err := r.db.Where("user_id = ? AND is_selled = ?", userID, false).Find(&goods)
@@ -70,10 +64,21 @@ func (r *goodRepository) GetGoodsForSale(userID uint) ([]models.Good, error) {
 	return goods, nil
 }
 
-func (r *goodRepository) GetBuyedGoods(userID uint) ([]models.Good, error) {
+func (r *goodRepository) GetAllUserBuyedGoods(userID uint) ([]models.Good, error) {
 	var goods []models.Good
 
 	err := r.db.Where("customer_id = ? AND is_selled = ?", userID, true).Find(&goods)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+
+	return goods, nil
+}
+
+func (r *goodRepository) GetAllUserSoldGoods(userID uint) ([]models.Good, error) {
+	var goods []models.Good
+
+	err := r.db.Where("user_id = ? AND is_selled = ?", userID, true).Find(&goods)
 	if err.Error != nil {
 		return nil, err.Error
 	}

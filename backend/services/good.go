@@ -16,10 +16,12 @@ type GoodRequest struct {
 type GoodService interface {
 	AddGood(good *GoodRequest, userID uint) (*models.Good, error)
 	GetAllGoods() ([]models.Good, error)
-	GetAllUserGoods(userId uint) ([]models.Good, error)
 	BuyGood(goodID, customerID uint) error
 	DeleteGood(goodID uint) error
 	UpdateGood(good *GoodRequest, goodID uint, userID uint) error
+	GetAllUserGoodsForSale(userId uint) ([]models.Good, error)
+	GetAllUserBuyedGoods(userId uint) ([]models.Good, error)
+	GetAllUserSoldGoods(userId uint) ([]models.Good, error)
 }
 
 type goodService struct {
@@ -51,16 +53,6 @@ func (s *goodService) AddGood(good *GoodRequest, userID uint) (*models.Good, err
 
 func (s *goodService) GetAllGoods() ([]models.Good, error) {
 	res, err := s.goodRepository.GetAllGoods()
-	if err != nil {
-		return nil, err
-	}
-
-	return res, err
-}
-
-func (s *goodService) GetAllUserGoods(userId uint) ([]models.Good, error) {
-
-	res, err := s.goodRepository.GetAllUserGoods(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -145,4 +137,34 @@ func (s *goodService) UpdateGood(good *GoodRequest, goodID uint, userID uint) er
 	}
 
 	return nil
+}
+
+func (s *goodService) GetAllUserGoodsForSale(userId uint) ([]models.Good, error) {
+
+	res, err := s.goodRepository.GetAllUserGoodsForSale(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func (s *goodService) GetAllUserBuyedGoods(userId uint) ([]models.Good, error) {
+
+	res, err := s.goodRepository.GetAllUserBuyedGoods(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func (s *goodService) GetAllUserSoldGoods(userId uint) ([]models.Good, error) {
+
+	res, err := s.goodRepository.GetAllUserSoldGoods(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
 }

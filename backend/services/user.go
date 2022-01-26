@@ -204,7 +204,7 @@ func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
 
 	var countForSale, countOfBuyed, priceForSale, priceOfBuyed int
 
-	goodsForSale, err := s.goodRepository.GetGoodsForSale(userID)
+	goodsForSale, err := s.goodRepository.GetAllUserGoodsForSale(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
 		priceForSale += int(val.Price)
 	}
 
-	goodsBuyed, err := s.goodRepository.GetBuyedGoods(userID)
+	goodsBuyed, err := s.goodRepository.GetAllUserBuyedGoods(userID)
 	if err != nil {
 		return nil, err
 	}
