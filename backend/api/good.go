@@ -176,7 +176,15 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 			return
 		}
 
-		err = goodService.UpdateGood(good, uint(uintGoodID))
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		err = goodService.UpdateGood(good, uint(uintGoodID), userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
