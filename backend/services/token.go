@@ -112,8 +112,8 @@ func GetUserIdFromToken(inpToken, secret string) (uint, error) {
 	if err != nil {
 		return 0, err
 	}
-	uuid := claims["user_id"]
-	return uuid.(uint), nil
+	userId := uint(claims["user_id"].(float64))
+	return userId, nil
 }
 
 func GetClaimsFromToken(inpToken, secret string) (jwt.MapClaims, error) {

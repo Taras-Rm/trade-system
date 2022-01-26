@@ -64,6 +64,7 @@ type UserService interface {
 	CreateUser(user *UserRegister) (*models.User, error)
 	IsValidCreateUserData(user *UserRegister) error
 	LoginUser(userData *UserLogin) (*LoginResponse, error)
+	LoginByToken(req *TokensRequest) (*LoginResponse, error)
 	LogoutUser(tokensReq *TokensRequest) error
 	GetUserProfile(userID uint) (*UserResponse, error)
 	UpdateUserProfile(user *UserUpdateRequest, userID uint) error
@@ -166,6 +167,84 @@ func (s *userService) LoginUser(userData *UserLogin) (*LoginResponse, error) {
 	}
 
 	return res, nil
+}
+
+func (s *userService) LoginByToken(req *TokensRequest) (*LoginResponse, error) {
+	accessToken := req.AccessToken
+	refreshToken := req.RefreshToken
+
+	accessSecret := config.GetSecretAccess()
+	refreshSecret := config.GetSecretRefresh()
+
+	if TokenValidation(accessToken, accessSecret) == nil {
+		userID, err := GetUserIdFromToken(accessToken, accessSecret)
+		if err != nil {
+			return nil, err
+		}
+
+		user, err := s.userRepository.GetUserByID(userID)
+		if err != nil {
+			return nil, err
+		}
+
+		resp := &LoginResponse{
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			Age:       user.Age,
+			Email:     user.Email,
+			Phone:     user.Phone,
+			Amount:    user.Amount,
+		}
+
+		return resp, nil
+	}
+
+	if TokenValidation(refreshToken, refreshSecret) == nil {
+		uuid, err := GetUuidFromToken(refreshToken, refreshSecret)
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = s.tokenRepository.DeleteTokenInfo(uuid)
+		if err != nil {
+			return nil, errors.New("invalid token. Login with email and password")
+		}
+
+		userID, err := GetUserIdFromToken(refreshToken, refreshSecret)
+		if err != nil {
+			return nil, err
+		}
+
+		user, err := s.userRepository.GetUserByID(userID)
+		if err != nil {
+			return nil, errors.New("user not found")
+		}
+
+		tokens, err := CreateToken(userID)
+		if err != nil {
+			return nil, err
+		}
+
+		err = s.tokenRepository.SaveTokenInfo(userID, tokens.AccessTExpires, tokens.RefreshTExpires, tokens.AccessTokenUuid, tokens.RefreshTokenUuid)
+		if err != nil {
+			return nil, err
+		}
+
+		res := &LoginResponse{
+			FirstName:    user.FirstName,
+			LastName:     user.LastName,
+			Age:          user.Age,
+			Email:        user.Email,
+			Phone:        user.Phone,
+			Amount:       user.Amount,
+			AccessToken:  tokens.AccessToken,
+			RefreshToken: tokens.RefreshToken,
+		}
+
+		return res, nil
+	}
+
+	return nil, errors.New("tokens are expired or invalid")
 }
 
 func (s *userService) LogoutUser(tokensReq *TokensRequest) error {
