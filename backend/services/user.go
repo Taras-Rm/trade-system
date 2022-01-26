@@ -45,11 +45,19 @@ type UserResponse struct {
 	LastName     string `json:"lastName"`
 	Email        string `json:"email"`
 	Age          string `json:"age"`
-	Phone        string `json:"phone" binding:"required"`
+	Phone        string `json:"phone"`
 	CountForSale int    `json:"countForSale"`
 	CountOfBuyed int    `json:"countOfBuyed"`
 	PriceForSale int    `json:"priceForSale"`
 	PriceOfBuyed int    `json:"priceOfBuyed"`
+}
+
+type UserUpdateRequest struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
+	Age       string `json:"age"`
+	Phone     string `json:"phone"`
 }
 
 type UserService interface {
@@ -58,6 +66,7 @@ type UserService interface {
 	LoginUser(userData *UserLogin) (*LoginResponse, error)
 	LogoutUser(tokensReq *TokensRequest) error
 	GetUserProfile(userID uint) (*UserResponse, error)
+	UpdateUserProfile(user *UserUpdateRequest, userID uint) error
 }
 
 type userService struct {
@@ -226,4 +235,21 @@ func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
 	}
 
 	return userResp, nil
+}
+
+func (s *userService) UpdateUserProfile(user *UserUpdateRequest, userID uint) error {
+	userForUpdate := &models.User{
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+		Age:       user.Age,
+		Phone:     user.Phone,
+	}
+
+	err := s.userRepository.UpdateUserProfile(userForUpdate, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
