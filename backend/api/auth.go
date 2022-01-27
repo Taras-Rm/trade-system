@@ -2,9 +2,12 @@ package api
 
 import (
 	"net/http"
+	"time"
+	"tradeApp/config"
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func InjectAuth(gr *gin.RouterGroup, userService services.UserService) {
@@ -47,16 +50,22 @@ func login(userService services.UserService) gin.HandlerFunc {
 		var request *services.UserLogin
 		err := c.BindJSON(&request)
 		if err != nil {
+			// log
+			config.Logger.Warn("Bad login request", zap.Duration("time", time.Microsecond), zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{"message": "bad request", "error": err.Error()})
 			return
 		}
 
 		loginResp, err := userService.LoginUser(request)
 		if err != nil {
+			// log
+			config.Logger.Error("Login server error", zap.Duration("time", time.Microsecond), zap.Error(err))
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "server error", "error": err.Error()})
 			return
 		}
 
+		// log
+		config.Logger.Info("Login success", zap.Duration("time", time.Microsecond))
 		c.JSON(http.StatusOK, gin.H{"message": "success authorized", "data": &loginResp})
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"tradeApp/api"
+	"tradeApp/config"
 	"tradeApp/middleware"
 	"tradeApp/repositories"
 	"tradeApp/services"
@@ -29,8 +30,11 @@ func main() {
 
 	// Server handler
 	handler := setup.StartServer()
-
 	gr := handler.Group("api")
+
+	// Initialize logger
+	config.InitLogger()
+
 	// Token
 	tokenRepository := repositories.NewTokenRepository(redisClient)
 	goodRepository := repositories.NewGoodRepository(db)
