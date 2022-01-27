@@ -2,8 +2,6 @@ package api
 
 import (
 	"net/http"
-	"time"
-	"tradeApp/config"
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
@@ -51,7 +49,7 @@ func login(userService services.UserService) gin.HandlerFunc {
 		err := c.BindJSON(&request)
 		if err != nil {
 			// log
-			config.Logger.Warn("Bad login request", zap.Duration("time", time.Microsecond), zap.Error(err))
+			zap.S().Warn("Bad login request")
 			c.JSON(http.StatusBadRequest, gin.H{"message": "bad request", "error": err.Error()})
 			return
 		}
@@ -59,13 +57,13 @@ func login(userService services.UserService) gin.HandlerFunc {
 		loginResp, err := userService.LoginUser(request)
 		if err != nil {
 			// log
-			config.Logger.Error("Login server error", zap.Duration("time", time.Microsecond), zap.Error(err))
+			zap.S().Error("Login server error", zap.Error(err))
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "server error", "error": err.Error()})
 			return
 		}
 
 		// log
-		config.Logger.Info("Login success", zap.Duration("time", time.Microsecond))
+		zap.S().Info("Login success")
 		c.JSON(http.StatusOK, gin.H{"message": "success authorized", "data": &loginResp})
 	}
 }
