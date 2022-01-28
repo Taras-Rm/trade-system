@@ -51,6 +51,15 @@ func GetDBHost() string {
 	return res
 }
 
+func GetRDHost() string {
+	res, ok := os.LookupEnv("REDIS_HOST")
+	if !ok {
+		logrus.Error("Can`t read .env file")
+	}
+
+	return res
+}
+
 func GetTimeAccess() string {
 	res, ok := os.LookupEnv("TIME_ACCESS")
 	if !ok {

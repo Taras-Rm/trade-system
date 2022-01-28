@@ -1,19 +1,39 @@
 version: '3'
 
 services:
-  postgres:
-    image: "postgres" # use latest official postgres version
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+  app:
+    build: ./
+    command: ./trade-app
     ports:
-      - 5432:5432
+      - 8080:8080
+    depends_on:
+      - db
+      - redis
+    environment: # environment variables
+      SERVER_PORT: 8080
+      DB_USER: postgres
+      DB_PASS: post1235
+      DB_NAME: trade
+      DB_HOST: db
+      REDIS_HOST: redis
+      TIME_ACCESS: 5m
+      TIME_REFRESH: 24h
+      JWT_ACCESS_SECRET: access123
+      JWT_REFRESH_SECRET: refresh123
+  db:
+    restart: always
+    image: postgres # use latest official postgres version
+    environment:
+      POSTGRES_DB: "trade"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "post1235"
+    ports:
+      - 5436:5432
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts do
 
   redis:
-    image: 'bitnami/redis:latest'
+    image: bitnami/redis:latest
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
