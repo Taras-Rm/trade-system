@@ -1,7 +1,4 @@
 *.env
 *.idea
 
-Dockerfile
-docker-compose.yml
-
 logs/logs.txt
