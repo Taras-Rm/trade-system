@@ -13,6 +13,7 @@ type UserRepository interface {
 	GetUserByID(userID uint) (*models.User, error)
 	BuyGood(goodID, customerID uint, userNewAmount, customerNewAmount float64) error
 	UpdateUserProfile(user *models.User, userID uint) error
+	UpdateAmount(amount uint, userID uint) error
 }
 
 type userRepository struct {
@@ -84,5 +85,10 @@ func (r *userRepository) BuyGood(userID, customerID uint, userNewAmount, custome
 
 func (r *userRepository) UpdateUserProfile(user *models.User, userID uint) error {
 	err := r.db.Model(&models.User{}).Where("id = ?", userID).Updates(&user)
+	return err.Error
+}
+
+func (r *userRepository) UpdateAmount(amount uint, userID uint) error {
+	err := r.db.Model(&models.User{}).Where("id = ?", userID).Update("amount", amount)
 	return err.Error
 }

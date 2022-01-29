@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"net/mail"
+	"strconv"
 	"tradeApp/config"
 	"tradeApp/models"
 	"tradeApp/repositories"
@@ -29,6 +30,10 @@ type TokensRequest struct {
 	RefreshToken string `json:"refreshToken" binding:"required"`
 }
 
+type AmountRequest struct {
+	Amount string `json:"amount" binding:"required"`
+}
+
 type LoginResponse struct {
 	FirstName    string  `json:"firstName"`
 	LastName     string  `json:"lastName"`
@@ -41,15 +46,16 @@ type LoginResponse struct {
 }
 
 type UserResponse struct {
-	FirstName    string `json:"firstName"`
-	LastName     string `json:"lastName"`
-	Email        string `json:"email"`
-	Age          string `json:"age"`
-	Phone        string `json:"phone"`
-	CountForSale int    `json:"countForSale"`
-	CountOfBuyed int    `json:"countOfBuyed"`
-	PriceForSale int    `json:"priceForSale"`
-	PriceOfBuyed int    `json:"priceOfBuyed"`
+	FirstName    string  `json:"firstName"`
+	LastName     string  `json:"lastName"`
+	Email        string  `json:"email"`
+	Age          string  `json:"age"`
+	Phone        string  `json:"phone"`
+	Amount       float64 `json:"amount"`
+	CountForSale int     `json:"countForSale"`
+	CountOfBuyed int     `json:"countOfBuyed"`
+	PriceForSale int     `json:"priceForSale"`
+	PriceOfBuyed int     `json:"priceOfBuyed"`
 }
 
 type UserUpdateRequest struct {
@@ -68,6 +74,7 @@ type UserService interface {
 	LogoutUser(tokensReq *TokensRequest) error
 	GetUserProfile(userID uint) (*UserResponse, error)
 	UpdateUserProfile(user *UserUpdateRequest, userID uint) error
+	UpdateAmount(req *AmountRequest, userID uint) error
 }
 
 type userService struct {
@@ -307,6 +314,7 @@ func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
 		Email:        user.Email,
 		Age:          user.Age,
 		Phone:        user.Phone,
+		Amount:       user.Amount,
 		CountForSale: countForSale,
 		PriceForSale: priceForSale,
 		CountOfBuyed: countOfBuyed,
@@ -326,6 +334,20 @@ func (s *userService) UpdateUserProfile(user *UserUpdateRequest, userID uint) er
 	}
 
 	err := s.userRepository.UpdateUserProfile(userForUpdate, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *userService) UpdateAmount(req *AmountRequest, userID uint) error {
+	uintAmount, err := strconv.ParseFloat(req.Amount, 64)
+	if err != nil {
+		return err
+	}
+
+	err = s.userRepository.UpdateAmount(uint(uintAmount), userID)
 	if err != nil {
 		return err
 	}
