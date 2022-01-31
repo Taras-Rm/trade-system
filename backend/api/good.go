@@ -7,6 +7,7 @@ import (
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func InjectGood(gr *gin.RouterGroup, goodService services.GoodService) {
@@ -30,6 +31,7 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 
 		err := c.BindJSON(&good)
 		if err != nil {
+			zap.S().Error("Add good server error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "bad request", "error": err.Error(),
 			})
@@ -38,6 +40,7 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Add good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -46,12 +49,14 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 
 		res, err := goodService.AddGood(good, userID)
 		if err != nil {
+			zap.S().Error("Add good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Add good success")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "good is added",
 			"good":    res,
@@ -64,11 +69,13 @@ func getAllGoods(goodService services.GoodService) gin.HandlerFunc {
 
 		goods, err := goodService.GetAllGoods()
 		if err != nil {
+			zap.S().Error("Get all goods server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error()})
 			return
 		}
 
+		zap.S().Info("Get all goods success")
 		c.JSON(http.StatusOK, gin.H{
 			"goods": goods,
 		})
@@ -80,6 +87,7 @@ func buyGood(goodService services.GoodService) gin.HandlerFunc {
 		goodID := c.Param("id")
 		uintGoodID, err := strconv.ParseUint(goodID, 10, 64)
 		if err != nil {
+			zap.S().Error("Buy good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -88,6 +96,7 @@ func buyGood(goodService services.GoodService) gin.HandlerFunc {
 
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Buy good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -96,12 +105,14 @@ func buyGood(goodService services.GoodService) gin.HandlerFunc {
 
 		err = goodService.BuyGood(uint(uintGoodID), userID)
 		if err != nil {
+			zap.S().Error("Buy good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Buy good success")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "success good buying",
 		})
@@ -113,6 +124,7 @@ func deleteGood(goodService services.GoodService) gin.HandlerFunc {
 		goodID := c.Param("id")
 		uintGoodID, err := strconv.ParseUint(goodID, 10, 64)
 		if err != nil {
+			zap.S().Error("Delete good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -121,12 +133,14 @@ func deleteGood(goodService services.GoodService) gin.HandlerFunc {
 
 		err = goodService.DeleteGood(uint(uintGoodID))
 		if err != nil {
+			zap.S().Error("Delete good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Delete good success")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "good has been deleted",
 		})
@@ -139,6 +153,7 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 
 		err := c.BindJSON(&good)
 		if err != nil {
+			zap.S().Error("Update good server error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "bad request", "error": err.Error(),
 			})
@@ -148,6 +163,7 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 		goodID := c.Param("id")
 		uintGoodID, err := strconv.ParseUint(goodID, 10, 64)
 		if err != nil {
+			zap.S().Error("Update good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -156,6 +172,7 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Update good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -164,12 +181,14 @@ func updateGood(goodService services.GoodService) gin.HandlerFunc {
 
 		err = goodService.UpdateGood(good, uint(uintGoodID), userID)
 		if err != nil {
+			zap.S().Error("Update good server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Update good success")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "good has been updated",
 		})
@@ -180,6 +199,7 @@ func getAllUserGoodsForSale(goodService services.GoodService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Get all user goods for sale server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -188,12 +208,14 @@ func getAllUserGoodsForSale(goodService services.GoodService) gin.HandlerFunc {
 
 		goods, err := goodService.GetAllUserGoodsForSale(userID)
 		if err != nil {
+			zap.S().Error("Get all user goods for sale server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Get all user goods for sale success")
 		c.JSON(http.StatusOK, gin.H{
 			"goods": goods,
 		})
@@ -204,6 +226,7 @@ func getAllUserBuyedGoods(goodService services.GoodService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Get all user buyed goods server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -212,12 +235,14 @@ func getAllUserBuyedGoods(goodService services.GoodService) gin.HandlerFunc {
 
 		goods, err := goodService.GetAllUserBuyedGoods(userID)
 		if err != nil {
+			zap.S().Error("Get all user buyed goods server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Get all user buyed goods success")
 		c.JSON(http.StatusOK, gin.H{
 			"goods": goods,
 		})
@@ -228,6 +253,7 @@ func getAllUserSoldGoods(goodService services.GoodService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
+			zap.S().Error("Get all user sold goods server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -236,12 +262,14 @@ func getAllUserSoldGoods(goodService services.GoodService) gin.HandlerFunc {
 
 		goods, err := goodService.GetAllUserSoldGoods(userID)
 		if err != nil {
+			zap.S().Error("Get all user sold goods server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
+		zap.S().Info("Get all user sold goods success")
 		c.JSON(http.StatusOK, gin.H{
 			"goods": goods,
 		})
