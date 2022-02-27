@@ -6,15 +6,14 @@ import RegisterForm from "./registerForm/RegisterForm";
 import { Box } from "@mui/system";
 import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/bigCard/BigCard";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getRegistrationStart } from "./registration-slice";
 
-function Registration() {
-  const dispatch = useDispatch();
-
+function Registration({registrationStart, isLoad, error}) {
 
   // надсилання форми
   let onSubmitForm = (newObj) => {
-    //dispatch(register(newObj));
+    registrationStart(newObj);
   };
 
   // перевірка чи користувач зареєструвався
@@ -58,4 +57,13 @@ function Registration() {
   );
 }
 
-export default Registration;
+const mapStateToProps = (state) => ({
+  error: state.login.error,
+  isLoad: state.login.isLoad
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  registrationStart: (formData) => dispatch(getRegistrationStart(formData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

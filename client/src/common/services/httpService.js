@@ -17,8 +17,9 @@ httpService.interceptors.response.use(res => res, err => {
 
   if (condition) {
     return refreshTokenApi().then((res) => {
-      setItemToLocalStorage(ACCESS_TOKEN, res.data.data.AccessToken);
-      setItemToLocalStorage(REFRESH_TOKEN, res.data.data.RefreshToken);
+      debugger
+      setItemToLocalStorage(ACCESS_TOKEN, res.data.data.accessToken);
+      setItemToLocalStorage(REFRESH_TOKEN, res.data.data.refreshToken);
       return res
     }).then((res) => {
       err.config.headers.Authorization = `Bearer ${ res.data.data.AccessToken }`
