@@ -11,10 +11,9 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { getLoginStart } from "./login-slice";
 
 function Login({loginStart}) {
-  const dispatch = useDispatch();
 
   let onSubmitForm = (regObj) => {
-    dispatch(loginStart({regObj}))
+    loginStart({regObj});
   };
 
   if (false) {

@@ -10,12 +10,12 @@ export default function* watcherLoginSaga() {
 
 function* getLoginUser(action) {
   try {
-    let payload = yield call(loginApi, {...action.payload});
+    let payload = yield call(loginApi, {...action.payload.regObj});
 
     yield put(getLoginSuccess());
 
-    setItemToLocalStorage(ACCESS_TOKEN, payload.data.data.AccessToken);
-    setItemToLocalStorage(REFRESH_TOKEN, payload.data.data.RefreshToken);    
+    setItemToLocalStorage(ACCESS_TOKEN, payload.data.data.accessToken);
+    setItemToLocalStorage(REFRESH_TOKEN, payload.data.data.refreshToken);    
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       yield put(getLoginError(error.response.data.error));
