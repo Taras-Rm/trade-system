@@ -15,7 +15,7 @@ type UserRegister struct {
 	FirstName string `json:"firstName" binding:"required"`
 	LastName  string `json:"lastName" binding:"required"`
 	Email     string `json:"email" binding:"required"`
-	Age       string `json:"age" binding:"required"`
+	Age       uint64 `json:"age" binding:"required"`
 	Phone     string `json:"phone" binding:"required"`
 	Password  string `json:"password" binding:"required"`
 }
@@ -38,7 +38,7 @@ type LoginResponse struct {
 	FirstName    string  `json:"firstName"`
 	LastName     string  `json:"lastName"`
 	Email        string  `json:"email"`
-	Age          string  `json:"age"`
+	Age          uint64  `json:"age"`
 	Phone        string  `json:"phone"`
 	Amount       float64 `json:"amount"`
 	AccessToken  string  `json:"accessToken"`
@@ -49,7 +49,7 @@ type UserResponse struct {
 	FirstName    string  `json:"firstName"`
 	LastName     string  `json:"lastName"`
 	Email        string  `json:"email"`
-	Age          string  `json:"age"`
+	Age          uint64  `json:"age"`
 	Phone        string  `json:"phone"`
 	Amount       float64 `json:"amount"`
 	CountForSale int     `json:"countForSale"`
@@ -62,7 +62,7 @@ type UserUpdateRequest struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Email     string `json:"email"`
-	Age       string `json:"age"`
+	Age       uint64 `json:"age"`
 	Phone     string `json:"phone"`
 }
 
