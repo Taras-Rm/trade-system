@@ -13,14 +13,13 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../store/loginReducer";
 import logo from "../../../static/images/logo2.png";
 
 function Sidebar({ fullName = "Taras Rom", avatarLetter }) {
   const dispatch = useDispatch();
 
   let onLogoutClick = async () => {
-    dispatch(logout());
+    //dispatch(logout());
   };
 
   return (

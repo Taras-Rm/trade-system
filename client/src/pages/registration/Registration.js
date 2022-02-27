@@ -7,23 +7,20 @@ import { Box } from "@mui/system";
 import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/bigCard/BigCard";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../store/authReducer";
-import AlertBox from "../../components/alert/AlertBox";
 
 function Registration() {
   const dispatch = useDispatch();
 
-  const isRegistered = useSelector((state) => state.authReducer.isSuccess);
 
   // надсилання форми
   let onSubmitForm = (newObj) => {
-    dispatch(register(newObj));
+    //dispatch(register(newObj));
   };
 
   // перевірка чи користувач зареєструвався
-  if (isRegistered) {
-    return <Redirect to="/login" />;
-  }
+  // if (true) {
+  //   return <Redirect to="/login" />;
+  // }
 
   return (
     <div className="registration">

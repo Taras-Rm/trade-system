@@ -7,20 +7,17 @@ import Typography from "@mui/material/Typography";
 import Img from "./../../static/images/trade-img.png";
 import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/bigCard/BigCard";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/loginReducer";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getLoginStart } from "./login-slice";
 
-function Login() {
+function Login({loginStart}) {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.loginReducer.isAuthLogin);
 
-  // надсилання даних форми логування
   let onSubmitForm = (regObj) => {
-    dispatch(login(regObj));
+    dispatch(loginStart({regObj}))
   };
 
-  // перенапрвлення залогованого користувача на головну сторінку
-  if (isAuth) {
+  if (false) {
     return <Redirect to="/home/profile" />;
   }
 
@@ -64,4 +61,16 @@ function Login() {
   );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  //isAuth: !!state.profileReducer.auth,
+  error: state.login.error,
+  isLoad: state.login.isLoad
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loginStart: (formData) => dispatch(getLoginStart(formData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+
