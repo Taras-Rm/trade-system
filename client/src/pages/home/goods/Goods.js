@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import GoodsItem from "../../../components/goodsItem/GoodsItem";
 import { useDispatch, useSelector } from "react-redux";
 import "./Goods.scss";
-import { getAllGoods } from "../../../store/goodsReducer";
 
 function Goods() {
   const dispatch = useDispatch();
@@ -11,7 +10,7 @@ function Goods() {
   let isLoading = useSelector((state) => state.goodsReducer.isLoading);
 
   useEffect(() => {
-    dispatch(getAllGoods(user.ID));
+    //dispatch(getAllGoods(user.ID));
   }, []);
 
   if (isLoading) {

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import "./Home.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../../store/homeReducer";
 import Sidebar from "./sidebar/Sidebar";
 import { Route, Switch } from "react-router";
 import Profile from "./profile/Profile";
@@ -16,7 +15,7 @@ function Home() {
 
   useEffect(() => {
     // завантаження даних користувача з сервера
-    dispatch(getUserProfile());
+    //dispatch(getUserProfile());
   }, [dispatch]);
 
   // перевірка чи профіль користувача завантажився

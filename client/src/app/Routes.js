@@ -19,7 +19,7 @@ function Routes() {
         <Login />
       </Route>
       <ProtectedRoute path="/home">
-        <Home />
+        {/* <Home /> */} Authorized !!!
       </ProtectedRoute>
       <Redirect to="/" />
     </Switch>
