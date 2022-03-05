@@ -17,7 +17,7 @@ function Login({loginStart, isAuth, error}) {
   };
 
   if (isAuth) {
-    return <Redirect to="/home" />;
+    return <Redirect to="/home/profile" />;
   }
 
   return (

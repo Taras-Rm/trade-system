@@ -1,6 +1,7 @@
-export const START = 'profile/START';
-export const SUCCESS = 'profile/SUCCESS';
-export const ERROR = 'profile/ERROR';
+export const LOAD_DATA_START = 'profile/START';
+export const LOAD_DATA_SUCCESS = 'profile/SUCCESS';
+export const LOAD_DATA_ERROR = 'profile/ERROR';
+
 export const LOGOUT = 'profile/LOGOUT';
 
 export const START_UPDATE = 'profile/START_UPDATE';
@@ -17,22 +18,22 @@ const STATE = {
 
 function profileReducer(state = STATE, action) {
   switch (action.type) {
-    case START:
+    case LOAD_DATA_START:
       return {
         ...state,
         loading: true,
       };
 
-    case SUCCESS:
+    case LOAD_DATA_SUCCESS:
       return {
         ...state,
-        user: action.payload,
         auth: true,
+        user: action.payload,
         loading: false,
         error: null,
       };
 
-    case ERROR:
+    case LOAD_DATA_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -75,11 +76,11 @@ function profileReducer(state = STATE, action) {
   }
 }
 
-export const getProfileStart = () => ({type: START});
+export const getProfileStart = () => ({type: LOAD_DATA_START});
 
-export const getProfileSuccess = (user) => ({type: SUCCESS, payload: user})
+export const getProfileSuccess = (user) => ({type: LOAD_DATA_SUCCESS, payload: user})
 
-export const getProfileError = (err) => ({type: ERROR, payload: err})
+export const getProfileError = (err) => ({type: LOAD_DATA_ERROR, payload: err})
 
 export const logoutUser = () => ({ type: LOGOUT })
 

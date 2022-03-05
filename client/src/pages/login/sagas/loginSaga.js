@@ -13,7 +13,6 @@ function* getLoginUser(action) {
   try {
     let payload = yield call(loginApi, {...action.payload.regObj});
 
-    debugger;
     yield put(getLoginSuccess());
     yield put(getProfileSuccess(payload.data.data))
 
