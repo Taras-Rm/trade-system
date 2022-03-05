@@ -38,8 +38,11 @@ const loginReducer = (state = initialState, action) => {
 };
 
 export const getLoginStart = (formData) => ({ type: START, payload: formData });
+
 export const getLoginStartByTokens = (formData) => ({ type: START_BY_TOKENS, payload: formData });
+
 export const getLoginSuccess = () => ({ type: SUCCESS });
+
 export const getLoginError = (err) => ({ type: ERROR, payload: err });
 
 export default loginReducer;

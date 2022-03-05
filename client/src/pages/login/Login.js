@@ -7,16 +7,16 @@ import Typography from "@mui/material/Typography";
 import Img from "./../../static/images/trade-img.png";
 import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/bigCard/BigCard";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { getLoginStart } from "./login-slice";
 
-function Login({loginStart}) {
+function Login({loginStart, isAuth, error}) {
 
   let onSubmitForm = (regObj) => {
     loginStart({regObj});
   };
 
-  if (false) {
+  if (isAuth) {
     return <Redirect to="/home/profile" />;
   }
 
@@ -61,7 +61,7 @@ function Login({loginStart}) {
 }
 
 const mapStateToProps = (state) => ({
-  //isAuth: !!state.profileReducer.auth,
+  isAuth: !!state.profile.auth,
   error: state.login.error,
   isLoad: state.login.isLoad
 });

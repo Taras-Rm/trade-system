@@ -18,9 +18,9 @@ function Routes() {
       <Route exact path="/login">
         <Login />
       </Route>
-      <ProtectedRoute path="/home">
-        {/* <Home /> */} Authorized !!!
-      </ProtectedRoute>
+      <Route path="/home">
+        <Home />
+      </Route>
       <Redirect to="/" />
     </Switch>
   );

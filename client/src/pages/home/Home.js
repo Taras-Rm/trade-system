@@ -1,33 +1,30 @@
 import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import "./Home.scss";
-import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "./sidebar/Sidebar";
 import { Route, Switch } from "react-router";
 import Profile from "./profile/Profile";
 import Goods from "./goods/Goods";
 import AddGoods from "./addGoods/AddGoods";
+import { getProfileStart } from "./profile/profile-slice";
+import { connect } from "react-redux";
 
-function Home() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.homeReducer.isSuccess);
-  const user = useSelector((state) => state.homeReducer.user);
+function Home({getProfileStart}) {
 
   useEffect(() => {
-    // завантаження даних користувача з сервера
-    //dispatch(getUserProfile());
-  }, [dispatch]);
-
-  // перевірка чи профіль користувача завантажився
-  if (!isLoading) {
-    return <div>Loading...</div>;
-  }
+    getProfileStart()
+  }, [])
+ 
+  // // перевірка чи профіль користувача завантажився
+  // if (!isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="home">
       <Sidebar
-        fullName={`${user.firstName} ${user.lastName}`}
-        avatarLetter={user.firstName[0]}
+        // fullName={`${user.firstName} ${user.lastName}`}
+        // avatarLetter={user.firstName[0]}
       />
       <div className="home_main">
         <Header />
@@ -47,4 +44,12 @@ function Home() {
   );
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getProfileStart: () => dispatch(getProfileStart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
