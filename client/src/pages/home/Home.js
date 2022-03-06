@@ -9,22 +9,23 @@ import AddGoods from "./addGoods/AddGoods";
 import { getProfileStart } from "./profile/profile-slice";
 import { connect } from "react-redux";
 
-function Home({getProfileStart}) {
+function Home({getProfileStart, loading, user, error}) {
 
+  // load user profile data
   useEffect(() => {
     getProfileStart()
   }, [])
  
-  // // перевірка чи профіль користувача завантажився
-  // if (!isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  // перевірка чи профіль користувача завантажився
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="home">
       <Sidebar
-        // fullName={`${user.firstName} ${user.lastName}`}
-        // avatarLetter={user.firstName[0]}
+        fullName={`${user.firstName} ${user.lastName}`}
+        avatarLetter={user.firstName[0]}
       />
       <div className="home_main">
         <Header />
@@ -45,7 +46,9 @@ function Home({getProfileStart}) {
 }
 
 const mapStateToProps = (state) => ({
-  
+  loading: state.profile.loading,
+  error: state.profile.error,
+  user: state.profile.user
 });
 
 const mapDispatchToProps = (dispatch) => ({
