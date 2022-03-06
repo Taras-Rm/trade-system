@@ -23,19 +23,21 @@ import { red } from "@mui/material/colors";
 import "./AddGoodsForm.scss";
 import { Box } from "@mui/system";
 
-function AddGoodsForm() {
+function AddGoodsForm({onSubmitForm}) {
+
   const formik = useFormik({
     initialValues: {
-      goodsname: "",
-      goodsdescription: "",
+      name: "",
+      description: "",
       category: "",
       price: 0,
     },
     validationSchema: validationSchema,
-    onSubmit: (regObj) => {
-      alert(regObj);
+    onSubmit: (goodObj) => {
+      onSubmitForm({ ...goodObj, price: parseFloat(goodObj.price) });
     },
   });
+
   return (
     <form
       className="addGoods_form"
@@ -45,31 +47,31 @@ function AddGoodsForm() {
       <Stack spacing={3}>
         <TextField
           style={{ width: 500 }}
-          autoComplete="goodsname"
-          type="goodsname"
+          autoComplete="name"
+          type="name"
           label="Goods name"
-          id="goodsname"
-          name="goodsname"
-          value={formik.values.goodsname}
+          id="name"
+          name="name"
+          value={formik.values.name}
           onChange={formik.handleChange}
-          error={formik.touched.goodsname && Boolean(formik.errors.goodsname)}
-          helperText={formik.touched.goodsname && formik.errors.goodsname}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
         />
         <TextField
           style={{ width: 500 }}
           multiline
-          type="goodsdescription"
+          type="description"
           label="Goods description"
-          id="goodsdescription"
-          name="goodsdescription"
-          value={formik.values.goodsdescription}
+          id="description"
+          name="description"
+          value={formik.values.description}
           onChange={formik.handleChange}
           error={
-            formik.touched.goodsdescription &&
-            Boolean(formik.errors.goodsdescription)
+            formik.touched.description &&
+            Boolean(formik.errors.description)
           }
           helperText={
-            formik.touched.goodsdescription && formik.errors.goodsdescription
+            formik.touched.description && formik.errors.description
           }
         />
 
@@ -85,9 +87,9 @@ function AddGoodsForm() {
               label="Category"
               onChange={formik.handleChange}
             >
-              <MenuItem value={10}>Toyes</MenuItem>
-              <MenuItem value={20}>Eat</MenuItem>
-              <MenuItem value={30}>Cars</MenuItem>
+              <MenuItem value={"toy"}>Toyes</MenuItem>
+              <MenuItem value={"eat"}>Eat</MenuItem>
+              <MenuItem value={"car"}>Cars</MenuItem>
             </Select>
           </FormControl>
 
@@ -113,6 +115,7 @@ function AddGoodsForm() {
           Sell
         </Button>
       </Stack>
+      
     </form>
   );
 }

@@ -32,21 +32,21 @@ function Sidebar({ fullName = "Taras Rom", avatarLetter }) {
         <span className="avatarBox_name">{`${fullName}`}</span>
       </div>
       <List className="sidebar_list">
+      <NavLink style={{ color: "black" }} to="/home/profile">
+          <ListItem className={`sidebar_item`} sx={{ pl: 4 }} button>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Profile"} />
+          </ListItem>
+        </NavLink>
+        
         <NavLink style={{ color: "black" }} to="/home/goods">
           <ListItem className={`sidebar_item`} sx={{ pl: 4 }} button>
             <ListItemIcon>
               <AllInboxIcon />
             </ListItemIcon>
             <ListItemText primary={"Goods"} />
-          </ListItem>
-        </NavLink>
-
-        <NavLink style={{ color: "black" }} to="/home/profile">
-          <ListItem className={`sidebar_item`} sx={{ pl: 4 }} button>
-            <ListItemIcon>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Profile"} />
           </ListItem>
         </NavLink>
 

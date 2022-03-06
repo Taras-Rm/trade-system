@@ -9,7 +9,7 @@ export const SUCCESS_UPDATE = 'profile/SUCCESS_UPDATE';
 export const ERROR_UPDATE = 'profile/ERROR_UPDATE';
 
 const STATE = {
-  loading: null,
+  loading: false,
   auth: false,
   user: null,
   error: null,
