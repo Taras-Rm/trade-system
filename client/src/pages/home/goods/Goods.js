@@ -1,19 +1,16 @@
 import React, { useEffect } from "react";
 import GoodsItem from "../../../components/goodsItem/GoodsItem";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import "./Goods.scss";
+import { getAllGoodsStart } from "./goods-slice";
 
-function Goods() {
-  const dispatch = useDispatch();
-  let goods = useSelector((state) => state.goodsReducer.goods);
-  let user = useSelector((state) => state.homeReducer.user);
-  let isLoading = useSelector((state) => state.goodsReducer.isLoading);
+function Goods({ getAllGoods, error, loading, goods }) {
 
   useEffect(() => {
-    //dispatch(getAllGoods(user.ID));
+    getAllGoods();
   }, []);
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -29,4 +26,14 @@ function Goods() {
   );
 }
 
-export default Goods;
+const mapStateToProps = (state) => ({
+  goods: state.allGoods.goods,
+  error: state.allGoods.error,
+  loading: state.allGoods.loading,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getAllGoods: () => dispatch(getAllGoodsStart())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Goods);

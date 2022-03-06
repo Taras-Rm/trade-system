@@ -7,7 +7,6 @@ import AddGoodsForm from "./addGoodsForm/AddGoodsForm";
 function AddGoods({addGoodsStart, error}) {
 
   let onSubmitForm = (goodObj) => {
-    debugger
     addGoodsStart({goodObj});
   };
 
