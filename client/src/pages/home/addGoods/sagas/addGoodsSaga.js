@@ -1,5 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import { addGoodsApi } from '../../../../api/addGoodsApi';
+import { addGoodsApi } from '../../../../api/goodsApi';
 import { addGoodsError, addGoodsSuccess, SEND_DATA_START } from '../addGoods-slice';
 
 export default function* watcherAddGoodsSaga() {
