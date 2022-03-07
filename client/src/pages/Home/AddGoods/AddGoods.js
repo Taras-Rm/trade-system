@@ -1,13 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
+import { addGoodsStart } from "./addGoods-slice";
 import "./AddGoods.scss";
 import AddGoodsForm from "./AddGoodsForm/AddGoodsForm";
 
-function AddGoods() {
+function AddGoods({ addGoods, loading, error }) {
 
   let onAddNewGoodClick = (goodObj, image) => {
-    // console.log(image);
-    // dispatch(addNewGood({ ...goodObj, userID: userID }, image));
-    // openSnackbar("Your good is added !");
+    addGoods({ ...goodObj });
   };
 
   return (
@@ -18,4 +18,13 @@ function AddGoods() {
   );
 }
 
-export default AddGoods;
+const mapStateToProps = (state) => ({
+  loading: state.addGoods.loading,
+  error: state.addGoods.error,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addGoods: (good) => dispatch(addGoodsStart(good)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddGoods);
