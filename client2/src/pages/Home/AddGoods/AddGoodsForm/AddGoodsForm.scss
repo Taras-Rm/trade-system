@@ -1,0 +1,42 @@
+.addGoods_form {
+  background-color: #fff6a8;
+  width: fit-content;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+
+  &_title {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 22px;
+  }
+}
+
+.addGoods_form__fields {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.upload__image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.image-item__btn-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: left;
+  margin-bottom: 15px;
+}
+
+.previewCard {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 40px;
+}
