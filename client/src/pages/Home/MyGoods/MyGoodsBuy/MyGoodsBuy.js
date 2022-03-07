@@ -12,8 +12,10 @@ import {
 import "./MyGoodsBuy.scss";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Preloader from "../../../../components/Preloader/Preloader";
+import { connect } from "react-redux";
+import { getBuyedGoodsStart } from "../myGoods-slice";
 
-function MyGoodsBuy() {
+function MyGoodsBuy({ getBuyedGoods, loading, error, goods }) {
 
   const onDeleteGoodClick = (goodID) => {
     // dispatch(deleteBuyedGood(goodID, userID));
@@ -21,17 +23,17 @@ function MyGoodsBuy() {
   };
 
   useEffect(() => {
-    // dispatch(getAllBuyedGoods(userID));
+    getBuyedGoods()
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <div style={{ textAlign: "center", marginTop: 50 }}>
-  //       <Preloader />
-  //     </div>
-  //   );
-  // }
-  let allBuyedGoods = []
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: 50 }}>
+        <Preloader />
+      </div>
+    );
+  }
+
   return (
     <div className="myGoodsBuy">
       <h2 className="myGoodsBuy_title">My buyed goods</h2>
@@ -60,15 +62,15 @@ function MyGoodsBuy() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allBuyedGoods.map((row) => (
+                {goods.map((row) => (
                   <TableRow key={row.name}>
                     <TableCell width={200} component="th" scope="row">
-                      {"csc"}
+                      {row.name}
                     </TableCell>
                     <TableCell scope="row" component="th">
-                      {"cd"}
+                      {row.category}
                     </TableCell>
-                    <TableCell component="th">{"cdsc"}</TableCell>
+                    <TableCell component="th">{row.price}</TableCell>
                     <TableCell width={200} component="th" align="center">
                       <Button
                         // onClick={() => onDeleteGoodClick()}
@@ -88,7 +90,7 @@ function MyGoodsBuy() {
 
         <div className="myGoodsBuy_info">
           <div className="myGoodsBuy_info__count">
-            Count of buyed goods: {allBuyedGoods.length}
+            Count of buyed goods: {goods.length}
           </div>
           <div className="myGoodsBuy_info__price">
             Total price of buyed goods: {5} $
@@ -99,4 +101,14 @@ function MyGoodsBuy() {
   );
 }
 
-export default MyGoodsBuy;
+const mapStateToProps = (state) => ({
+  goods: state.myGoods.buyedGoods,
+  error: state.myGoods.errorBuyed,
+  loading: state.myGoods.loadingBuyed
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getBuyedGoods: () => dispatch(getBuyedGoodsStart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyGoodsBuy);
