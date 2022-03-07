@@ -15,7 +15,7 @@ import Preloader from "../../../../components/Preloader/Preloader";
 import { connect } from "react-redux";
 import { getBuyedGoodsStart } from "../myGoods-slice";
 
-function MyGoodsBuy({ getBuyedGoods, loading, error, goods }) {
+function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
 
   const onDeleteGoodClick = (goodID) => {
     // dispatch(deleteBuyedGood(goodID, userID));
@@ -93,7 +93,7 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods }) {
             Count of buyed goods: {goods.length}
           </div>
           <div className="myGoodsBuy_info__price">
-            Total price of buyed goods: {5} $
+            Total price of buyed goods: {priceBuyed} $
           </div>
         </div>
       </div>
@@ -104,7 +104,8 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods }) {
 const mapStateToProps = (state) => ({
   goods: state.myGoods.buyedGoods,
   error: state.myGoods.errorBuyed,
-  loading: state.myGoods.loadingBuyed
+  loading: state.myGoods.loadingBuyed,
+  priceBuyed: state.myGoods.priceBuyed
 });
 
 const mapDispatchToProps = (dispatch) => ({

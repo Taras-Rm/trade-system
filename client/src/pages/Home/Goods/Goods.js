@@ -12,7 +12,11 @@ function Goods({ getAllGoods, loading, error, goods }) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ textAlign: "center", marginTop: 50 }}>
+        <Preloader />
+      </div>
+    );
   }
   
   return (

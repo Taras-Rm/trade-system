@@ -16,14 +16,16 @@ import Preloader from "../../../../components/Preloader/Preloader";
 import GoodUpdateForm from "../../../../components/GoodUpdateForm/GoodUpdateForm";
 import MyModal from "../../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
+import { getGoodsForSellStart } from "../myGoods-slice";
+import { connect } from "react-redux";
 
-function MyGoodsSell() {
+function MyGoodsSell({ getGoods, goods, loading, error, priceSell }) {
 
   /////
   // модальне вікно оновлення
   const [modalUpd, setModalUpd] = useState(false);
-  // дані форми оновлення банку
-  // зміни в інпутах форми оновлення
+  // // дані форми оновлення банку
+  // // зміни в інпутах форми оновлення
   const formUpd = useFormik({
     initialValues: {
       name: "",
@@ -33,7 +35,7 @@ function MyGoodsSell() {
       goodID: null,
     },
   });
-  /////
+  // /////
 
   const onDeleteGoodClick = (goodID) => {
     // dispatch(deleteGood(goodID, userID));
@@ -41,24 +43,7 @@ function MyGoodsSell() {
   };
 
   const editHandler = () => {
-    // if (isNaN(formUpd.values.price)) {
-    //   openSnackbar2("Bad form data !");
-    // } else {
-    //   dispatch(
-    //     updateGood(
-    //       {
-    //         name: formUpd.values.name,
-    //         description: formUpd.values.description,
-    //         category: formUpd.values.category,
-    //         price: formUpd.values.price,
-    //       },
-    //       formUpd.values.goodID,
-    //       userID
-    //     )
-    //   );
-    //   setModalUpd(false);
-    //   openSnackbar("Your good is updated !");
-    // }
+
   };
 
   const onEditGoodClick = (goodObj, goodID) => {
@@ -73,17 +58,17 @@ function MyGoodsSell() {
   };
 
   useEffect(() => {
-    // dispatch(getAllSellGoods(userID));
+    getGoods()
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <div style={{ textAlign: "center", marginTop: 50 }}>
-  //       <Preloader />
-  //     </div>
-  //   );
-  // }
-let allGoods = []
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: 50 }}>
+        <Preloader />
+      </div>
+    );
+  }
+
   return (
     <div className="myGoodsSale">
       {/* modal for update */}
@@ -113,13 +98,13 @@ let allGoods = []
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allGoods.map((row) => (
+                {goods.map((row) => (
                   <TableRow key={row.name}>
                     <TableCell width={200} component="th" scope="row">
-                      {"cdscs"}
+                      {row.name}
                     </TableCell>
                     <TableCell scope="row" component="th">
-                      {"cdcd"}
+                      {row.category}
                     </TableCell>
                     <TableCell component="th">{row.price}</TableCell>
                     <TableCell width={100} component="th" align="center">
@@ -151,10 +136,10 @@ let allGoods = []
 
         <div className="myGoodsSale_info">
           <div className="myGoodsSale_info__count">
-            Count of goods: {allGoods.length}
+            Count of goods: {goods.length}
           </div>
           <div className="myGoodsSale_info__price">
-            Total price of goods: {565} $
+            Total price of goods: {priceSell} $
           </div>
         </div>
       </div>
@@ -162,4 +147,15 @@ let allGoods = []
   );
 }
 
-export default MyGoodsSell;
+const mapStateToProps = (state) => ({
+  goods: state.myGoods.forSellGoods,
+  error: state.myGoods.errorSell,
+  loading: state.myGoods.loadingSell,
+  priceSell: state.myGoods.priceSell
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getGoods: () => dispatch(getGoodsForSellStart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyGoodsSell);

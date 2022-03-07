@@ -9,10 +9,13 @@ export const GET_GOODS_FOR_SELL_ERROR = 'myGoods/sell/ERROR';
 const STATE = {
   loadingBuyed: false,
   errorBuyed: null,
+  buyedGoods: [],
+  priceBuyed: null,
+
   loadingSell: false,
   errorSell: null,
-  buyedGoods: [],
   forSellGoods: [],
+  priceSell: null,
 };
 
 function myGoodsReducer(state = STATE, action) {
@@ -25,11 +28,16 @@ function myGoodsReducer(state = STATE, action) {
       };
 
     case GET_BUYED_GOODS_SUCCESS:
+      let price1 = 0;
+      for(let i = 0; i < action.payload.length; i++) {
+        price1 += action.payload[i].price
+      }
       return {
         ...state,
         loadingBuyed: false,
         buyedGoods: action.payload,
         errorBuyed: null,
+        priceBuyed: price1
       };
 
     case GET_BUYED_GOODS_ERROR:
@@ -46,11 +54,16 @@ function myGoodsReducer(state = STATE, action) {
       };
 
     case GET_GOODS_FOR_SELL_SUCCESS:
+      let price2 = 0;
+      for(let i = 0; i < action.payload.length; i++) {
+        price2 += action.payload[i].price
+      }
       return {
         ...state,
         forSellGoods: action.payload,
         loadingSell: false,
         errorSell: null,
+        priceSell: price2
       };
 
     case GET_GOODS_FOR_SELL_ERROR:

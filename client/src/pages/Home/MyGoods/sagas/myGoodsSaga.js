@@ -1,8 +1,8 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import { getAllBuyedGoodsApi, getAllGoodsForSaleApi } from '../../../../api/goodsApi';
+import { getAllBuyedGoodsApi, getAllGoodsForSellApi } from '../../../../api/goodsApi';
 import { getProfileDataApi } from '../../../../api/profileApi';
 import { getLoginError } from '../../../Login/login-slice';
-import { getBuyedGoodsError, getBuyedGoodsSuccess, getGoodsForSellError, GET_BUYED_GOODS_START, GET_GOODS_FOR_SELL_START } from '../myGoods-slice';
+import { getBuyedGoodsError, getBuyedGoodsSuccess, getGoodsForSellError, getGoodsForSellSuccess, GET_BUYED_GOODS_START, GET_GOODS_FOR_SELL_START } from '../myGoods-slice';
 
 export default function* watcherMyGoodsSaga() {
   yield takeLatest(GET_BUYED_GOODS_START, getBuyedGoods);
@@ -22,9 +22,9 @@ function* getBuyedGoods() {
 
 function* getGoodsForSell() {
   try {
-    let payload = yield call(getAllGoodsForSaleApi);
+    let payload = yield call(getAllGoodsForSellApi);
 
-    yield put(getAllGoodsForSaleApi(payload.data.goods))
+    yield put(getGoodsForSellSuccess(payload.data.goods))
 
   } catch (error) {
     yield put(getGoodsForSellError(error.message))
