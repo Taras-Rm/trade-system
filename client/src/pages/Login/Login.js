@@ -3,7 +3,7 @@ import "./Login.scss";
 import LoginForm from "./LoginForm/LoginForm";
 
 import Typography from "@mui/material/Typography";
-import Img from "./../../static/images/trade-img.png";
+import Img from "../../static/images/trade-img.png";
 import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/BigCard/BigCard";
 import { Box } from "@mui/material";

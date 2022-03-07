@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import "./Register.scss";
-import Img from "./../../static/images/trade-img.png";
+import Img from "../../static/images/trade-img.png";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
