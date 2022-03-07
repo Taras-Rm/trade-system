@@ -1,0 +1,23 @@
+.goods {
+  padding: 0 30px;
+
+  &_title {
+    font-size: 30px;
+    padding-left: 25px;
+    padding-top: 10px;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+
+  &_noGoods {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 150px;
+  }
+}
+
+.goods_box {
+  display: flex;
+
+  flex-wrap: wrap;
+}

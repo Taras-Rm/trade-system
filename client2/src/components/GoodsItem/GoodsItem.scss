@@ -1,0 +1,25 @@
+.goods_item {
+  margin-left: 25px;
+  margin-top: 25px;
+
+  cursor: pointer;
+
+  box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px,
+    rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+}
+
+.goods_item:hover {
+  transition: 0.5s all;
+
+  transform: scale(1.1);
+}
+
+.preview {
+  margin: 0;
+}
+
+.goods_item_content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
