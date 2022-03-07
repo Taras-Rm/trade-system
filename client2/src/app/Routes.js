@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { PrivateRoute } from "../common/privateRoute/PrivateRoute";
 import ProtectedRoute from "../components/protectedRoute/ProtectedRoute";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
@@ -18,9 +19,9 @@ function Routes() {
       <Route exact path="/login">
         <Login />
       </Route>
-      <ProtectedRoute path="/home">
+      <PrivateRoute path="/home">
         <Home />
-      </ProtectedRoute>
+      </PrivateRoute>
       <Redirect to="/" />
     </Switch>
   );

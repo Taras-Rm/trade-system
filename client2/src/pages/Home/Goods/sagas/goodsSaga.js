@@ -1,15 +1,15 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
-import { getAllGoodsApi } from '../../../../api/addGoodsApi';
-import { getAllGoodsError, getAllGoodsStart, getAllGoodsSuccess, GET_ALL_GOODS_START } from '../goods-slice';
+import { call, put, takeLatest } from "redux-saga/effects";
+import { getAllGoodsApi } from "../../../../api/goodsApi";
+import { getAllGoodsError, getAllGoodsSuccess, GET_ALL_GOODS_START } from "../goods-slice";
 
 export default function* watcherAllGoodsSaga() {
-  yield takeLatest(GET_ALL_GOODS_START, getAllGoods);
+  yield takeLatest(GET_ALL_GOODS_START, getAllGoodsData);
 }
 
-function* getAllGoods() {
+function* getAllGoodsData() {
   try {
     let payload = yield call(getAllGoodsApi);
-
+    
     yield put(getAllGoodsSuccess(payload.data.goods))
 
   } catch (error) {
