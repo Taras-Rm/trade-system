@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import GoodsItem from "../../../components/GoodsItem/GoodsItem";
-import Preloader from "./../../../components/Preloader/Preloader";
+import Preloader from "../../../components/Preloader/Preloader";
 import { getAllGoodsStart } from "./goods-slice";
 import "./Goods.scss";
 
