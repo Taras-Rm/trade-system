@@ -45,6 +45,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
       } else {
         img = "";
       }
+      regObj.price = parseFloat(regObj.price)
       onAddNewGoodClick(regObj, img);
       resetForm();
       setImage([]);
