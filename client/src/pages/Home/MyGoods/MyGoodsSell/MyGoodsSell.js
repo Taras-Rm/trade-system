@@ -21,11 +21,10 @@ import { connect } from "react-redux";
 
 function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood }) {
 
-  /////
-  // модальне вікно оновлення
+  // modal window for update form
   const [modalUpd, setModalUpd] = useState(false);
-  // // дані форми оновлення банку
-  // // зміни в інпутах форми оновлення
+
+  // data for update
   const formUpd = useFormik({
     initialValues: {
       name: "",
@@ -35,30 +34,33 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood })
       goodID: null,
     },
   });
-  // /////
+
+  useEffect(() => {
+    getGoods()
+  }, []);
 
   const onDeleteGoodClick = (goodId) => {
     deleteGood(goodId)
   };
 
-  const editHandler = () => {
+  // on edit good button click
+  const onEditGoodClick = (goodObj) => {
+    setModalUpd(true);
+
+    formUpd.setValues({
+      name: goodObj.name,
+      description: goodObj.description,
+      category: goodObj.category,
+      price: goodObj.price,
+      goodID: goodObj.ID,
+    });
+  };
+
+   // on edit confirm button click
+   const editHandler = () => {
 
   };
 
-  const onEditGoodClick = (goodObj, goodID) => {
-    // setModalUpd(true);
-    // formUpd.setValues({
-    //   name: goodObj.name,
-    //   description: goodObj.description,
-    //   category: goodObj.category,
-    //   price: goodObj.price,
-    //   goodID: goodID,
-    // });
-  };
-
-  useEffect(() => {
-    getGoods()
-  }, []);
 
   if (loading) {
     return (
@@ -111,7 +113,7 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood })
                         variant="contained"
                         size="small"
                         style={{ backgroundColor: "orange" }}
-                        // onClick={() => onEditGoodClick(row, row.id)}
+                        onClick={() => onEditGoodClick(row, row.id)}
                       >
                         edit
                       </Button>
