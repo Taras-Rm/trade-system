@@ -6,6 +6,10 @@ export const GET_GOODS_FOR_SELL_START = 'myGoods/sell/START';
 export const GET_GOODS_FOR_SELL_SUCCESS = 'myGoods/sell/SUCCESS';
 export const GET_GOODS_FOR_SELL_ERROR = 'myGoods/sell/ERROR';
 
+export const DELETE_GOODS_FOR_SELL_START = 'myGoods/sell/delete/START';
+export const DELETE_GOODS_FOR_SELL_SUCCESS = 'myGoods/sell/delete/SUCCESS';
+export const DELETE_GOODS_FOR_SELL_ERROR = 'myGoods/sell/delete/ERROR';
+
 const STATE = {
   loadingBuyed: false,
   errorBuyed: null,
@@ -16,6 +20,9 @@ const STATE = {
   errorSell: null,
   forSellGoods: [],
   priceSell: null,
+
+  loadingDeleteSell: false,
+  errorDeleteSell: null,
 };
 
 function myGoodsReducer(state = STATE, action) {
@@ -73,6 +80,27 @@ function myGoodsReducer(state = STATE, action) {
         errorSell: action.payload,
       };
 
+    case DELETE_GOODS_FOR_SELL_START:
+      return {
+        ...state,
+        loadingDeleteSell: true,
+        errorDeleteSell: null
+      };
+
+    case DELETE_GOODS_FOR_SELL_SUCCESS:
+      return {
+        ...state,
+        loadingDeleteSell: false,
+        errorDeleteSell: null
+      };
+
+      case DELETE_GOODS_FOR_SELL_SUCCESS:
+        return {
+          ...state,
+          loadingDeleteSell: false,
+          errorDeleteSell: action.payload
+      };
+
     default:
       return state;
   }
@@ -90,6 +118,13 @@ export const getGoodsForSellStart = () => ({type: GET_GOODS_FOR_SELL_START});
 export const getGoodsForSellSuccess = (goods) => ({type: GET_GOODS_FOR_SELL_SUCCESS, payload: goods})
 
 export const getGoodsForSellError = (err) => ({type: GET_GOODS_FOR_SELL_ERROR, payload: err})
+
+
+export const deleteGoodsForSellStart = (goodId) => ({type: DELETE_GOODS_FOR_SELL_START, payload: goodId});
+
+export const deleteGoodsForSellSuccess = () => ({type: DELETE_GOODS_FOR_SELL_SUCCESS})
+
+export const deleteGoodsForSellError = (err) => ({type: DELETE_GOODS_FOR_SELL_ERROR, payload: err})
 
 
 export default myGoodsReducer;

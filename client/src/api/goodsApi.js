@@ -8,3 +8,5 @@ export const getAllGoodsApi = () => httpService.get('/good');
 export const getAllGoodsForSellApi = () => httpService.get('/good/goods/sale');
 
 export const getAllBuyedGoodsApi = () => httpService.get('/good/goods/buy');
+
+export const deleteGoodsForSellApi = (goodId) => httpService.delete(`/good/${goodId}`);

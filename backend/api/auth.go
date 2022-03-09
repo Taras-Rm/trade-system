@@ -32,6 +32,7 @@ func register(userService services.UserService) gin.HandlerFunc {
 		if err != nil {
 			zap.S().Error("Registration validation error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request", "error": err.Error()})
+			return
 		}
 
 		user, err := userService.CreateUser(request)
