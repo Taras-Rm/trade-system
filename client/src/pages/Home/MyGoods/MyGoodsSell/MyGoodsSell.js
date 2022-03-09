@@ -56,7 +56,7 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, u
     });
   };
 
-   // on edit confirm button click
+   // on edit confirm button click //
    const editHandler = () => {
      let data = formUpd.values
      data.price = parseInt(data.price, 10)
