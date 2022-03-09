@@ -16,10 +16,10 @@ import Preloader from "../../../../components/Preloader/Preloader";
 import GoodUpdateForm from "../../../../components/GoodUpdateForm/GoodUpdateForm";
 import MyModal from "../../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
-import { getGoodsForSellStart } from "../myGoods-slice";
+import { deleteGoodsForSellStart, getGoodsForSellStart } from "../myGoods-slice";
 import { connect } from "react-redux";
 
-function MyGoodsSell({ getGoods, goods, loading, error, priceSell }) {
+function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood }) {
 
   /////
   // модальне вікно оновлення
@@ -37,9 +37,8 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell }) {
   });
   // /////
 
-  const onDeleteGoodClick = (goodID) => {
-    // dispatch(deleteGood(goodID, userID));
-    // openSnackbar("Your good is deleted !");
+  const onDeleteGoodClick = (goodId) => {
+    deleteGood(goodId)
   };
 
   const editHandler = () => {
@@ -119,7 +118,7 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell }) {
                     </TableCell>
                     <TableCell width={100} component="th" align="center">
                       <Button
-                        // onClick={() => onDeleteGoodClick(row.id)}
+                        onClick={() => onDeleteGoodClick(row.ID)}
                         variant="contained"
                         size="small"
                         color="error"
@@ -156,6 +155,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getGoods: () => dispatch(getGoodsForSellStart()),
+  deleteGood: (goodId) => dispatch(deleteGoodsForSellStart(goodId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyGoodsSell);

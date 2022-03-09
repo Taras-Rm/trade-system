@@ -34,7 +34,7 @@ function RegisterForm({ onSubmitForm, error }) {
         lastName: values.lastName,
         email: values.email,
         password: values.password,
-        age: Number(values.age),
+        age: parseInt(values.age, 10),
         phone: values.phone,
       };
       onSubmitForm(newObj);
