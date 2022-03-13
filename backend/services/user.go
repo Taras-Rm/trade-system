@@ -46,6 +46,7 @@ type LoginResponse struct {
 }
 
 type UserResponse struct {
+	ID           uint    `json:"id"`
 	FirstName    string  `json:"firstName"`
 	LastName     string  `json:"lastName"`
 	Email        string  `json:"email"`
@@ -309,6 +310,7 @@ func (s *userService) GetUserProfile(userID uint) (*UserResponse, error) {
 	}
 
 	userResp := &UserResponse{
+		ID:           user.ID,
 		FirstName:    user.FirstName,
 		LastName:     user.LastName,
 		Email:        user.Email,

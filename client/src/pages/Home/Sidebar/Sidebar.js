@@ -96,7 +96,7 @@ function Sidebar({ fullName, avatarLetter, loading }) {
         <Divider className="listDivider" />
         <Link
           style={{ color: "black", textDecoration: "none" }}
-          to="/login"
+          // to="/login"
           onClick={() => onLogoutClick()}
         >
           <ListItem className="sidebar_item" sx={{ pl: 4 }} button>

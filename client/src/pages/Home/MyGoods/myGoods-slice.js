@@ -10,6 +10,10 @@ export const DELETE_GOODS_FOR_SELL_START = 'myGoods/sell/delete/START';
 export const DELETE_GOODS_FOR_SELL_SUCCESS = 'myGoods/sell/delete/SUCCESS';
 export const DELETE_GOODS_FOR_SELL_ERROR = 'myGoods/sell/delete/ERROR';
 
+export const UPDATE_GOODS_FOR_SELL_START = 'myGoods/sell/update/START';
+export const UPDATE_GOODS_FOR_SELL_SUCCESS = 'myGoods/sell/update/SUCCESS';
+export const UPDATE_GOODS_FOR_SELL_ERROR = 'myGoods/sell/update/ERROR';
+
 const STATE = {
   loadingBuyed: false,
   errorBuyed: null,
@@ -23,6 +27,9 @@ const STATE = {
 
   loadingDeleteSell: false,
   errorDeleteSell: null,
+
+  loadingUpdateSell: false,
+  errorUpdateSell: null,
 };
 
 function myGoodsReducer(state = STATE, action) {
@@ -100,6 +107,27 @@ function myGoodsReducer(state = STATE, action) {
           loadingDeleteSell: false,
           errorDeleteSell: action.payload
       };
+    
+      case UPDATE_GOODS_FOR_SELL_START:
+        return {
+          ...state,
+          loadingUpdateSell: true,
+          errorUpdateSell: null
+        };
+  
+      case UPDATE_GOODS_FOR_SELL_SUCCESS:
+        return {
+          ...state,
+          loadingUpdateSell: false,
+          errorUpdateSell: null
+        };
+  
+        case UPDATE_GOODS_FOR_SELL_SUCCESS:
+          return {
+            ...state,
+            loadingUpdateSell: false,
+            errorUpdateSell: action.payload
+        };
 
     default:
       return state;
@@ -125,6 +153,13 @@ export const deleteGoodsForSellStart = (goodId) => ({type: DELETE_GOODS_FOR_SELL
 export const deleteGoodsForSellSuccess = () => ({type: DELETE_GOODS_FOR_SELL_SUCCESS})
 
 export const deleteGoodsForSellError = (err) => ({type: DELETE_GOODS_FOR_SELL_ERROR, payload: err})
+
+
+export const updateGoodsForSellStart = (good) => ({type: UPDATE_GOODS_FOR_SELL_START, payload: good});
+
+export const updateGoodsForSellSuccess = () => ({type: UPDATE_GOODS_FOR_SELL_SUCCESS})
+
+export const updateGoodsForSellError = (err) => ({type: UPDATE_GOODS_FOR_SELL_ERROR, payload: err})
 
 
 export default myGoodsReducer;

@@ -16,16 +16,15 @@ import Preloader from "../../../../components/Preloader/Preloader";
 import GoodUpdateForm from "../../../../components/GoodUpdateForm/GoodUpdateForm";
 import MyModal from "../../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
-import { deleteGoodsForSellStart, getGoodsForSellStart } from "../myGoods-slice";
+import { deleteGoodsForSellStart, getGoodsForSellStart, updateGoodsForSellStart } from "../myGoods-slice";
 import { connect } from "react-redux";
 
-function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood }) {
+function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, updateGood }) {
 
-  /////
-  // модальне вікно оновлення
+  // modal window for update form
   const [modalUpd, setModalUpd] = useState(false);
-  // // дані форми оновлення банку
-  // // зміни в інпутах форми оновлення
+
+  // data for update
   const formUpd = useFormik({
     initialValues: {
       name: "",
@@ -35,30 +34,37 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood })
       goodID: null,
     },
   });
-  // /////
+
+  useEffect(() => {
+    getGoods()
+  }, []);
 
   const onDeleteGoodClick = (goodId) => {
     deleteGood(goodId)
   };
 
-  const editHandler = () => {
+  // on edit good button click
+  const onEditGoodClick = (goodObj) => {
+    setModalUpd(true);
 
+    formUpd.setValues({
+      name: goodObj.name,
+      description: goodObj.description,
+      category: goodObj.category,
+      price: goodObj.price,
+      goodId: goodObj.ID,
+    });
   };
 
-  const onEditGoodClick = (goodObj, goodID) => {
-    // setModalUpd(true);
-    // formUpd.setValues({
-    //   name: goodObj.name,
-    //   description: goodObj.description,
-    //   category: goodObj.category,
-    //   price: goodObj.price,
-    //   goodID: goodID,
-    // });
+   // on edit confirm button click //
+   const editHandler = () => {
+     let data = formUpd.values
+     data.price = parseInt(data.price, 10)
+     updateGood(data)
+
+     setModalUpd(false);
   };
 
-  useEffect(() => {
-    getGoods()
-  }, []);
 
   if (loading) {
     return (
@@ -111,7 +117,7 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood })
                         variant="contained"
                         size="small"
                         style={{ backgroundColor: "orange" }}
-                        // onClick={() => onEditGoodClick(row, row.id)}
+                        onClick={() => onEditGoodClick(row)}
                       >
                         edit
                       </Button>
@@ -155,7 +161,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getGoods: () => dispatch(getGoodsForSellStart()),
-  deleteGood: (goodId) => dispatch(deleteGoodsForSellStart(goodId))
+  deleteGood: (goodId) => dispatch(deleteGoodsForSellStart(goodId)),
+  updateGood: (good) => dispatch(updateGoodsForSellStart(good))
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyGoodsSell);
