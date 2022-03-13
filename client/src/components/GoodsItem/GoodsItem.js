@@ -11,21 +11,12 @@ import noImg from "../../static/images/no-image.png";
 import { useHistory } from "react-router-dom";
 
 function GoodsItem({
+  img="",
   good,
-  userID,
-  name = "",
-  price = "",
-  img,
   preview = false,
   onBuyGoodClick,
-  authUserID,
-  openSnackbar,
+  userId
 }) {
-  const onBuyBtnClick = (e) => {
-    e.preventDefault();
-    onBuyGoodClick({ ...good, customerID: authUserID });
-    openSnackbar("You buy this good !");
-  };
 
   const hist = useHistory();
 
@@ -33,7 +24,6 @@ function GoodsItem({
     <Card
       className={`goods_item ${preview ? "preview" : ""}`}
       sx={{ width: 270, borderRadius: 5 }}
-      onClick={() => hist.push(`/home/goods/ad/${good.id}`)}
     >
       <CardMedia
         component="img"
@@ -45,12 +35,14 @@ function GoodsItem({
         <div className="goods_item_content">
           <div className="goods_item_contentLeft">
             <Typography
+              className="goods_item_contentLeft__name"
               style={{ marginBottom: 5 }}
               variant="h6"
               component="div"
               data-testid="goodName"
+              onClick={() => hist.push(`/home/goods/ad/${good.ID}`)}
             >
-              {name.length > 13 ? `${name.slice(0, 13)}...` : name}
+              {good.name.length > 13 ? `${good.name.slice(0, 13)}...` : good.name}
             </Typography>
             <Typography
               style={{ textAlign: "left" }}
@@ -58,15 +50,15 @@ function GoodsItem({
               color="text.secondary"
               data-testid="goodPrice"
             >
-              ${price}
+              ${good.price}
             </Typography>
           </div>
           <div className="goods_item_contentRight">
             <Button
               variant="contained"
               style={{ backgroundColor: "green" }}
-              disabled={authUserID === userID}
-              onClick={onBuyBtnClick}
+              disabled={userId === good.userID}
+              onClick={() => onBuyGoodClick(good.ID)}
             >
               Buy
             </Button>

@@ -63,8 +63,9 @@ func (s *goodService) GetAllGoods() ([]models.Good, error) {
 func (s *goodService) BuyGood(goodID, customerID uint) error {
 	// check is it own good
 	gd, _ := s.goodRepository.GetGoodByID(goodID)
-	if gd != nil {
+	if gd.UserID == customerID {
 		return errors.New("it`s your good")
+
 	}
 	// get customer
 	customer, err := s.userRepository.GetUserByID(customerID)

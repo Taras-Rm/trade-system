@@ -192,17 +192,6 @@ function AddGoodsForm({ onAddNewGoodClick }) {
           </Button>
         </div>
       </div>
-      <div className="previewCard">
-        <h4 style={{ fontWeight: 400, marginBottom: 20 }}>
-          You can see how your ad will look
-        </h4>
-        <GoodsItem
-          name={formik.values.name}
-          price={formik.values.price}
-          img={image[0] && image[0]["data_url"]}
-          preview={true}
-        />
-      </div>
     </form>
   );
 }
