@@ -65,7 +65,6 @@ func (s *goodService) BuyGood(goodID, customerID uint) error {
 	gd, _ := s.goodRepository.GetGoodByID(goodID)
 	if gd.UserID == customerID {
 		return errors.New("it`s your good")
-
 	}
 	// get customer
 	customer, err := s.userRepository.GetUserByID(customerID)

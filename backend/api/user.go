@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"tradeApp/middleware"
 	"tradeApp/services"
@@ -56,9 +57,11 @@ func updateProfile(userService services.UserService) gin.HandlerFunc {
 			})
 			return
 		}
-
 		var user services.UserUpdateRequest
 		err = c.BindJSON(&user)
+		fmt.Println(user)
+		fmt.Println(err)
+
 		if err != nil {
 			zap.S().Error("Update profile server error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{
