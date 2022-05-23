@@ -8,6 +8,7 @@ function App() {
   const dispatch = useDispatch();
   const initialized = useSelector((state) => state.appReducer.initialized);
   useEffect(() => {
+    debugger
     dispatch(initialize());
   }, [dispatch]);
 

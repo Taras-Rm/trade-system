@@ -8,6 +8,7 @@ export default function* watcherRegistrationSaga() {
 
 function* getRegistrationUser(action) {
     try{
+        debugger
         let payload = yield call(registrationApi, {...action.payload});
 
         yield put(getRegistrationSuccess());

@@ -13,7 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../static/images/logo2.png";
 
-function Sidebar({ fullName, avatarLetter, loading }) {
+function Sidebar({ fullName, avatarLetter, loading, amountOfMoney }) {
 
   let onLogoutClick = () => {
     //dispatch(userLogout());

@@ -17,7 +17,6 @@ httpService.interceptors.response.use(res => res, err => {
 
   if (condition) {
     return refreshTokenApi().then((res) => {
-      debugger
       setItemToLocalStorage(ACCESS_TOKEN, res.data.data.accessToken);
       setItemToLocalStorage(REFRESH_TOKEN, res.data.data.refreshToken);
       return res
