@@ -19,7 +19,6 @@ function* getAllGoodsData() {
 }
 
 function* buyGood(action) {
-  debugger
   try {
     let payload = yield call(buyGoodApi, action.payload);
     

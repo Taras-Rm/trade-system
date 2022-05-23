@@ -18,6 +18,8 @@ import MyModal from "../../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
 import { deleteGoodsForSellStart, getGoodsForSellStart, updateGoodsForSellStart } from "../myGoods-slice";
 import { connect } from "react-redux";
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, updateGood }) {
 
@@ -46,6 +48,7 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, u
   // on edit good button click
   const onEditGoodClick = (goodObj) => {
     setModalUpd(true);
+    NotificationManager.success('Success message', 'Title here');
 
     formUpd.setValues({
       name: goodObj.name,
@@ -148,6 +151,8 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, u
           </div>
         </div>
       </div>
+
+      <NotificationContainer />
     </div>
   );
 }

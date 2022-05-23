@@ -11,8 +11,9 @@ import Profile from "./Profile/Profile";
 import GoodAd from "./GoodAd/GoodAd";
 import { connect } from "react-redux";
 import { getProfileStart } from "./Profile/profile-slice";
+import Preloader from "../../components/Preloader/Preloader";
 
-function Home({ getProfileStart, loading, error, user }) {
+function Home({ getProfileStart, loading, error, user, maneyAmount }) {
 
   useEffect(() => {
     getProfileStart()
@@ -20,7 +21,7 @@ function Home({ getProfileStart, loading, error, user }) {
 
   return (
     <div className="home">
-      <Sidebar fullName={`${user.firstName} ${user.lastName}`} avatarLetter={user.firstName[0].toUpperCase()} loading={loading}/>
+      <Sidebar fullName={`${user.firstName} ${user.lastName}`} avatarLetter={user.firstName[0].toUpperCase()} amountOfMoney={user.amount} />
       <div className="home_main">
         <Header />
         <Switch>
@@ -51,7 +52,7 @@ function Home({ getProfileStart, loading, error, user }) {
 const mapStateToProps = (state) => ({
   loading: state.profile.loading,
   error: state.profile.error,
-  user: state.profile.user
+  user: state.profile.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

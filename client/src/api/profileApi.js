@@ -1,4 +1,6 @@
 import { httpService } from "../common/services/httpService";
 
 
-export const getProfileDataApi = (data) => httpService.get('/user/profile');
+export const getProfileDataApi = () => httpService.get('/user/profile');
+
+export const updateProfileDataApi = (data) => httpService.put('/user/profile', data);

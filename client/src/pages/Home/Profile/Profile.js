@@ -1,12 +1,15 @@
 import { Button } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import MyModal from "../../../components/MyModal/MyModal";
+import Preloader from "../../../components/Preloader/Preloader";
 import UserUpdateForm from "../../../components/UserUpdateForm/UserUpdateForm";
+import { getBuyedGoodsStart, getProfileStart, getSoldGoodsStart, updateProfileStart } from "./profile-slice";
 import "./Profile.scss";
 import TradeInfo from "./TradeInfo/TradeInfo";
 
-function Profile() {
+function Profile({ user, error, loadingProfile, getProfileStart, updateProfileStart, buyedGoods, getBuyedGoods, buyedGoodsPrice, getSoldGoods, soldGoods, soldGoodsPrice }) {
 
   ///
   // модальне вікно оновлення
@@ -27,98 +30,79 @@ function Profile() {
   const onEditInfoClick = () => {
     setModalUpd(true);
     formUpd.setValues({
-      //firstName: user.firstName,
-      //lastName: user.lastName,
-      //age: user.age,
-      //phone: user.phone,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      age: user.age,
+      phone: user.phone,
     });
   };
 
   const editHandler = (e) => {
-    // e.preventDefault();
-    // if (
-    //   isNaN(formUpd.values.age) ||
-    //   formUpd.values.firstName === "" ||
-    //   formUpd.values.lastName === "" ||
-    //   formUpd.values.phone === ""
-    // ) {
-    //   openSnackbar2("Bad form data !");
-    // } else {
-    //   dispatch(
-    //     updateUser(
-    //       {
-    //         firstName: formUpd.values.firstName,
-    //         lastName: formUpd.values.lastName,
-    //         age: formUpd.values.age,
-    //         phone: formUpd.values.phone,
-    //       },
-    //       user.id
-    //     )
-    //   );
-    //   setModalUpd(false);
-    //   openSnackbar("Your profile is updated !");
-    // }
+    let data = formUpd.values
+    updateProfileStart(data)
+ 
+    setModalUpd(false);
   };
 
-  // useEffect(() => {
-  //   dispatch(getAllSelledGoods(user.id));
-  //   dispatch(getAllBuyedGoods(user.id));
-  // }, [dispatch, user.id]);
-
-  // if (isLoading) {
-  //   return (
-  //     <div style={{ textAlign: "center", marginTop: 50 }}>
-  //       <Preloader />
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    getProfileStart()
+    getBuyedGoods()
+    getSoldGoods()
+  }, [user.id]);
 
   return (
     <div className="profilePage">
       <h2 className="profilePage_title">All profile information</h2>
-
+      {
+        loadingProfile ?
+        <div style={{ textAlign: "center", marginTop: 50 }}>
+        <Preloader />
+      </div> :
       <div className="profilePage_info">
         <h2 className="profilePage_info__title">Information about user</h2>
-
         <div className="profilePage_info__box">
           <div className="profilePage_info__item">
             <span className="profilePage_info__itemName">First name:</span>
             <span className="profilePage_info__itemValue">
-              {4455}
+              {user.firstName}
             </span>
           </div>
           <div className="profilePage_info__item">
             <span className="profilePage_info__itemName">Last name:</span>
-            <span className="profilePage_info__itemValue">{"dfvfdv"}</span>
+            <span className="profilePage_info__itemValue">{user.lastName}</span>
           </div>
           <div className="profilePage_info__item">
             <span className="profilePage_info__itemName">Age:</span>
-            <span className="profilePage_info__itemValue">{"dfvfdv"}</span>
+            <span className="profilePage_info__itemValue">{user.age}</span>
           </div>
           <div className="profilePage_info__item">
             <span className="profilePage_info__itemName">Phone:</span>
-            <span className="profilePage_info__itemValue">{"dfvfdv"}</span>
+            <span className="profilePage_info__itemValue">{user.phone}</span>
+          </div>
+          <div className="profilePage_info__item">
+            <span className="profilePage_info__itemName">Money amount:</span>
+            <span className="profilePage_info__itemValue">{user.amount} $</span>
           </div>
         </div>
         <Button
-          // onClick={() => onEditInfoClick()}
+          onClick={() => onEditInfoClick()}
           variant="contained"
-          size="small"
+          size="large"
           style={{ backgroundColor: "orange", width: "50%", margin: "0 auto" }}
         >
           Update information
         </Button>
       </div>
-
+      }
       <div className="profilePage_infoTrade">
         <h2 className="profilePage_infoTrade__title">
           Information about user trades
         </h2>
         <TradeInfo
-          totalBuyedPrice={5}
-          totalSelledPrice={5}
-          totalSelledCount={4}
-          totalBuyedCount={4}
+          totalBuyedPrice={buyedGoodsPrice}
+          totalSelledPrice={soldGoodsPrice}
+          totalSelledCount={soldGoods.length}
+          totalBuyedCount={buyedGoods.length}
         />
       </div>
       <MyModal visible={modalUpd} setVisible={setModalUpd}>
@@ -128,4 +112,24 @@ function Profile() {
   );
 }
 
-export default Profile;
+const mapStateToProps = (state) => ({
+  loadingProfile: state.profile.loading,
+  error: state.profile.error,
+  user: state.profile.user,
+
+  buyedGoods: state.profile.buyedGoods,
+  buyedGoodsPrice: state.profile.buyedGoodsPrice,
+  soldGoods: state.profile.soldGoods,
+  soldGoodsPrice: state.profile.soldGoodsPrice,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getProfileStart: () => dispatch(getProfileStart()),
+  updateProfileStart: (data) => dispatch(updateProfileStart(data)),
+
+  getBuyedGoods: () => dispatch(getBuyedGoodsStart()),
+  getSoldGoods: () => dispatch(getSoldGoodsStart())
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
