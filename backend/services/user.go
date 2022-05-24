@@ -30,6 +30,10 @@ type TokensRequest struct {
 	RefreshToken string `json:"refreshToken" binding:"required"`
 }
 
+type RefreshRequest struct {
+	RefreshToken string `json:"RefreshToken" binding:"required"`
+}
+
 type AmountRequest struct {
 	Amount string `json:"amount" binding:"required"`
 }
@@ -76,6 +80,7 @@ type UserService interface {
 	GetUserProfile(userID uint) (*UserResponse, error)
 	UpdateUserProfile(user *UserUpdateRequest, userID uint) error
 	UpdateAmount(req *AmountRequest, userID uint) error
+	RefreshTokens(tokens *RefreshRequest) (*TokensRequest, error)
 }
 
 type userService struct {
@@ -86,6 +91,41 @@ type userService struct {
 
 func NewUserService(userRepo repositories.UserRepository, tokenRepo repositories.TokenRepository, goodRepo repositories.GoodRepository) UserService {
 	return &userService{userRepository: userRepo, tokenRepository: tokenRepo, goodRepository: goodRepo}
+}
+
+func (s *userService) RefreshTokens(tokens *RefreshRequest) (*TokensRequest, error) {
+	RefreshToken := tokens.RefreshToken
+	refreshSecret := config.GetSecretRefresh()
+	if err := TokenValidation(RefreshToken, refreshSecret); err != nil {
+		return nil, err
+	}
+	refreshUuid, err := GetUuidFromToken(RefreshToken, refreshSecret)
+	if err != nil {
+		return nil, err
+	}
+	deleted, err := s.tokenRepository.DeleteTokenInfo(refreshUuid)
+	if err != nil || deleted == 0 {
+		return nil, errors.New("your token is invalid. You have to login by email and password")
+	}
+
+	userId, err := GetUserIdFromToken(RefreshToken, refreshSecret)
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := CreateToken(userId)
+	if err != nil {
+		return nil, errors.New("server error creating token")
+	}
+	err = s.tokenRepository.SaveTokenInfo(userId, token.AccessTExpires, token.RefreshTExpires, token.AccessTokenUuid, token.RefreshTokenUuid)
+	if err != nil {
+		return nil, errors.New("can't save to Redis")
+	}
+	res := &TokensRequest{
+		AccessToken:  token.AccessToken,
+		RefreshToken: token.RefreshToken,
+	}
+	return res, nil
 }
 
 func (s *userService) CreateUser(user *UserRegister) (*models.User, error) {
