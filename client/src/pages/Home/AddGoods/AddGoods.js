@@ -7,7 +7,7 @@ import AddGoodsForm from "./AddGoodsForm/AddGoodsForm";
 function AddGoods({ addGoods, loading, error }) {
 
   let onAddNewGoodClick = (goodObj, image) => {
-    addGoods({ ...goodObj });
+    addGoods({ ...goodObj, image });
   };
 
   return (

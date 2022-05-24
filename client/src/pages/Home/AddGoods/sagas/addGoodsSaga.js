@@ -8,6 +8,7 @@ export default function* watcherAddGoodsSaga() {
 
 function* addGoodsData(action) {
   try {
+    debugger;
     let payload = yield call(addGoodsApi, {...action.payload});
     
     yield put(addGoodsSuccess())

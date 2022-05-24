@@ -1,8 +1,10 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { getAllBuyedGoodsApi, getAllSoldGoodsApi } from '../../../../api/goodsApi';
+import { logoutApi } from '../../../../api/logoutApi';
 import { getProfileDataApi, updateProfileDataApi } from '../../../../api/profileApi';
+import { deleteTokensFromLocalStorage } from '../../../../common/helpers/deleteTokensFromLocalStorage';
 import { getLoginError } from '../../../Login/login-slice';
-import { getBuyedGoodsError, getBuyedGoodsSuccess, getProfileStart, getProfileSuccess, getSoldGoodsError, getSoldGoodsSuccess, LOAD_DATA_START, START_GET_BUYED_GOODS, START_GET_SOLD_GOODS, START_UPDATE, updateProfileError, updateProfileSuccess } from '../profile-slice';
+import { getBuyedGoodsError, getBuyedGoodsSuccess, getProfileStart, getProfileSuccess, getSoldGoodsError, getSoldGoodsSuccess, LOAD_DATA_START, LOGOUT, START_GET_BUYED_GOODS, START_GET_SOLD_GOODS, START_UPDATE, updateProfileError, updateProfileSuccess } from '../profile-slice';
 
 export default function* watcherProfileSaga() {
   yield takeLatest(LOAD_DATA_START, getProfileData);
@@ -11,6 +13,7 @@ export default function* watcherProfileSaga() {
   yield takeLatest(START_GET_BUYED_GOODS, getBuyedGoods);
   yield takeLatest(START_GET_SOLD_GOODS, getSoldGoods);
 
+  yield takeLatest(LOGOUT, logoutProfile)
 }
 
 function* getProfileData() {
@@ -56,5 +59,15 @@ function* getSoldGoods() {
 
   } catch (error) {
     yield put(getSoldGoodsError(error.message))
+  }
+}
+
+function* logoutProfile() {
+  try {
+    yield call(logoutApi)
+    yield call(deleteTokensFromLocalStorage)
+
+  } catch (error) {
+    deleteTokensFromLocalStorage()
   }
 }
