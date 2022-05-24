@@ -47,10 +47,6 @@ function AddGoodsForm({ onAddNewGoodClick }) {
       } else {
         img = "";
       }
-      debugger
-      const reader = new FileReader()
-      reader.readAsDataURL(img.file)
-      const base64Url = reader.result
 
       regObj.price = parseFloat(regObj.price)
       onAddNewGoodClick(regObj, img);

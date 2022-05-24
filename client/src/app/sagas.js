@@ -3,6 +3,7 @@ import watcherAddGoodsSaga from '../pages/Home/AddGoods/sagas/addGoodsSaga';
 import watcherAllGoodsSaga from '../pages/Home/Goods/sagas/goodsSaga';
 import watcherMyGoodsSaga from '../pages/Home/MyGoods/sagas/myGoodsSaga';
 import watcherProfileSaga from '../pages/Home/Profile/sagas/profileSaga';
+import watcherLoginByTokensSaga from '../pages/Login/sagas/loginByTokensSaga';
 import watcherLoginSaga from '../pages/Login/sagas/loginSaga';
 import watcherRegistrationSaga from '../pages/Register/sagas/registrationSaga';
 
@@ -15,6 +16,7 @@ export function* rootSagas() {
      watcherAllGoodsSaga,
      watcherAddGoodsSaga,
      watcherMyGoodsSaga,
+     watcherLoginByTokensSaga
     ].map(fork)
   );
 }
