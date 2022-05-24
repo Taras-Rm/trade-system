@@ -13,11 +13,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../static/images/logo2.png";
 
-function Sidebar({ fullName, avatarLetter, loading, amountOfMoney }) {
+function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
 
-  let onLogoutClick = () => {
-    //dispatch(userLogout());
-  };
 
   if (loading) {
     return <div>Loading ...</div>;
@@ -96,8 +93,8 @@ function Sidebar({ fullName, avatarLetter, loading, amountOfMoney }) {
         <Divider className="listDivider" />
         <Link
           style={{ color: "black", textDecoration: "none" }}
-          // to="/login"
-          onClick={() => onLogoutClick()}
+          to="/"
+          onClick={logout}
         >
           <ListItem className="sidebar_item" sx={{ pl: 4 }} button>
             <ListItemIcon>

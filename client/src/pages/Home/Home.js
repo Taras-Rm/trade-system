@@ -10,10 +10,10 @@ import MyGoodsBuy from "./MyGoods/MyGoodsBuy/MyGoodsBuy";
 import Profile from "./Profile/Profile";
 import GoodAd from "./GoodAd/GoodAd";
 import { connect } from "react-redux";
-import { getProfileStart } from "./Profile/profile-slice";
+import { getProfileStart, logoutUser } from "./Profile/profile-slice";
 import Preloader from "../../components/Preloader/Preloader";
 
-function Home({ getProfileStart, loading, error, user, maneyAmount }) {
+function Home({ getProfileStart, loading, error, user, maneyAmount, logout }) {
 
   useEffect(() => {
     getProfileStart()
@@ -21,7 +21,7 @@ function Home({ getProfileStart, loading, error, user, maneyAmount }) {
 
   return (
     <div className="home">
-      <Sidebar fullName={`${user.firstName} ${user.lastName}`} avatarLetter={user.firstName[0].toUpperCase()} amountOfMoney={user.amount} />
+      <Sidebar logout={logout} fullName={`${user.firstName} ${user.lastName}`} avatarLetter={user.firstName[0].toUpperCase()} amountOfMoney={user.amount} />
       <div className="home_main">
         <Header />
         <Switch>
@@ -57,6 +57,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProfileStart: () => dispatch(getProfileStart()),
+
+  logout: () => dispatch(logoutUser())
 });
 
 
