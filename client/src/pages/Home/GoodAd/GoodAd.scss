@@ -1,6 +1,12 @@
 .goodAd {
   padding: 0 50px;
 
+  &_formHeader {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
   &_bck {
     background-color: transparent;
     padding: 10px;
@@ -12,6 +18,10 @@
     font-size: 16px;
     display: flex;
     align-items: center;
+
+    &:hover {
+      background-color: rgb(244, 246, 248);
+    }
   }
 
   &_content {
@@ -35,6 +45,16 @@
       justify-content: space-between;
       align-items: flex-start;
     }
+
+    &__right__box {
+      display: flex;
+    }
+
+    &__right__contacts {
+      margin-right: 40px;
+    }
+
+   
   }
 
   &_title {
@@ -62,16 +82,22 @@
 }
 
 .goodAd_content__right-item {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .goodAd_content__category {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 600;
   margin-right: 30px;
 }
 
+.goodAd_content__value {
+  font-size: 22px;
+  margin-right: 30px;
+}
+
 .goodAd_content__description {
+  font-size: 26px;
   display: flex;
   flex-direction: column;
 }

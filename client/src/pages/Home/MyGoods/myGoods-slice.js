@@ -13,6 +13,7 @@ export const DELETE_GOODS_FOR_SELL_ERROR = 'myGoods/sell/delete/ERROR';
 export const UPDATE_GOODS_FOR_SELL_START = 'myGoods/sell/update/START';
 export const UPDATE_GOODS_FOR_SELL_SUCCESS = 'myGoods/sell/update/SUCCESS';
 export const UPDATE_GOODS_FOR_SELL_ERROR = 'myGoods/sell/update/ERROR';
+export const STOP_UPDATE_GOODS_FOR_SELL = 'myGoods/sell/update/STOP';
 
 const STATE = {
   loadingBuyed: false,
@@ -29,6 +30,7 @@ const STATE = {
   errorDeleteSell: null,
 
   loadingUpdateSell: false,
+  isSuccessUpdateSell: false,
   errorUpdateSell: null,
 };
 
@@ -119,14 +121,23 @@ function myGoodsReducer(state = STATE, action) {
         return {
           ...state,
           loadingUpdateSell: false,
+          isSuccessUpdateSell: true,
           errorUpdateSell: null
         };
   
-        case UPDATE_GOODS_FOR_SELL_SUCCESS:
+        case UPDATE_GOODS_FOR_SELL_ERROR:
           return {
             ...state,
             loadingUpdateSell: false,
             errorUpdateSell: action.payload
+        };
+
+        case STOP_UPDATE_GOODS_FOR_SELL:
+          return {
+            ...state,
+            isSuccessUpdateSell: false,
+            loadingUpdateSell: false,
+            errorUpdateSell: null
         };
 
     default:
@@ -158,6 +169,8 @@ export const deleteGoodsForSellError = (err) => ({type: DELETE_GOODS_FOR_SELL_ER
 export const updateGoodsForSellStart = (good) => ({type: UPDATE_GOODS_FOR_SELL_START, payload: good});
 
 export const updateGoodsForSellSuccess = () => ({type: UPDATE_GOODS_FOR_SELL_SUCCESS})
+
+export const stopUpdateGoodsForSell = () => ({type: STOP_UPDATE_GOODS_FOR_SELL})
 
 export const updateGoodsForSellError = (err) => ({type: UPDATE_GOODS_FOR_SELL_ERROR, payload: err})
 

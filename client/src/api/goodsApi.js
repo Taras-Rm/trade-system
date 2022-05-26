@@ -5,6 +5,9 @@ export const addGoodsApi = (data) => httpService.post('/good', data);
 
 export const getAllGoodsApi = () => httpService.get('/good');
 
+export const getGoodApi = (goodId) => httpService.get(`/good/${goodId}`);
+
+
 
 export const getAllGoodsForSellApi = () => httpService.get('/good/goods/sale');
 
@@ -17,4 +20,4 @@ export const deleteGoodsForSellApi = (goodId) => httpService.delete(`/good/${goo
 
 export const updateGoodsForSellApi = (good) => httpService.put(`/good/${good.goodId}`, good);
 
-export const buyGoodApi = (goodId) => httpService.post(`/good/buy/${goodId}`);
+export const buyGoodApi = (goodId) => httpService.post('/good/buy', goodId);

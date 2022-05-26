@@ -5,7 +5,9 @@ export const ERROR = 'registration/ERROR';
 
 const initialState = {
   isLoad: false,
-  error: null
+  error: null,
+
+  isSuccess: false,
 };
 
 const registrationReducer = (state = initialState, action) => {
@@ -19,7 +21,7 @@ const registrationReducer = (state = initialState, action) => {
     case SUCCESS:
       return {
         ...state,
-
+        isSuccess: true,
         isLoad: false,
         error: null
       };

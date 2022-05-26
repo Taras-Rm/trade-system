@@ -1,10 +1,13 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { buyGoodApi, getAllGoodsApi } from "../../../../api/goodsApi";
-import { buyGoodError, buyGoodSuccess, BUY_GOOD_START, getAllGoodsError, getAllGoodsStart, getAllGoodsSuccess, GET_ALL_GOODS_START } from "../goods-slice";
+import { buyGoodApi, getAllGoodsApi, getGoodApi } from "../../../../api/goodsApi";
+import { getUserDataStart } from "../../GoodAd/goodAd-slice";
+import { buyGoodError, buyGoodSuccess, BUY_GOOD_START, getAllGoodsError, getAllGoodsStart, getAllGoodsSuccess, getGoodError, getGoodSuccess, GET_ALL_GOODS_START, GET_GOOD_START } from "../goods-slice";
 
 export default function* watcherAllGoodsSaga() {
   yield takeLatest(GET_ALL_GOODS_START, getAllGoodsData);
   yield takeLatest(BUY_GOOD_START, buyGood);
+  yield takeLatest(GET_GOOD_START, getGoodData);
+
 }
 
 function* getAllGoodsData() {
@@ -18,10 +21,25 @@ function* getAllGoodsData() {
   }
 }
 
+function* getGoodData(action) {
+  try {
+    let payload = yield call(getGoodApi, action.payload);
+    
+    yield put(getGoodSuccess(payload.data.good))
+    yield put(getUserDataStart(payload.data.good.userID))
+
+
+  } catch (error) {
+    yield put(getGoodError(error.message))
+  }
+}
+
+
 function* buyGood(action) {
   try {
+    debugger
     let payload = yield call(buyGoodApi, action.payload);
-    
+    debugger
     yield put(buyGoodSuccess())
     yield put(getAllGoodsStart())
 

@@ -1,4 +1,5 @@
 import addGoodsReducer from "../pages/Home/AddGoods/addGoods-slice";
+import getUserReducer from "../pages/Home/GoodAd/goodAd-slice";
 import goodsReducer from "../pages/Home/Goods/goods-slice";
 import myGoodsReducer from "../pages/Home/MyGoods/myGoods-slice";
 import profileReducer from "../pages/Home/Profile/profile-slice";
@@ -12,4 +13,5 @@ export const reducers = {
     goods: goodsReducer,
     addGoods: addGoodsReducer,
     myGoods: myGoodsReducer,
+    user: getUserReducer,
 };

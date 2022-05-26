@@ -9,7 +9,6 @@ export const requireAuth = (Component) => {
   const AppAuthWpapper = ({ isAuth, loginStart }) => {
 
     useEffect(() => {
-      debugger
       if (!isAuth) {
         const tokensData = {
           AccessToken: getItemFromLocalStorage(ACCESS_TOKEN),

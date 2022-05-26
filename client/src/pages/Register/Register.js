@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import "./Register.scss";
 import Img from "../../static/images/trade-img.png";
@@ -9,18 +9,21 @@ import BigCard from "../../components/BigCard/BigCard";
 import { connect } from "react-redux";
 import { registrationApi } from "../../api/registrationApi";
 import { getRegistrationStart } from "./registration-slice";
+import { useHistory } from "react-router-dom";
 
-function Register({ registrationStart, error, isLoad }) {
-
+function Register({ registrationStart, error, isLoad, isSuccess }) {
+  const history = useHistory()
 
   let onSubmitForm = (formObj) => {
     registrationStart(formObj)
   };
 
-  // if (isRegistered) {
-  //   openSnackbar("You are registered !");
-  //   return <Redirect to="/login" />;
-  // }
+  useEffect(() => {
+
+    if (isSuccess) {
+      history.push('/login');
+    }
+  }, [ history, isSuccess ]);
 
   return (
     <div className="registration">
@@ -42,6 +45,9 @@ function Register({ registrationStart, error, isLoad }) {
           </Typography>
         </Box>
         <RegisterForm onSubmitForm={onSubmitForm} />
+        {error && <div>
+            {error}
+            </div>}
         <Typography
           variant="body2"
           align="center"
@@ -58,8 +64,10 @@ function Register({ registrationStart, error, isLoad }) {
 }
 
 const mapStateToProps = (state) => ({
-  error: state.login.error,
-  isLoad: state.login.isLoad
+  error: state.registration.error,
+  isLoad: state.registration.isLoad,
+
+  isSuccess: state.registration.isSuccess
 });
 
 const mapDispatchToProps = (dispatch) => ({
