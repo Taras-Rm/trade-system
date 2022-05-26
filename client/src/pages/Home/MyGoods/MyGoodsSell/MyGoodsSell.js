@@ -16,12 +16,12 @@ import Preloader from "../../../../components/Preloader/Preloader";
 import GoodUpdateForm from "../../../../components/GoodUpdateForm/GoodUpdateForm";
 import MyModal from "../../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
-import { deleteGoodsForSellStart, getGoodsForSellStart, updateGoodsForSellStart } from "../myGoods-slice";
+import { deleteGoodsForSellStart, getGoodsForSellStart, stopUpdateGoodsForSell, updateGoodsForSellStart } from "../myGoods-slice";
 import { connect } from "react-redux";
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, updateGood }) {
+function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, updateGood, stopUpdateGood, isSuccessUpdateSell }) {
 
   // modal window for update form
   const [modalUpd, setModalUpd] = useState(false);
@@ -48,7 +48,6 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, u
   // on edit good button click
   const onEditGoodClick = (goodObj) => {
     setModalUpd(true);
-    NotificationManager.success('Success message', 'Title here');
 
     formUpd.setValues({
       name: goodObj.name,
@@ -67,6 +66,10 @@ function MyGoodsSell({ getGoods, goods, loading, error, priceSell, deleteGood, u
 
      setModalUpd(false);
   };
+
+  if(isSuccessUpdateSell) {
+    //NotificationManager.success('Success message', 'Title here');
+  }
 
 
   if (loading) {
@@ -161,14 +164,17 @@ const mapStateToProps = (state) => ({
   goods: state.myGoods.forSellGoods,
   error: state.myGoods.errorSell,
   loading: state.myGoods.loadingSell,
-  priceSell: state.myGoods.priceSell
+  priceSell: state.myGoods.priceSell,
+
+  isSuccessUpdateSell: state.myGoods.isSuccessUpdateSell
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getGoods: () => dispatch(getGoodsForSellStart()),
   deleteGood: (goodId) => dispatch(deleteGoodsForSellStart(goodId)),
-  updateGood: (good) => dispatch(updateGoodsForSellStart(good))
+  updateGood: (good) => dispatch(updateGoodsForSellStart(good)),
 
+  stopUpdateGood: () => dispatch(stopUpdateGoodsForSell())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyGoodsSell);

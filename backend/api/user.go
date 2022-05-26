@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"tradeApp/middleware"
 	"tradeApp/services"
 
@@ -16,6 +17,8 @@ func InjectUser(gr *gin.RouterGroup, userService services.UserService) {
 	handler.Use(middleware.AuthMiddleware)
 
 	handler.GET("/profile", getProfile(userService))
+	handler.GET("/profile/:id", getUserData(userService))
+
 	handler.PUT("/profile", updateProfile(userService))
 	handler.PUT("/amount", updateAmount(userService))
 }
@@ -43,6 +46,34 @@ func getProfile(userService services.UserService) gin.HandlerFunc {
 		zap.S().Info("Get profile success")
 		c.JSON(http.StatusOK, gin.H{
 			"profile": res,
+		})
+	}
+}
+
+func getUserData(userService services.UserService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID := c.Param("id")
+		uintUserID, err := strconv.ParseUint(userID, 10, 64)
+		if err != nil {
+			zap.S().Error("Get user data server error", zap.Error(err))
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		res, err := userService.GetUserProfile(uint(uintUserID))
+		if err != nil {
+			zap.S().Error("Get user data server error", zap.Error(err))
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		zap.S().Info("Get user data success")
+		c.JSON(http.StatusOK, gin.H{
+			"user": res,
 		})
 	}
 }

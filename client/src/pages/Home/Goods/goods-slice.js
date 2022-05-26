@@ -6,6 +6,10 @@ export const BUY_GOOD_START = 'buyGood/START';
 export const BUY_GOOD_SUCCESS = 'buyGood/SUCCESS';
 export const BUY_GOOD_ERROR = 'buyGood/ERROR';
 
+export const GET_GOOD_START = 'getGoodStart/START';
+export const GET_GOOD_SUCCESS = 'getGoodSuccess/SUCCESS';
+export const GET_GOOD_ERROR = 'getGoodError/ERROR';
+
 const STATE = {
   goods: [],
   loading: false,
@@ -13,6 +17,9 @@ const STATE = {
 
   loadingBuyGood: false,
   errorBuyGood: null,
+
+  selectedGoodAd: {},
+  loadingGoodAd: false
 };
 
 function getAllGoodsReducer(state = STATE, action) {
@@ -65,6 +72,26 @@ function getAllGoodsReducer(state = STATE, action) {
           errorBuyGood: action.payload,
           loadingBuyGood: false
         };
+
+        case GET_GOOD_START:
+          return {
+            ...state,
+            loadingGoodAd: true,
+          };
+    
+        case GET_GOOD_SUCCESS:
+          debugger
+          return {
+            ...state,
+            loadingGoodAd: false,
+            selectedGoodAd: action.payload,
+          };
+    
+        case GET_GOOD_ERROR:
+          return {
+            ...state,
+            loadingGoodAd: false
+          };
     default:
       return state;
   }
@@ -75,6 +102,13 @@ export const getAllGoodsStart = () => ({type: GET_ALL_GOODS_START});
 export const getAllGoodsSuccess = (goods) => ({type: GET_ALL_GOODS_SUCCESS, payload: goods})
 
 export const getAllGoodsError = (err) => ({type: GET_ALL_GOODS_ERROR, payload: err})
+
+
+export const getGoodStart = (goodId) => ({type: GET_GOOD_START, payload: goodId});
+
+export const getGoodSuccess = (good) => ({type: GET_GOOD_SUCCESS, payload: good})
+
+export const getGoodError = (err) => ({type: GET_GOOD_ERROR, payload: err})
 
 
 export const buyGoodsStart = (goodId) => ({type: BUY_GOOD_START, payload: goodId});

@@ -9,6 +9,7 @@ import React from "react";
 import "./GoodsItem.scss";
 import noImg from "../../static/images/no-image.png";
 import { useHistory } from "react-router-dom";
+import { formatDate } from "../../common/helpers/formatDate"
 
 function GoodsItem({
   img="",
@@ -34,6 +35,15 @@ function GoodsItem({
       <CardContent>
         <div className="goods_item_content">
           <div className="goods_item_contentLeft">
+          <Typography
+              className="goods_item_contentLeft__date"
+              style={{ marginBottom: 5 }}
+              variant="h8"
+              component="div"
+              data-testid="goodDate"
+            >
+              {formatDate(good.CreatedAt)}
+            </Typography>
             <Typography
               className="goods_item_contentLeft__name"
               style={{ marginBottom: 5 }}
