@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"strconv"
 	"tradeApp/models"
 	"tradeApp/repositories"
 )
@@ -13,10 +14,20 @@ type GoodRequest struct {
 	Category    string  `json:"category" binding:"required"`
 }
 
+type OrderRequest struct {
+	GoodID    string `json:"goodID"`
+	ToCountry string `json:"toCountry"`
+	ToCity    string `json:"toCity"`
+	ToStreet  string `json:"toStreet"`
+	ToPhone   string `json:"toPhoneNumber"`
+}
+
 type GoodService interface {
 	AddGood(good *GoodRequest, userID uint) (*models.Good, error)
 	GetAllGoods() ([]models.Good, error)
-	BuyGood(goodID, customerID uint) error
+	GetGood(goodID uint) (*models.Good, error)
+
+	BuyGood(goodID, customerID uint, orderRequest *OrderRequest) error
 	DeleteGood(goodID uint) error
 	UpdateGood(good *GoodRequest, goodID uint, userID uint) error
 	GetAllUserGoodsForSale(userId uint) ([]models.Good, error)
@@ -25,12 +36,13 @@ type GoodService interface {
 }
 
 type goodService struct {
-	goodRepository repositories.GoodRepository
-	userRepository repositories.UserRepository
+	goodRepository  repositories.GoodRepository
+	userRepository  repositories.UserRepository
+	orderRepository repositories.OrderRepository
 }
 
-func NewGoodService(goodRepo repositories.GoodRepository, userRepo repositories.UserRepository) GoodService {
-	return &goodService{goodRepository: goodRepo, userRepository: userRepo}
+func NewGoodService(goodRepo repositories.GoodRepository, userRepo repositories.UserRepository, orderRepo repositories.OrderRepository) GoodService {
+	return &goodService{goodRepository: goodRepo, userRepository: userRepo, orderRepository: orderRepo}
 }
 
 func (s *goodService) AddGood(good *GoodRequest, userID uint) (*models.Good, error) {
@@ -60,7 +72,16 @@ func (s *goodService) GetAllGoods() ([]models.Good, error) {
 	return res, err
 }
 
-func (s *goodService) BuyGood(goodID, customerID uint) error {
+func (s *goodService) GetGood(goodID uint) (*models.Good, error) {
+	res, err := s.goodRepository.GetGoodByID(goodID)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func (s *goodService) BuyGood(goodID, customerID uint, orderRequest *OrderRequest) error {
 	// check is it own good
 	gd, _ := s.goodRepository.GetGoodByID(goodID)
 	if gd.UserID == customerID {
@@ -100,6 +121,23 @@ func (s *goodService) BuyGood(goodID, customerID uint) error {
 	}
 
 	err = s.userRepository.BuyGood(owner.ID, customerID, newOwnerAmount, newCustomerAmount)
+	if err != nil {
+		return err
+	}
+
+	goodRequestID, _ := strconv.Atoi(orderRequest.GoodID)
+
+	newOrder := models.Order{
+		GoodID:     uint(goodRequestID),
+		UserID:     good.UserID,
+		CustomerID: customerID,
+		ToCountry:  orderRequest.ToCountry,
+		ToCity:     orderRequest.ToCity,
+		ToStreet:   orderRequest.ToStreet,
+		ToPhone:    orderRequest.ToPhone,
+	}
+
+	_, err = s.orderRepository.CreateOrder(&newOrder)
 	if err != nil {
 		return err
 	}

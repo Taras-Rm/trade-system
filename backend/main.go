@@ -39,10 +39,11 @@ func main() {
 	tokenRepository := repositories.NewTokenRepository(redisClient)
 	goodRepository := repositories.NewGoodRepository(db)
 	userRepository := repositories.NewUserRepository(db)
+	orderRepository := repositories.NewOrderRepository(db)
 
 	middleware.InitAuthMiddleware(tokenRepository)
 
-	goodService := services.NewGoodService(goodRepository, userRepository)
+	goodService := services.NewGoodService(goodRepository, userRepository, orderRepository)
 	userService := services.NewUserService(userRepository, tokenRepository, goodRepository)
 
 	api.InjectGood(gr, goodService)
