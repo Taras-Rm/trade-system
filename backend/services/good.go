@@ -11,7 +11,7 @@ type GoodRequest struct {
 	Name        string  `json:"name" binding:"required"`
 	Description string  `json:"description" binding:"required"`
 	Price       float64 `json:"price" binding:"required"`
-	Category    string  `json:"category" binding:"required"`
+	Category    string  `json:"category"`
 }
 
 type OrderRequest struct {
@@ -46,12 +46,16 @@ func NewGoodService(goodRepo repositories.GoodRepository, userRepo repositories.
 }
 
 func (s *goodService) AddGood(good *GoodRequest, userID uint) (*models.Good, error) {
+	category := good.Category
+	if good.Category == "" {
+		category = "Without category"
+	}
 
 	newGood := models.Good{
 		Name:        good.Name,
 		Description: good.Description,
 		Price:       good.Price,
-		Category:    good.Category,
+		Category:    category,
 		UserID:      userID,
 	}
 
