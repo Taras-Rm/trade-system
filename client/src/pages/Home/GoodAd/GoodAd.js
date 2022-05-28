@@ -15,6 +15,7 @@ import GoodBuyForm from "../../../components/GoodBuyForm/GoodBuyForm";
 import MyModal from "../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
 import { validationSchema } from "./utils/validationSchema";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, currentUserId, buyGood}) {
 
@@ -80,6 +81,11 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
       buyGood({...data, goodID: id})
   
        setModalUpd(false);
+
+       setTimeout(() => {
+        NotificationManager.success('You have buyed good', 'Buy good');
+      }, 1000)
+      hist.goBack();
     };
   
   

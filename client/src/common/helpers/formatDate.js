@@ -1,3 +1,5 @@
 export const formatDate = (date) => {
-    return date.split("T")[0]
+    let dateArr = date.split("T")[0]
+    let formatedDate = dateArr.split("-").reverse().join("-")
+    return formatedDate
 }

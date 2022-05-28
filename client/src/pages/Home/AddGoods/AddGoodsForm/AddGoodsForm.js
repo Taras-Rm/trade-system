@@ -68,7 +68,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
         <div className="addGoods_form__fields">
           <Stack spacing={3}>
             <TextField
-              style={{ width: 500 }}
+              style={{ width: 600 }}
               autoComplete="name"
               type="name"
               label="Name"
@@ -81,7 +81,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
             />
 
             <TextField
-              style={{ width: 500 }}
+              style={{ width: 600 }}
               multiline
               rows={4}
               type="description"
@@ -154,7 +154,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
               // write your building UI
               <div className="upload__image-wrapper">
                 <Button
-                  style={{ width: "fit-content", marginBottom: 25 }}
+                  style={{ width: "200px", marginBottom: 25 }}
                   variant="contained"
                   endIcon={<UploadIcon />}
                   onClick={onImageUpload}
@@ -185,7 +185,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
           </ImageUploading>
 
           <Button
-            style={{ width: 500, backgroundColor: "rgb(0, 171, 85)" }}
+            style={{ width: 600, backgroundColor: "rgb(0, 171, 85)" }}
             size="large"
             type="submit"
             variant="contained"

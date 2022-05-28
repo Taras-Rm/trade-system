@@ -3,17 +3,23 @@ import { connect } from "react-redux";
 import { addGoodsStart } from "./addGoods-slice";
 import "./AddGoods.scss";
 import AddGoodsForm from "./AddGoodsForm/AddGoodsForm";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 function AddGoods({ addGoods, loading, error }) {
 
   let onAddNewGoodClick = (goodObj, image) => {
     addGoods({ ...goodObj, image });
+
+    setTimeout(() => {
+      NotificationManager.success('Ad is successfully created', 'Ad creation');
+    }, 500)
   };
 
   return (
     <div className="addGoods">
       <h2 className="addGoods_title">Add goods</h2>
       <AddGoodsForm onAddNewGoodClick={onAddNewGoodClick} />
+      <NotificationContainer />
     </div>
   );
 }
