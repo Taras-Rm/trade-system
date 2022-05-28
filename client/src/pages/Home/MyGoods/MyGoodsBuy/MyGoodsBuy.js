@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Preloader from "../../../../components/Preloader/Preloader";
 import { connect } from "react-redux";
 import { getBuyedGoodsStart } from "../myGoods-slice";
+import { formatDate } from "../../../../common/helpers/formatDate";
 
 function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
 
@@ -55,6 +56,7 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
                 <TableRow>
                   <TableCell style={{ fontWeight: "bold" }}>Name</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Category</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Date</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Price $</TableCell>
                   <TableCell style={{ fontWeight: "bold" }} align="center">
                     Delete from history
@@ -69,6 +71,9 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
                     </TableCell>
                     <TableCell scope="row" component="th">
                       {row.category}
+                    </TableCell>
+                    <TableCell scope="row" component="th">
+                      {formatDate(row.CreatedAt)}
                     </TableCell>
                     <TableCell component="th">{row.price}</TableCell>
                     <TableCell width={200} component="th" align="center">

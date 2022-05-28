@@ -8,50 +8,62 @@ import Preloader from "../../../components/Preloader/Preloader";
 import { validationSchema } from "../GoodAd/utils/validationSchema";
 import { buyGoodsStart, getAllGoodsStart } from "./goods-slice";
 import "./Goods.scss";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
-function Goods({ getAllGoods, loading, error, goods, buyGood, loadingBuyGood, errorBuyGood, userId }) {
-
+function Goods({
+  getAllGoods,
+  loading,
+  error,
+  goods,
+  buyGood,
+  loadingBuyGood,
+  errorBuyGood,
+  userId,
+}) {
   useEffect(() => {
-    getAllGoods()
+    getAllGoods();
   }, []);
 
+  // modal window for buy good form
+  const [modalUpd, setModalUpd] = useState(false);
 
-     // modal window for buy good form
-     const [modalUpd, setModalUpd] = useState(false);
+  // selected good ID
+  const [goodID, setGoodID] = useState(null);
 
+  // data for buy good
+  const formGoodBuy = useFormik({
+    initialValues: {
+      toCountry: "",
+      toCity: "",
+      toStreet: "",
+      toPhoneNumber: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: ({ resetForm }) => {
+      buyGoodHandler();
+      resetForm();
+    },
+  });
 
-     // selected good ID
-     const [goodID, setGoodID] = useState(null);
+  // on edit good button click
+  const onBuyGoodClick = (goodID) => {
+    setGoodID(goodID);
+    setModalUpd(true);
+  };
 
-// data for buy good
-const formGoodBuy = useFormik({
-  initialValues: {
-    toCountry: "",
-    toCity: "",
-    toStreet: "",
-    toPhoneNumber: "",
-  },
-  validationSchema: validationSchema,
-  onSubmit: ({ resetForm }) => {
-    buyGoodHandler()
-    resetForm();
-  },
-});
+  // on buy confirm button click //
+  const buyGoodHandler = () => {
+    let data = formGoodBuy.values;
+    buyGood({ ...data, goodID: String(goodID) });
 
-// on edit good button click
-const onBuyGoodClick = (goodID) => {
-  setGoodID(goodID)
-  setModalUpd(true);
-};
-
- // on buy confirm button click //
- const buyGoodHandler = () => {
-    let data = formGoodBuy.values
-    debugger
-    buyGood({...data, goodID: String(goodID)})
-
-   setModalUpd(false);
-};
+    setModalUpd(false);
+    setTimeout(() => {
+      NotificationManager.success("You have buyed good", "Buy good");
+    }, 1000);
+  };
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: 50 }}>
@@ -59,12 +71,17 @@ const onBuyGoodClick = (goodID) => {
       </div>
     );
   }
-  
+
   return (
     <div className="goods">
-       <MyModal visible={modalUpd} setVisible={setModalUpd}>
+      <NotificationContainer />
+
+      <MyModal visible={modalUpd} setVisible={setModalUpd}>
         <h3 className="goods_formHeader">Plese enter delivery address</h3>
-        <GoodBuyForm onSubmit={formGoodBuy.handleSubmit} formData={formGoodBuy} />
+        <GoodBuyForm
+          onSubmit={formGoodBuy.handleSubmit}
+          formData={formGoodBuy}
+        />
       </MyModal>
       <h2 className="goods_title">Goods</h2>
       {!goods.length ? (
@@ -95,12 +112,12 @@ const mapStateToProps = (state) => ({
   userId: state.profile.user.id,
 
   loadingBuyGood: state.goods.loadingBuyGood,
-  errorBuyGood: state.goods.errorBuyGood
+  errorBuyGood: state.goods.errorBuyGood,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getAllGoods: () => dispatch(getAllGoodsStart()),
-  buyGood: (goodId) => dispatch(buyGoodsStart(goodId))
+  buyGood: (goodId) => dispatch(buyGoodsStart(goodId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Goods);

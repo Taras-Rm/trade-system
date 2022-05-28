@@ -8,6 +8,7 @@ import UserUpdateForm from "../../../components/UserUpdateForm/UserUpdateForm";
 import { getBuyedGoodsStart, getProfileStart, getSoldGoodsStart, updateProfileStart } from "./profile-slice";
 import "./Profile.scss";
 import TradeInfo from "./TradeInfo/TradeInfo";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 function Profile({ user, error, loadingProfile, getProfileStart, updateProfileStart, buyedGoods, getBuyedGoods, buyedGoodsPrice, getSoldGoods, soldGoods, soldGoodsPrice }) {
 
@@ -42,6 +43,10 @@ function Profile({ user, error, loadingProfile, getProfileStart, updateProfileSt
     updateProfileStart(data)
  
     setModalUpd(false);
+
+    setTimeout(() => {
+      NotificationManager.success('Success information update', 'Update user information');
+    }, 1000)
   };
 
   useEffect(() => {
@@ -52,6 +57,8 @@ function Profile({ user, error, loadingProfile, getProfileStart, updateProfileSt
 
   return (
     <div className="profilePage">
+          <NotificationContainer />
+
       <h2 className="profilePage_title">All profile information</h2>
       {
         loadingProfile ?
@@ -75,7 +82,7 @@ function Profile({ user, error, loadingProfile, getProfileStart, updateProfileSt
             <span className="profilePage_info__itemName">Age:</span>
             <span className="profilePage_info__itemValue">{user.age}</span>
           </div>
-          <div className="profilePage_info__item">
+          <div className="profilePage_info__item phone">
             <span className="profilePage_info__itemName">Phone:</span>
             <span className="profilePage_info__itemValue">{user.phone}</span>
           </div>
