@@ -19,6 +19,7 @@ import { validationSchema } from "./utils/validationSchema";
 import "./AddGoodsForm.scss";
 import GoodsItem from "../../../../components/GoodsItem/GoodsItem";
 import GoodsItemPreview from "./GoodItemPreview/GoodsItemPreview";
+import { convertToBase64 } from "../../../../common/helpers/image";
 
 function AddGoodsForm({ onAddNewGoodClick }) {
   const [image, setImage] = React.useState([]);
@@ -37,7 +38,7 @@ function AddGoodsForm({ onAddNewGoodClick }) {
       price: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (regObj, { resetForm }) => {
+    onSubmit: async (regObj, { resetForm }) => {
       if (regObj.category === "") {
         regObj.category = "";
       }
@@ -47,9 +48,12 @@ function AddGoodsForm({ onAddNewGoodClick }) {
       } else {
         img = "";
       }
-
-      regObj.price = parseFloat(regObj.price)
-      onAddNewGoodClick(regObj, img);
+      //const formData = new FormData();
+      //formData.append("image", img);
+      debugger;
+      const base64 = await convertToBase64(img.file)
+      regObj.price = parseFloat(regObj.price);
+      onAddNewGoodClick({ ...regObj, "image": base64});
       resetForm();
       setImage([]);
     },

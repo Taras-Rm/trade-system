@@ -4,9 +4,11 @@
     padding-left: 25px;
     padding-top: 10px;
     font-weight: 500;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   padding: 0 50px;
+
+  
 }
 
 .profilePage_info {
@@ -20,7 +22,7 @@
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   &__title {
     margin-bottom: 40px;
@@ -38,11 +40,6 @@
   }
 
 }
-
-.profilePage_info__item.phone {
-  margin-bottom: 40px;
-}
-
 .profilePage_infoTrade {
   background-color: rgb(0, 171, 85);
   border-radius: 10px;
@@ -50,7 +47,7 @@
   color: white;
   padding: 20px 80px;
   font-size: 25px;
-  margin: 0 auto;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

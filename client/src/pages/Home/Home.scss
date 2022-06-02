@@ -1,6 +1,10 @@
 .home {
   display: flex;
   height: 100%;
+
+  &_wrapper {
+    margin-left: 270px;
+  }
 }
 
 .home_main {

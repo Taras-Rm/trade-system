@@ -44,6 +44,6 @@ function* buyGood(action) {
     yield put(getAllGoodsStart())
 
   } catch (error) {
-    yield put(buyGoodError(error.message))
+    yield put(buyGoodError(error.response.data.error)) // .response.data.error
   }
 }

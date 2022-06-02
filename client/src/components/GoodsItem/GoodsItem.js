@@ -30,7 +30,7 @@ function GoodsItem({
         component="img"
         alt="main img"
         height="270"
-        image={img || noImg}
+        image={good.image || noImg}
       />
       <CardContent>
         <div className="goods_item_content">

@@ -16,6 +16,10 @@ export const START_GET_SOLD_GOODS = 'profile/START_GET_SOLD_GOODS';
 export const SUCCESS_GET_SOLD_GOODS = 'profile/SUCCESS_GET_SOLD_GOODS';
 export const ERROR_GET_SOLD_GOODS = 'profile/ERROR_GET_SOLD_GOODS';
 
+export const START_TOP_UP_AMOUNT = 'profile/START_TOP_UP_AMOUNT';
+export const SUCCESS_TOP_UP_AMOUNT = 'profile/SUCCESS_TOP_UP_AMOUNT';
+export const ERROR_TOP_UP_AMOUNT = 'profile/ERROR_TOP_UP_AMOUNT';
+
 const STATE = {
   loading: false,
   auth: false,
@@ -175,6 +179,13 @@ export const getSoldGoodsStart = () => ({type: START_GET_SOLD_GOODS})
 export const getSoldGoodsSuccess = (goods) => ({type: SUCCESS_GET_SOLD_GOODS, payload: goods})
 
 export const getSoldGoodsError = (err) => ({type: ERROR_GET_SOLD_GOODS, payload: err})
+
+
+export const topUpAmountStart = (data) => ({type: START_TOP_UP_AMOUNT, payload: data})
+
+export const topUpAmountSuccess = () => ({type: SUCCESS_TOP_UP_AMOUNT })
+
+export const topUpAmountError = (err) => ({type: ERROR_TOP_UP_AMOUNT, payload: err})
 
 
 export default profileReducer;

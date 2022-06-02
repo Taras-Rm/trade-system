@@ -6,7 +6,7 @@ import GoodsItem from "../../../components/GoodsItem/GoodsItem";
 import MyModal from "../../../components/MyModal/MyModal";
 import Preloader from "../../../components/Preloader/Preloader";
 import { validationSchema } from "../GoodAd/utils/validationSchema";
-import { buyGoodsStart, getAllGoodsStart } from "./goods-slice";
+import { buyGoodsStart, getAllGoodsStart, stopHaveError } from "./goods-slice";
 import "./Goods.scss";
 import {
   NotificationContainer,
@@ -22,6 +22,8 @@ function Goods({
   loadingBuyGood,
   errorBuyGood,
   userId,
+  stopHaveError,
+  successBuyGood
 }) {
   useEffect(() => {
     getAllGoods();
@@ -55,15 +57,28 @@ function Goods({
   };
 
   // on buy confirm button click //
-  const buyGoodHandler = () => {
+  const buyGoodHandler = async () => {
     let data = formGoodBuy.values;
-    buyGood({ ...data, goodID: String(goodID) });
+    await  buyGood({ ...data, goodID: String(goodID) });
 
     setModalUpd(false);
-    setTimeout(() => {
-      NotificationManager.success("You have buyed good", "Buy good");
-    }, 1000);
   };
+
+  if (successBuyGood) {
+    setTimeout(() => {
+      NotificationManager.success("You have buyed good", "Buy good  ggg");
+    }, 500);
+    stopHaveError();
+  }
+
+  if (errorBuyGood) {
+    setTimeout(() => {
+      NotificationManager.error("You cannot buy good  ggg", errorBuyGood);
+    }, 500);
+    stopHaveError();
+  }
+
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: 50 }}>
@@ -113,11 +128,14 @@ const mapStateToProps = (state) => ({
 
   loadingBuyGood: state.goods.loadingBuyGood,
   errorBuyGood: state.goods.errorBuyGood,
+  successBuyGood: state.goods.successBuyGood,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getAllGoods: () => dispatch(getAllGoodsStart()),
   buyGood: (goodId) => dispatch(buyGoodsStart(goodId)),
+
+  stopHaveError: () => dispatch(stopHaveError())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Goods);
