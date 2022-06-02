@@ -12,6 +12,7 @@ type GoodRequest struct {
 	Description string  `json:"description" binding:"required"`
 	Price       float64 `json:"price" binding:"required"`
 	Category    string  `json:"category"`
+	Image       string  `json:"image"`
 }
 
 type OrderRequest struct {
@@ -57,6 +58,7 @@ func (s *goodService) AddGood(good *GoodRequest, userID uint) (*models.Good, err
 		Price:       good.Price,
 		Category:    category,
 		UserID:      userID,
+		Image:       good.Image,
 	}
 
 	res, err := s.goodRepository.AddGood(&newGood)

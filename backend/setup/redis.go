@@ -13,7 +13,7 @@ func RedisInit() (*redis.Client, error) {
 	//Initializing redis
 	rdHost := config.GetRDHost()
 
-	dsn := fmt.Sprintf("%s:6379", rdHost) // localhost -> redis for Docker
+	dsn := fmt.Sprintf("%s:6379", rdHost)
 
 	redisClient = redis.NewClient(&redis.Options{
 		Addr: dsn,

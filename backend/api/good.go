@@ -1,6 +1,9 @@
 package api
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"tradeApp/middleware"
@@ -30,13 +33,14 @@ func addGood(goodService services.GoodService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var good *services.GoodRequest
 
-		err := c.BindJSON(&good)
+		bytes, err := ioutil.ReadAll(c.Request.Body)
 		if err != nil {
-			zap.S().Error("Add good server error", zap.Error(err))
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "bad request", "error": err.Error(),
-			})
-			return
+			log.Fatal(err)
+		}
+
+		err = json.Unmarshal(bytes, &good)
+		if err != nil {
+			log.Fatal(err)
 		}
 
 		userID, err := middleware.GetUserId(c)

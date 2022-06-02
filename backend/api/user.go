@@ -20,7 +20,7 @@ func InjectUser(gr *gin.RouterGroup, userService services.UserService) {
 	handler.GET("/profile/:id", getUserData(userService))
 
 	handler.PUT("/profile", updateProfile(userService))
-	handler.PUT("/amount", updateAmount(userService))
+	handler.PUT("/amount", topUpAmount(userService))
 }
 
 func getProfile(userService services.UserService) gin.HandlerFunc {
@@ -117,7 +117,7 @@ func updateProfile(userService services.UserService) gin.HandlerFunc {
 	}
 }
 
-func updateAmount(userService services.UserService) gin.HandlerFunc {
+func topUpAmount(userService services.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req services.AmountRequest
 		err := c.BindJSON(&req)
@@ -138,7 +138,7 @@ func updateAmount(userService services.UserService) gin.HandlerFunc {
 			return
 		}
 
-		err = userService.UpdateAmount(&req, userID)
+		err = userService.TopUpAmount(&req, userID)
 		if err != nil {
 			zap.S().Error("Update amount server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{

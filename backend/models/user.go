@@ -12,4 +12,5 @@ type User struct {
 	Password  string  `json:"-"`
 	Amount    float64 `json:"amount"`
 	Goods     []Good  `json:"goods" gorm:"foreignKey:UserID"`
+	Orders    []Order `gorm:"foreignKey:UserID"`
 }

@@ -11,5 +11,6 @@ type Good struct {
 	IsSelled    bool      `json:"isSelled"`
 	CustomerID  uint      `json:"customerID"`
 	Category    string    `json:"category"`
+	Image       string    `json:"image"`
 	Comments    []Comment `json:"comments" gorm:"foreignKey:GoodID"`
 }
