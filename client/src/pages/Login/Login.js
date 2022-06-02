@@ -41,7 +41,7 @@ function Login({ loginStart, isLoad, error, isAuth }) {
           </Typography>
         </Box>
         <LoginForm handleLogin={handleLogin}/>
-        {error && <div>{error}</div>}
+        {error && <div className="login_rightPart__error">{error}</div>}
         <Typography
           variant="body2"
           align="center"

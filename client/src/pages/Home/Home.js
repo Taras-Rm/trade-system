@@ -14,35 +14,43 @@ import { getProfileStart, logoutUser } from "./Profile/profile-slice";
 import Preloader from "../../components/Preloader/Preloader";
 
 function Home({ getProfileStart, loading, error, user, maneyAmount, logout }) {
-
   useEffect(() => {
-    getProfileStart()
-  }, [])
+    getProfileStart();
+  }, []);
 
   return (
     <div className="home">
-      <Sidebar logout={logout} fullName={`${user.firstName} ${user.lastName}`} avatarLetter={user.firstName[0].toUpperCase()} amountOfMoney={user.amount} />
+      <div className="sidebar_wrapper">
+        <Sidebar
+          logout={logout}
+          fullName={`${user.firstName} ${user.lastName}`}
+          avatarLetter={user.firstName[0].toUpperCase()}
+          amountOfMoney={user.amount}
+        />
+      </div>
       <div className="home_main">
         <Header />
         <Switch>
-          <Route exact path="/home/profile">
-            <Profile />
-          </Route>
-          <Route exact path="/home/goods">
-            <Goods />
-          </Route>
-          <Route exact path="/home/goods/ad/:id">
-            <GoodAd />
-          </Route>
-          <Route exact path="/home/addGoods">
-            <AddGoods />
-          </Route>
-          <Route exact path="/home/sellGoods">
-            <MyGoodsSell />
-          </Route>
-          <Route exact path="/home/purchaseGoods">
-            <MyGoodsBuy />
-          </Route>
+          <div className="home_wrapper">
+            <Route exact path="/home/profile">
+              <Profile />
+            </Route>
+            <Route exact path="/home/goods">
+              <Goods />
+            </Route>
+            <Route exact path="/home/goods/ad/:id">
+              <GoodAd />
+            </Route>
+            <Route exact path="/home/addGoods">
+              <AddGoods />
+            </Route>
+            <Route exact path="/home/sellGoods">
+              <MyGoodsSell />
+            </Route>
+            <Route exact path="/home/purchaseGoods">
+              <MyGoodsBuy />
+            </Route>
+          </div>
         </Switch>
       </div>
     </div>
@@ -58,8 +66,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getProfileStart: () => dispatch(getProfileStart()),
 
-  logout: () => dispatch(logoutUser())
+  logout: () => dispatch(logoutUser()),
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

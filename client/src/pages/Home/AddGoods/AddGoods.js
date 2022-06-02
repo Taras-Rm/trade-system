@@ -7,8 +7,8 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 function AddGoods({ addGoods, loading, error }) {
 
-  let onAddNewGoodClick = (goodObj, image) => {
-    addGoods({ ...goodObj, image });
+  let onAddNewGoodClick = (goodObj) => {
+    addGoods({ ...goodObj });
 
     setTimeout(() => {
       NotificationManager.success('Ad is successfully created', 'Ad creation');

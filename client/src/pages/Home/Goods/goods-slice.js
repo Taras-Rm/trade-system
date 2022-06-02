@@ -10,12 +10,15 @@ export const GET_GOOD_START = 'getGoodStart/START';
 export const GET_GOOD_SUCCESS = 'getGoodSuccess/SUCCESS';
 export const GET_GOOD_ERROR = 'getGoodError/ERROR';
 
+export const STOP_HAVE_ERROR = 'getGoodError/STOP_HAVE_ERROR';
+
 const STATE = {
   goods: [],
   loading: false,
   error: null,
 
   loadingBuyGood: false,
+  successBuyGood: false,
   errorBuyGood: null,
 
   selectedGoodAd: {},
@@ -24,6 +27,12 @@ const STATE = {
 
 function getAllGoodsReducer(state = STATE, action) {
   switch (action.type) {
+    case STOP_HAVE_ERROR: 
+    return {
+      ...state,
+      errorBuyGood: null,
+      successBuyGood: false
+    }
     case GET_ALL_GOODS_START:
       return {
         ...state,
@@ -63,6 +72,7 @@ function getAllGoodsReducer(state = STATE, action) {
         return {
           ...state,
           loadingBuyGood: false,
+          successBuyGood: true,
           errorBuyGood: null,
         };
   
@@ -70,6 +80,7 @@ function getAllGoodsReducer(state = STATE, action) {
         return {
           ...state,
           errorBuyGood: action.payload,
+          successBuyGood: false,
           loadingBuyGood: false
         };
 
@@ -116,5 +127,8 @@ export const buyGoodsStart = (goodId) => ({type: BUY_GOOD_START, payload: goodId
 export const buyGoodSuccess = () => ({type: BUY_GOOD_SUCCESS})
 
 export const buyGoodError = (err) => ({type: BUY_GOOD_ERROR, payload: err})
+
+
+export const stopHaveError = () => ({type: STOP_HAVE_ERROR})
 
 export default getAllGoodsReducer;

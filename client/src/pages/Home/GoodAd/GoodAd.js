@@ -3,22 +3,26 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./GoodAd.scss";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import Preloader from "../../../components/Preloader/Preloader";
 import noImg from "../../../static/images/no-image.png";
 import { buyGoodsStart, getGoodStart } from "../Goods/goods-slice";
-import { getUserDataStart } from "./goodAd-slice";
 import { formatDate } from "../../../common/helpers/formatDate";
 import GoodBuyForm from "../../../components/GoodBuyForm/GoodBuyForm";
 import MyModal from "../../../components/MyModal/MyModal";
 import { useFormik } from "formik";
 import { validationSchema } from "./utils/validationSchema";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, currentUserId, buyGood}) {
-
+function GoodAd({
+  good,
+  ownerData,
+  loading,
+  getGoodStart,
+  currentUserId,
+  buyGood,
+}) {
   const hist = useHistory();
   const params = useParams();
   const id = params.id;
@@ -27,68 +31,42 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
     getGoodStart(id);
   }, []);
 
-   // modal window for buy good form
-   const [modalUpd, setModalUpd] = useState(false);
-
+  // modal window for buy good form
+  const [modalUpd, setModalUpd] = useState(false);
 
   const onBackBtnClick = () => {
     //dispatch(clearGoodInfo());
     hist.goBack();
   };
 
-  const onBuyBtnClick = (e) => {
-    // e.preventDefault();
-    // dispatch(
-    //   buyGood({
-    //     name: good.name,
-    //     category: good.category,
-    //     description: good.description,
-    //     id: id,
-    //     imageURL: good.imageURL,
-    //     price: good.price,
-    //     userID: good.userID,
-    //     customerID: authUserID,
-    //   })
-    // );
+  // data for buy good
+  const formGoodBuy = useFormik({
+    initialValues: {
+      toCountry: "",
+      toCity: "",
+      toStreet: "",
+      toPhoneNumber: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: ({ resetForm }) => {
+      buyGoodHandler();
+      resetForm();
+    },
+  });
 
-    // openSnackbar("You buy this good !");
-    // hist.goBack();
+  // on edit good button click
+  const onBuyGoodClick = (goodObj) => {
+    setModalUpd(true);
   };
 
-    // data for buy good
-    const formGoodBuy = useFormik({
-      initialValues: {
-        toCountry: "",
-        toCity: "",
-        toStreet: "",
-        toPhoneNumber: "",
-      },
-      validationSchema: validationSchema,
-      onSubmit: ({ resetForm }) => {
-        buyGoodHandler()
-        resetForm();
-      },
-    });
+  const buyGoodHandler = () => {
+    let data = formGoodBuy.values;
+    buyGood({ ...data, goodID: id });
 
-    // on edit good button click
-    const onBuyGoodClick = (goodObj) => {
-      setModalUpd(true);
-    };
-  
-     // on buy confirm button click //
-     const buyGoodHandler = () => {
-      let data = formGoodBuy.values
-      buyGood({...data, goodID: id})
-  
-       setModalUpd(false);
+    setModalUpd(false);
 
-       setTimeout(() => {
-        NotificationManager.success('You have buyed good', 'Buy good');
-      }, 1000)
-      hist.goBack();
-    };
-  
-  
+    hist.goBack();
+  };
 
   if (loading) {
     return (
@@ -103,7 +81,10 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
       {/* modal for update */}
       <MyModal visible={modalUpd} setVisible={setModalUpd}>
         <h3 className="goodAd_formHeader">Plese enter delivery address</h3>
-        <GoodBuyForm onSubmit={formGoodBuy.handleSubmit} formData={formGoodBuy} />
+        <GoodBuyForm
+          onSubmit={formGoodBuy.handleSubmit}
+          formData={formGoodBuy}
+        />
       </MyModal>
       <button className="goodAd_bck" onClick={onBackBtnClick}>
         <ArrowBackIcon style={{ marginRight: 10 }} /> Back
@@ -116,23 +97,27 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
               <img
                 className="goodAd_imgBox__img"
                 alt="mainPhoto"
-                src={good.imageURL || noImg}
+                src={good.image || noImg}
               />
             </div>
           </div>
           <div className="goodAd_content__right">
             <div className="goodAd_content__right__box">
               <div className="goodAd_content__right__contacts">
-              <div className="goodAd_content__right-item">
+                <div className="goodAd_content__right-item">
                   <span className="goodAd_content__category">Date:</span>
-                  <span className="goodAd_content__value">{`${good.CreatedAt && formatDate(good.CreatedAt)}`}</span>
+                  <span className="goodAd_content__value">{`${
+                    good.CreatedAt && formatDate(good.CreatedAt)
+                  }`}</span>
                 </div>
                 <div className="goodAd_content__right-item">
                   <span className="goodAd_content__category">Seller:</span>
                   <span className="goodAd_content__value">{`${ownerData.firstName} ${ownerData.lastName}`}</span>
                 </div>
                 <div className="goodAd_content__right-item">
-                  <span className="goodAd_content__category">Phone number:</span>
+                  <span className="goodAd_content__category">
+                    Phone number:
+                  </span>
                   <span className="goodAd_content__value">
                     {ownerData.phone}
                   </span>
@@ -150,7 +135,7 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
                   >
                     {good.price} $
                   </span>
-              </div>
+                </div>
               </div>
               <div className="goodAd_content__description">
                 <span
@@ -170,7 +155,6 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
                 margin: "0 auto",
               }}
               disabled={currentUserId === good.userID}
-
               onClick={onBuyGoodClick}
             >
               Buy this good
@@ -182,20 +166,17 @@ function GoodAd({ good, ownerData, loading, getGoodStart, getUserDataStart, curr
   );
 }
 
-
 const mapStateToProps = (state) => ({
   good: state.goods.selectedGoodAd,
   loading: state.goods.loadingGoodAd,
   currentUserId: state.profile.user.id,
 
-  ownerData: state.user.user
+  ownerData: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getGoodStart: (goodId) => dispatch(getGoodStart(goodId)),
-  buyGood: (goodId) => dispatch(buyGoodsStart(goodId))
-
+  buyGood: (goodId) => dispatch(buyGoodsStart(goodId)),
 });
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(GoodAd)
+export default connect(mapStateToProps, mapDispatchToProps)(GoodAd);

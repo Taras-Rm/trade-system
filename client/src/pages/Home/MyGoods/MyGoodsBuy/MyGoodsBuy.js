@@ -46,7 +46,7 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
         }}
       >
         <Paper className="myGoodsSale_paper">
-          <TableContainer sx={{ maxHeight: 400 }}>
+          <TableContainer sx={{ maxHeight: 500 }}>
             <Table
               stickyHeader
               aria-label="sticky table"
@@ -73,7 +73,7 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
                       {row.category}
                     </TableCell>
                     <TableCell scope="row" component="th">
-                      {formatDate(row.CreatedAt)}
+                      {formatDate(row.UpdatedAt)}
                     </TableCell>
                     <TableCell component="th">{row.price}</TableCell>
                     <TableCell width={200} component="th" align="center">

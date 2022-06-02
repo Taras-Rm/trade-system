@@ -94,7 +94,7 @@ function MyGoodsSell({
         "Success information update",
         "Update good information"
       );
-    }, 1000);
+    }, 500);
     stopUpdateGood();
   }
 
@@ -116,7 +116,7 @@ function MyGoodsSell({
         <h2 className="myGoodsSale_title">My goods for sale</h2>
         <div>
           <Paper className="myGoodsSale_paper">
-            <TableContainer sx={{ maxHeight: 400 }}>
+            <TableContainer sx={{ maxHeight: 500 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"

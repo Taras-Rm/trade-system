@@ -7,4 +7,10 @@
 .login_rightPart {
   margin: 0 auto;
   padding-top: 120px;
+
+  &__error {
+    text-align: center;
+    color: red;
+    padding-top: 10px;
+  }
 }

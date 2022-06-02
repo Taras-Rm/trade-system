@@ -79,7 +79,7 @@ type UserService interface {
 	LogoutUser(tokensReq *TokensRequest) error
 	GetUserProfile(userID uint) (*UserResponse, error)
 	UpdateUserProfile(user *UserUpdateRequest, userID uint) error
-	UpdateAmount(req *AmountRequest, userID uint) error
+	TopUpAmount(req *AmountRequest, userID uint) error
 	RefreshTokens(tokens *RefreshRequest) (*TokensRequest, error)
 }
 
@@ -384,13 +384,20 @@ func (s *userService) UpdateUserProfile(user *UserUpdateRequest, userID uint) er
 	return nil
 }
 
-func (s *userService) UpdateAmount(req *AmountRequest, userID uint) error {
+func (s *userService) TopUpAmount(req *AmountRequest, userID uint) error {
 	uintAmount, err := strconv.ParseFloat(req.Amount, 64)
 	if err != nil {
 		return err
 	}
 
-	err = s.userRepository.UpdateAmount(uint(uintAmount), userID)
+	user, err := s.userRepository.GetUserByID(userID)
+	if err != nil {
+		return err
+	}
+
+	newAmount := user.Amount + uintAmount
+
+	err = s.userRepository.UpdateAmount(uint(newAmount), userID)
 	if err != nil {
 		return err
 	}

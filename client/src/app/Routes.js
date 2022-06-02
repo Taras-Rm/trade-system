@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { PrivateRoute } from "../common/privateRoute/PrivateRoute";
-import ProtectedRoute from "../components/protectedRoute/ProtectedRoute";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Registration from "../pages/Register/Register";
