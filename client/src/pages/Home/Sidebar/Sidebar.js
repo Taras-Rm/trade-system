@@ -14,8 +14,6 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../../static/images/logo2.png";
 
 function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
-
-
   if (loading) {
     return <div>Loading ...</div>;
   }
