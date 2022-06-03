@@ -7,4 +7,10 @@
 .rightPart {
   margin: 0 auto;
   padding-top: 80px;
+
+  &__error {
+    text-align: center;
+    color: red;
+    padding-top: 10px;
+  }
 }

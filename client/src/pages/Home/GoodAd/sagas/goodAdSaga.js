@@ -9,7 +9,6 @@ export default function* watcherUserSaga() {
 
 function* getUserData(action) {
   try {
-    debugger
     let payload = yield call(getUserDataApi, action.payload);
     
     yield put(getUserDataSuccess(payload.data.user))

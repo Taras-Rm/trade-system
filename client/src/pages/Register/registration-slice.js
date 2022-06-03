@@ -3,6 +3,9 @@ export const START = 'registration/START';
 export const SUCCESS = 'registration/SUCCESS';
 export const ERROR = 'registration/ERROR';
 
+export const STOP_HAVE_ERROR = 'registration/STOP_HAVE_ERROR';
+
+
 const initialState = {
   isLoad: false,
   error: null,
@@ -32,6 +35,12 @@ const registrationReducer = (state = initialState, action) => {
         isLoad: false,
         error: action.payload
       };
+    case STOP_HAVE_ERROR:
+      return {
+        ...state,
+        error: null,
+        isSuccess: false
+      }
 
     default:
       return state;
@@ -41,5 +50,8 @@ const registrationReducer = (state = initialState, action) => {
 export const getRegistrationStart = (formData) => ({ type: START, payload: formData });
 export const getRegistrationSuccess = () => ({ type: SUCCESS });
 export const getRegistrationError = (err) => ({ type: ERROR, payload: err });
+
+export const stopHaveErrorAndSuccess = () => ({ type: STOP_HAVE_ERROR });
+
 
 export default registrationReducer;

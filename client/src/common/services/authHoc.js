@@ -19,7 +19,7 @@ export const requireAuth = (Component) => {
           loginStart(tokensData)
         }
       }
-    }, [])
+    }, [isAuth, loginStart])
 
     return <Component />
   }

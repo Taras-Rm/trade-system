@@ -17,30 +17,24 @@ function MoneyAmount({ moneyAmount = 500, topUpAmount }) {
   // modal window for top up amount
   const [modal, setModal] = useState(false);
 
-    // data for buy good
-    const formAmount = useFormik({
-      initialValues: {
-        amount: "",
-      },
-      validationSchema: validationSchema,
-      onSubmit: ({ resetForm }) => {
-        topUpAmountHandler();
-        resetForm();
-      },
-    });
+  // data for buy good
+  const formAmount = useFormik({
+    initialValues: {
+      amount: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: ({ resetForm }) => {
+      topUpAmountHandler();
+      resetForm();
+    },
+  });
 
-      // on top up amount confirm button click //
+  // on top up amount confirm button click //
   const topUpAmountHandler = () => {
     let data = formAmount.values;
-    debugger
     topUpAmount({ ...data });
 
     setModal(false);
-
-    // setTimeout(() => {
-    //   NotificationManager.success("You have buyed good", "Buy good");
-    // }, 1000);
-    // hist.goBack();
   };
 
   // on top up amount button click
@@ -54,8 +48,8 @@ function MoneyAmount({ moneyAmount = 500, topUpAmount }) {
       <MyModal visible={modal} setVisible={setModal}>
         <h3 className="moneyAmount_formHeader">Plese enter amount</h3>
         <TopUpAmountForm
-         handler={formAmount.handleSubmit}
-         formData={formAmount}
+          handler={formAmount.handleSubmit}
+          formData={formAmount}
         />
       </MyModal>
       <Table sx={{ maxWidth: 300 }} aria-label="simple table">

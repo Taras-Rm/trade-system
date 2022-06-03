@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Login.scss";
 import LoginForm from "./LoginForm/LoginForm";
 
@@ -8,9 +8,13 @@ import { Link, Redirect } from "react-router-dom";
 import BigCard from "../../components/BigCard/BigCard";
 import { Box } from "@mui/material";
 import { connect } from "react-redux";
-import { getLoginStart } from "./login-slice";
+import { getLoginStart, stopHaveLoginError } from "./login-slice";
 
-function Login({ loginStart, isLoad, error, isAuth }) {
+function Login({ loginStart, isLoad, error, isAuth, stopHaveError }) {
+
+  useEffect(() => {
+    return stopHaveError()
+  }, [])
 
   // send data for loging
   const handleLogin = (regObj) => {
@@ -69,6 +73,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loginStart: (formData) => dispatch(getLoginStart(formData)),
+
+  stopHaveError: () => dispatch(stopHaveLoginError())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
