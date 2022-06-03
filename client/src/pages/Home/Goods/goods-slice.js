@@ -91,7 +91,6 @@ function getAllGoodsReducer(state = STATE, action) {
           };
     
         case GET_GOOD_SUCCESS:
-          debugger
           return {
             ...state,
             loadingGoodAd: false,

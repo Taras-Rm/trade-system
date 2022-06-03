@@ -1,8 +1,4 @@
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Stack,
   TextField,
   Button,
@@ -31,7 +27,6 @@ const TopUpAmountForm = ({ handler, formData }) => {
         type="submit"
         variant="contained"
         onClick={handler}
-        // loading={isSubmitting}
       >
         Top up
       </Button>

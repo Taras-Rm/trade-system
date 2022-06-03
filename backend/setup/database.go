@@ -24,7 +24,7 @@ func ConnectDB() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	err = DB.AutoMigrate(&models.User{}, &models.Good{}, &models.Comment{}, &models.Order{})
+	err = DB.AutoMigrate(&models.User{}, &models.Good{}, &models.Order{}, &models.Address{})
 
 	if err != nil {
 		return nil, err

@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import BigCard from "../../components/BigCard/BigCard";
 import { connect } from "react-redux";
 import { registrationApi } from "../../api/registrationApi";
-import { getRegistrationStart } from "./registration-slice";
+import { getRegistrationStart, stopHaveErrorAndSuccess } from "./registration-slice";
 import { useHistory } from "react-router-dom";
 
-function Register({ registrationStart, error, isLoad, isSuccess }) {
+function Register({ registrationStart, error, isLoad, isSuccess, stopHaveErrorAndSuccess }) {
   const history = useHistory()
 
   let onSubmitForm = (formObj) => {
@@ -23,6 +23,9 @@ function Register({ registrationStart, error, isLoad, isSuccess }) {
     if (isSuccess) {
       history.push('/login');
     }
+
+    return stopHaveErrorAndSuccess()
+
   }, [ history, isSuccess ]);
 
   return (
@@ -45,9 +48,8 @@ function Register({ registrationStart, error, isLoad, isSuccess }) {
           </Typography>
         </Box>
         <RegisterForm onSubmitForm={onSubmitForm} />
-        {error && <div>
-            {error}
-            </div>}
+        {error && <div className="rightPart__error">{error}</div>}
+
         <Typography
           variant="body2"
           align="center"
@@ -72,6 +74,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   registrationStart: (formData) => dispatch(getRegistrationStart(formData)),
+
+  stopHaveErrorAndSuccess: () => dispatch(stopHaveErrorAndSuccess())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

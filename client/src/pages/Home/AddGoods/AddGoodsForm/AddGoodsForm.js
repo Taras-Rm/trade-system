@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { validationSchema } from "./utils/validationSchema";
 import "./AddGoodsForm.scss";
-import GoodsItem from "../../../../components/GoodsItem/GoodsItem";
 import GoodsItemPreview from "./GoodItemPreview/GoodsItemPreview";
 import { convertToBase64 } from "../../../../common/helpers/image";
 
@@ -26,7 +25,6 @@ function AddGoodsForm({ onAddNewGoodClick }) {
   const maxNumber = 1;
 
   const onChange = (imageList) => {
-    debugger;
     setImage(imageList);
   };
 
@@ -43,17 +41,18 @@ function AddGoodsForm({ onAddNewGoodClick }) {
         regObj.category = "";
       }
       let img = "";
+      let base64 = ""
       if (image.length !== 0) {
         img = image[0];
+         base64 = await convertToBase64(img.file);
       } else {
         img = "";
+        base64 = ""
       }
-      //const formData = new FormData();
-      //formData.append("image", img);
-      debugger;
-      const base64 = await convertToBase64(img.file)
+
       regObj.price = parseFloat(regObj.price);
-      onAddNewGoodClick({ ...regObj, "image": base64});
+
+      onAddNewGoodClick({ ...regObj, image: base64 });
       resetForm();
       setImage([]);
     },
@@ -149,10 +148,8 @@ function AddGoodsForm({ onAddNewGoodClick }) {
             {({
               imageList,
               onImageUpload,
-              onImageRemoveAll,
               onImageUpdate,
               onImageRemove,
-              isDragging,
               dragProps,
             }) => (
               // write your building UI
@@ -168,12 +165,6 @@ function AddGoodsForm({ onAddNewGoodClick }) {
                 </Button>
                 {imageList.map((image, index) => (
                   <div key={index} className="image-item">
-                    {/* <img
-                      src={image["data_url"]}
-                      alt=""
-                      height="auto"
-                      width="200"
-                    /> */}
                     <div className="image-item__btn-wrapper">
                       <Button onClick={() => onImageUpdate(index)}>
                         <RotateLeftIcon />{" "}

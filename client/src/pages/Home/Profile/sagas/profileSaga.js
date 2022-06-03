@@ -46,7 +46,6 @@ function* updateProfileData(action) {
 
 function* topUpAmount(action) {
   try {
-    debugger
     let payload = yield call(topUpAmountApi, action.payload);
 
     yield put(topUpAmountSuccess())

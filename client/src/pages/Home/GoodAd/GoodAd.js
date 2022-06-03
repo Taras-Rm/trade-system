@@ -19,6 +19,7 @@ function GoodAd({
   good,
   ownerData,
   loading,
+  loadingUserData,
   getGoodStart,
   currentUserId,
   buyGood,
@@ -68,9 +69,9 @@ function GoodAd({
     hist.goBack();
   };
 
-  if (loading) {
+  if (loading || loadingUserData) {
     return (
-      <div style={{ textAlign: "center", marginTop: 50 }}>
+      <div style={{ textAlign: "center", marginTop: 200 }}>
         <Preloader />
       </div>
     );
@@ -169,6 +170,8 @@ function GoodAd({
 const mapStateToProps = (state) => ({
   good: state.goods.selectedGoodAd,
   loading: state.goods.loadingGoodAd,
+  loadingUserData: state.user.loading,
+
   currentUserId: state.profile.user.id,
 
   ownerData: state.user.user,

@@ -37,9 +37,7 @@ function* getGoodData(action) {
 
 function* buyGood(action) {
   try {
-    debugger
     let payload = yield call(buyGoodApi, action.payload);
-    debugger
     yield put(buyGoodSuccess())
     yield put(getAllGoodsStart())
 
