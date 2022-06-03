@@ -137,10 +137,13 @@ func (s *goodService) BuyGood(goodID, customerID uint, orderRequest *OrderReques
 		GoodID:     uint(goodRequestID),
 		UserID:     good.UserID,
 		CustomerID: customerID,
-		ToCountry:  orderRequest.ToCountry,
-		ToCity:     orderRequest.ToCity,
-		ToStreet:   orderRequest.ToStreet,
-		ToPhone:    orderRequest.ToPhone,
+		Price:      good.Price,
+		Address: models.Address{
+			ToCountry: orderRequest.ToCountry,
+			ToCity:    orderRequest.ToCity,
+			ToStreet:  orderRequest.ToStreet,
+			ToPhone:   orderRequest.ToPhone,
+		},
 	}
 
 	_, err = s.orderRepository.CreateOrder(&newOrder)

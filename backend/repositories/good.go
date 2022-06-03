@@ -33,7 +33,7 @@ func (r *goodRepository) AddGood(good *models.Good) (*models.Good, error) {
 
 func (r *goodRepository) GetAllGoods() ([]models.Good, error) {
 	var goods []models.Good
-	res := r.db.Preload("Comments").Find(&goods)
+	res := r.db.Find(&goods)
 	return goods, res.Error
 }
 
