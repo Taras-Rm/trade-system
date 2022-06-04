@@ -12,6 +12,7 @@ import GoodAd from "./GoodAd/GoodAd";
 import { connect } from "react-redux";
 import { getProfileStart, logoutUser } from "./Profile/profile-slice";
 import Preloader from "../../components/Preloader/Preloader";
+import Charts from "./Charts/Charts";
 
 function Home({ getProfileStart, loading, error, user, maneyAmount, logout }) {
   useEffect(() => {
@@ -49,6 +50,9 @@ function Home({ getProfileStart, loading, error, user, maneyAmount, logout }) {
             </Route>
             <Route exact path="/home/purchaseGoods">
               <MyGoodsBuy />
+            </Route>
+            <Route exact path="/home/charts">
+              <Charts />
             </Route>
           </div>
         </Switch>

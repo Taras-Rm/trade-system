@@ -11,6 +11,7 @@ import AllInboxIcon from "@mui/icons-material/AllInbox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, NavLink } from "react-router-dom";
+import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import logo from "../../../static/images/logo2.png";
 
 function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
@@ -75,6 +76,17 @@ function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
             <ListItemText primary={"My buyed goods"} />
           </ListItem>
         </NavLink>
+        <NavLink
+          style={{ color: "black", textDecoration: "none" }}
+          to="/home/charts"
+        >
+          <ListItem className={`sidebar_item`} sx={{ pl: 4 }} button>
+            <ListItemIcon>
+              <StackedLineChartIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Charts"} />
+          </ListItem>
+        </NavLink>
         <Divider className="listDivider" />
         <NavLink
           style={{ color: "black", textDecoration: "none" }}
@@ -91,7 +103,7 @@ function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
         <Divider className="listDivider" />
         <Link
           style={{ color: "black", textDecoration: "none" }}
-          to="/"
+          to="/login"
           onClick={logout}
         >
           <ListItem className="sidebar_item" sx={{ pl: 4 }} button>
