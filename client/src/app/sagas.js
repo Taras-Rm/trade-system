@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 import watcherAddGoodsSaga from '../pages/Home/AddGoods/sagas/addGoodsSaga';
+import watcherChartsSaga from '../pages/Home/Charts/sagas/chartsSaga';
 import watcherUserSaga from '../pages/Home/GoodAd/sagas/goodAdSaga';
 import watcherAllGoodsSaga from '../pages/Home/Goods/sagas/goodsSaga';
 import watcherMyGoodsSaga from '../pages/Home/MyGoods/sagas/myGoodsSaga';
@@ -19,6 +20,7 @@ export function* rootSagas() {
      watcherMyGoodsSaga,
      watcherLoginByTokensSaga,
      watcherUserSaga,
+     watcherChartsSaga,
     ].map(fork)
   );
 }

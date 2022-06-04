@@ -14,6 +14,7 @@ export default function* watcherLoginByTokensSaga() {
   
   function* getLoginByTokensUser(action) {
     try {
+      debugger
       const payload = yield call(loginByTokensApi, action.payload);
   
       yield put(getLoginSuccess());

@@ -81,8 +81,9 @@ function* getSoldGoods() {
 
 function* logoutProfile() {
   try {
-    yield call(logoutApi)
     yield call(deleteTokensFromLocalStorage)
+    yield call(logoutApi)
+
 
   } catch (error) {
     deleteTokensFromLocalStorage()
