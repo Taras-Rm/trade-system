@@ -15,6 +15,7 @@ func InjectChart(gr *gin.RouterGroup, chartService services.ChartService) {
 	handler.Use(middleware.AuthMiddleware)
 
 	handler.GET("", getIncomeExpenses(chartService))
+	handler.GET("/category", getGoodsCategories(chartService))
 }
 
 func getIncomeExpenses(chartService services.ChartService) gin.HandlerFunc {
@@ -37,6 +38,32 @@ func getIncomeExpenses(chartService services.ChartService) gin.HandlerFunc {
 		}
 
 		zap.S().Info("Get incomes and expenses server success")
+		c.JSON(http.StatusOK, gin.H{
+			"data": result,
+		})
+	}
+}
+
+func getGoodsCategories(chartService services.ChartService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userID, err := middleware.GetUserId(c)
+		if err != nil {
+			zap.S().Error("Get goods categories server error", zap.Error(err))
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error(),
+			})
+			return
+		}
+
+		result, err := chartService.GetGoodsCategories(userID)
+		if err != nil {
+			zap.S().Error("Get goods categories server error", zap.Error(err))
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "server error", "error": err.Error()})
+			return
+		}
+
+		zap.S().Info("Get goods categories server success")
 		c.JSON(http.StatusOK, gin.H{
 			"data": result,
 		})

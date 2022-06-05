@@ -8,4 +8,19 @@
     font-weight: 500;
     margin-bottom: 20px;
   }
+
+  &_block {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &__name {
+      color: gray;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+  }
+
+
+  
 }
