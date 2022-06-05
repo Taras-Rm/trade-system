@@ -28,7 +28,7 @@ func (r *orderRepository) CreateOrder(order *models.Order) (*models.Order, error
 func (r *orderRepository) GetBuyedByUserID(userID uint) ([]models.Order, error) {
 	var orders []models.Order
 
-	err := r.db.Where("customer_id = ?", userID, false).Find(&orders)
+	err := r.db.Where("customer_id = ?", userID, false).Preload("Good").Find(&orders)
 	if err.Error != nil {
 		return nil, err.Error
 	}
@@ -39,7 +39,7 @@ func (r *orderRepository) GetBuyedByUserID(userID uint) ([]models.Order, error) 
 func (r *orderRepository) GetSoldByUserID(userID uint) ([]models.Order, error) {
 	var orders []models.Order
 
-	err := r.db.Where("user_id = ?", userID, false).Find(&orders)
+	err := r.db.Where("user_id = ?", userID, false).Preload("Good").Find(&orders)
 	if err.Error != nil {
 		return nil, err.Error
 	}

@@ -45,7 +45,7 @@ func main() {
 
 	goodService := services.NewGoodService(goodRepository, userRepository, orderRepository)
 	userService := services.NewUserService(userRepository, tokenRepository, goodRepository)
-	chartService := services.NewChartService(goodRepository, orderRepository)
+	chartService := services.NewChartService(orderRepository)
 
 	api.InjectGood(gr, goodService)
 	api.InjectAuth(gr, userService)
