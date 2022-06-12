@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +9,6 @@ import {
   Paper,
 } from "@mui/material";
 import "./MyGoodsBuy.scss";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Preloader from "../../../../components/Preloader/Preloader";
 import { connect } from "react-redux";
 import { getBuyedGoodsStart } from "../myGoods-slice";
@@ -18,14 +16,9 @@ import { formatDate } from "../../../../common/helpers/formatDate";
 
 function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
 
-  const onDeleteGoodClick = (goodID) => {
-    // dispatch(deleteBuyedGood(goodID, userID));
-    // openSnackbar("Your good is deleted !");
-  };
-
   useEffect(() => {
     getBuyedGoods()
-  }, []);
+  }, [getBuyedGoods]);
 
   if (loading) {
     return (
@@ -58,9 +51,6 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
                   <TableCell style={{ fontWeight: "bold" }}>Category</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Date</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Price $</TableCell>
-                  <TableCell style={{ fontWeight: "bold" }} align="center">
-                    Delete from history
-                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -76,16 +66,6 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
                       {formatDate(row.UpdatedAt)}
                     </TableCell>
                     <TableCell component="th">{row.price}</TableCell>
-                    <TableCell width={200} component="th" align="center">
-                      <Button
-                        // onClick={() => onDeleteGoodClick()}
-                        variant="contained"
-                        size="small"
-                        color="error"
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

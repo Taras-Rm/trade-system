@@ -78,7 +78,7 @@ function Profile({
     getProfileStart();
     getBuyedGoods();
     getSoldGoods();
-  }, [user.id]);
+  }, [user.id, getProfileStart, getBuyedGoods, getSoldGoods]);
 
   return (
     <div className="profilePage">

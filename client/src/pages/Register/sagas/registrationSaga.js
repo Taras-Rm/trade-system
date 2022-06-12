@@ -12,7 +12,7 @@ export default function* watcherRegistrationSaga() {
 
 function* getRegistrationUser(action) {
   try {
-    let payload = yield call(registrationApi, { ...action.payload });
+    yield call(registrationApi, { ...action.payload });
 
     yield put(getRegistrationSuccess());
   } catch (error) {

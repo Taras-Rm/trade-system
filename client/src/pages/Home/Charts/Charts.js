@@ -5,7 +5,6 @@ import BarChart from "./BarChart";
 import { getCategoryGoodsStart, getChartsDataStart } from "./charts-slice";
 import { monthSorter } from "../../../common/helpers/formatDate";
 import Preloader from "../../../components/Preloader/Preloader";
-import LineChart from "./PieChart";
 import PieChart from "./PieChart";
 
 function Charts({
@@ -19,7 +18,7 @@ function Charts({
   useEffect(() => {
     getCategoryGoodsData();
     getChartsData();
-  }, []);
+  }, [getCategoryGoodsData, getChartsData]);
 
   // let formatedChartsData = chartsData;
 
@@ -91,17 +90,19 @@ function Charts({
   if (!categoryGoods) {
     categoryGoods = []
   }
-  
+
   let filteredCategoryGoodsBuyed = categoryGoods.filter((data) => {
-    if(data.CountOfBuyed != 0) {
+    if(data.CountOfBuyed !== 0) {
       return data
     }
+    return ""
   })
 
   let filteredCategoryGoodsSold = categoryGoods.filter((data) => {
-    if(data.CountOfSelled != 0) {
+    if(data.CountOfSelled !== 0) {
       return data
     }
+    return ""
   })
 
   let userCategoryBuyedCount = {

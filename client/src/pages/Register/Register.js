@@ -7,26 +7,32 @@ import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import BigCard from "../../components/BigCard/BigCard";
 import { connect } from "react-redux";
-import { registrationApi } from "../../api/registrationApi";
-import { getRegistrationStart, stopHaveErrorAndSuccess } from "./registration-slice";
+import {
+  getRegistrationStart,
+  stopHaveErrorAndSuccess,
+} from "./registration-slice";
 import { useHistory } from "react-router-dom";
 
-function Register({ registrationStart, error, isLoad, isSuccess, stopHaveErrorAndSuccess }) {
-  const history = useHistory()
+function Register({
+  registrationStart,
+  error,
+  isLoad,
+  isSuccess,
+  stopHaveErrorAndSuccess,
+}) {
+  const history = useHistory();
 
   let onSubmitForm = (formObj) => {
-    registrationStart(formObj)
+    registrationStart(formObj);
   };
 
   useEffect(() => {
-
     if (isSuccess) {
-      history.push('/login');
+      history.push("/login");
     }
 
-    return stopHaveErrorAndSuccess()
-
-  }, [ history, isSuccess ]);
+    return stopHaveErrorAndSuccess();
+  }, [history, isSuccess, stopHaveErrorAndSuccess]);
 
   return (
     <div className="registration">
@@ -69,13 +75,13 @@ const mapStateToProps = (state) => ({
   error: state.registration.error,
   isLoad: state.registration.isLoad,
 
-  isSuccess: state.registration.isSuccess
+  isSuccess: state.registration.isSuccess,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   registrationStart: (formData) => dispatch(getRegistrationStart(formData)),
 
-  stopHaveErrorAndSuccess: () => dispatch(stopHaveErrorAndSuccess())
+  stopHaveErrorAndSuccess: () => dispatch(stopHaveErrorAndSuccess()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

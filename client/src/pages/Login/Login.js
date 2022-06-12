@@ -14,7 +14,7 @@ function Login({ loginStart, isLoad, error, isAuth, stopHaveError }) {
 
   useEffect(() => {
     return stopHaveError()
-  }, [])
+  }, [stopHaveError])
 
   // send data for loging
   const handleLogin = (regObj) => {

@@ -9,19 +9,22 @@ import Title from "../pages/Title/Title";
 function Routes() {
   return (
     <Switch>
-      <Route exact path="/">
-        <Title />
-      </Route>
-      <Route exact path="/registration">
-        <Registration />
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <PrivateRoute path="/home">
-        <Home />
-      </PrivateRoute>
+      <div>
+        <Route exact path="/">
+          <Title />
+        </Route>
+        <Route exact path="/registration">
+          <Registration />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <PrivateRoute path="/home">
+          <Home />
+        </PrivateRoute>
+      </div>
       <Redirect to="/" />
+
     </Switch>
   );
 }
