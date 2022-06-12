@@ -13,7 +13,6 @@ import TopUpAmountForm from "../../../../components/TopUpAmountForm/TopUpAmountF
 import "./MoneyAmount.scss";
 import { validationSchema } from "./utils/validationSchema";
 import {
-  NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 

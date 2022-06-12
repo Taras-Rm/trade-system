@@ -85,7 +85,7 @@ function MyGoodsSell({
 
   useEffect(() => {
     getGoods();
-  }, []);
+  }, [getGoods]);
 
   const onDeleteGoodClick = (goodId) => {
     deleteGood(goodId);

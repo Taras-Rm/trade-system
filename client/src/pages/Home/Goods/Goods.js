@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import GoodBuyForm from "../../../components/GoodBuyForm/GoodBuyForm";
 import GoodsItem from "../../../components/GoodsItem/GoodsItem";
 import MyModal from "../../../components/MyModal/MyModal";
@@ -27,7 +27,7 @@ function Goods({
 }) {
   useEffect(() => {
     getAllGoods();
-  }, []);
+  }, [getAllGoods]);
 
   // modal window for buy good form
   const [modalUpd, setModalUpd] = useState(false);

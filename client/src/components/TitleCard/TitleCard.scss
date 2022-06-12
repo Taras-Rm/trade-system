@@ -1,0 +1,22 @@
+.title_card {
+  display: block;
+}
+
+.title_card_item.MuiCard-root {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.linksBox {
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 20px;
+
+  &_link {
+    text-decoration: none;
+    padding: 5px;
+    color: white;
+  }
+}

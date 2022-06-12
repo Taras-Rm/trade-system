@@ -46,7 +46,7 @@ function* updateProfileData(action) {
 
 function* topUpAmount(action) {
   try {
-    let payload = yield call(topUpAmountApi, action.payload);
+    yield call(topUpAmountApi, action.payload);
 
     yield put(topUpAmountSuccess())
     // get profile

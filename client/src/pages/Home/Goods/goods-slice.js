@@ -43,7 +43,7 @@ function getAllGoodsReducer(state = STATE, action) {
     case GET_ALL_GOODS_SUCCESS:
       let gds = []
       for(let i = 0; i < action.payload.length; i++) {
-        if(action.payload[i].customerID == 0) {
+        if(action.payload[i].customerID === 0) {
           gds.push(action.payload[i])
         }
       } 

@@ -30,7 +30,7 @@ function GoodAd({
 
   useEffect(() => {
     getGoodStart(id);
-  }, []);
+  }, [getGoodStart, id]);
 
   // modal window for buy good form
   const [modalUpd, setModalUpd] = useState(false);

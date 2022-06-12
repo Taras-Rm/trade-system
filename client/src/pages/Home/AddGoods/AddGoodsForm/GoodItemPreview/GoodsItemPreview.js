@@ -8,7 +8,6 @@ import {
 import React from "react";
 import "./GoodsItemPreview.scss";
 import noImg from "../../../../../static/images/no-image.png";
-import { useHistory } from "react-router-dom";
 
 let startGood = {
   name: "",
