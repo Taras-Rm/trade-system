@@ -29,6 +29,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import { formatDate } from "../../../../common/helpers/formatDate";
+import { validationSchema } from "./utils/validationSchema";
 
 function MyGoodsSell({
   getGoods,
@@ -43,28 +44,6 @@ function MyGoodsSell({
 }) {
   // modal window for update form
   const [modalUpd, setModalUpd] = useState(false);
-
-  // data for update
-  const formUpd = useFormik({
-    initialValues: {
-      name: "",
-      description: "",
-      category: "",
-      price: "",
-      goodID: null,
-    },
-  });
-
-  useEffect(() => {
-    getGoods();
-  }, []);
-
-  const onDeleteGoodClick = (goodId) => {
-    deleteGood(goodId);
-    setTimeout(() => {
-      NotificationManager.info("Good is successfully deleted", "Deleted good");
-    }, 1000);
-  };
 
   // on edit good button click
   const onEditGoodClick = (goodObj) => {
@@ -86,6 +65,33 @@ function MyGoodsSell({
     updateGood(data);
 
     setModalUpd(false);
+  };
+
+  // data for update
+  const formUpd = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      category: "",
+      price: "",
+      goodID: null,
+    },
+    validationSchema: validationSchema,
+    onSubmit: ({ resetForm }) => {
+      editHandler();
+      resetForm();
+    },
+  });
+
+  useEffect(() => {
+    getGoods();
+  }, []);
+
+  const onDeleteGoodClick = (goodId) => {
+    deleteGood(goodId);
+    setTimeout(() => {
+      NotificationManager.info("Good is successfully deleted", "Deleted good");
+    }, 1000);
   };
 
   if (isSuccessUpdateSell) {
@@ -111,7 +117,7 @@ function MyGoodsSell({
       <div className="myGoodsSale">
         {/* modal for update */}
         <MyModal visible={modalUpd} setVisible={setModalUpd}>
-          <GoodUpdateForm handler={editHandler} formData={formUpd} />
+          <GoodUpdateForm onSubmit={formUpd.handleSubmit} formData={formUpd} />
         </MyModal>
         <h2 className="myGoodsSale_title">My goods for sale</h2>
         <div>

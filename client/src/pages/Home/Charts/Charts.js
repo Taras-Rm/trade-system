@@ -30,10 +30,6 @@ function Charts({
     formatedChartsData = [];
   }
 
-  // if (!!categoryGoods) {
-  //   categoryGoods = []
-  // }
-
   let userDataBuyedAmount = {
     labels: formatedChartsData.map((data) => data.Month),
     datasets: [
@@ -92,6 +88,10 @@ function Charts({
     ],
   };
 
+  if (!categoryGoods) {
+    categoryGoods = []
+  }
+  
   let filteredCategoryGoodsBuyed = categoryGoods.filter((data) => {
     if(data.CountOfBuyed != 0) {
       return data

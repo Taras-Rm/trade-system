@@ -12,6 +12,10 @@ import MyModal from "../../../../components/MyModal/MyModal";
 import TopUpAmountForm from "../../../../components/TopUpAmountForm/TopUpAmountForm";
 import "./MoneyAmount.scss";
 import { validationSchema } from "./utils/validationSchema";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 function MoneyAmount({ moneyAmount = 500, topUpAmount }) {
   // modal window for top up amount
@@ -35,6 +39,10 @@ function MoneyAmount({ moneyAmount = 500, topUpAmount }) {
     topUpAmount({ ...data });
 
     setModal(false);
+
+    setTimeout(() => {
+      NotificationManager.success("Success amount top up", "Money sended");
+    }, 1000);
   };
 
   // on top up amount button click
