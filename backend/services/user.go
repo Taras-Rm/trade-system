@@ -151,7 +151,7 @@ func (s *userService) CreateUser(user *UserRegister) (*models.User, error) {
 		Email:     user.Email,
 		Age:       user.Age,
 		Phone:     user.Phone,
-		Amount:    50000,
+		Amount:    0,
 		Password:  string(hashedPassword),
 	})
 
