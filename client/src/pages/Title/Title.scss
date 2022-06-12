@@ -1,1 +1,11 @@
 @import "../../style.scss";
+
+.titlePage {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+
+    &_leftPart {
+        margin: 0 auto;
+    }
+}
