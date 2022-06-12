@@ -66,14 +66,14 @@ function Goods({
 
   if (successBuyGood) {
     setTimeout(() => {
-      NotificationManager.success("You have buyed good", "Buy good  ggg");
+      NotificationManager.success("You have buyed good", "Buy good");
     }, 500);
     stopHaveError();
   }
 
   if (errorBuyGood) {
     setTimeout(() => {
-      NotificationManager.error("You cannot buy good  ggg", errorBuyGood);
+      NotificationManager.error("You can not buy good", errorBuyGood);
     }, 500);
     stopHaveError();
   }
