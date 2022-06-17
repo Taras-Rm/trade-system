@@ -30,7 +30,7 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
 
   return (
     <div className="myGoodsBuy">
-      <h2 className="myGoodsBuy_title">My buyed goods</h2>
+      <h2 className="myGoodsBuy_title">My bought goods</h2>
       <div
         style={{
           display: "flex",
@@ -75,10 +75,10 @@ function MyGoodsBuy({ getBuyedGoods, loading, error, goods, priceBuyed }) {
 
         <div className="myGoodsBuy_info">
           <div className="myGoodsBuy_info__count">
-            Count of buyed goods: {goods.length}
+            Count of bought goods: {goods.length}
           </div>
           <div className="myGoodsBuy_info__price">
-            Total price of buyed goods: {priceBuyed} $
+            Total price of bought goods: {priceBuyed} $
           </div>
         </div>
       </div>

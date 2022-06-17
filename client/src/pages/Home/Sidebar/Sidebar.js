@@ -73,7 +73,7 @@ function Sidebar({ fullName, avatarLetter, loading, amountOfMoney, logout }) {
             <ListItemIcon>
               <AllInboxIcon />
             </ListItemIcon>
-            <ListItemText primary={"My buyed goods"} />
+            <ListItemText primary={"My bought goods"} />
           </ListItem>
         </NavLink>
         <NavLink
