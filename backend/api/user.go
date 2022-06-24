@@ -8,7 +8,6 @@ import (
 	"tradeApp/services"
 
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 func InjectUser(gr *gin.RouterGroup, userService services.UserService) {
@@ -27,7 +26,6 @@ func getProfile(userService services.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
-			zap.S().Error("Get profile server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -36,14 +34,12 @@ func getProfile(userService services.UserService) gin.HandlerFunc {
 
 		res, err := userService.GetUserProfile(userID)
 		if err != nil {
-			zap.S().Error("Get profile server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
-		zap.S().Info("Get profile success")
 		c.JSON(http.StatusOK, gin.H{
 			"profile": res,
 		})
@@ -55,7 +51,6 @@ func getUserData(userService services.UserService) gin.HandlerFunc {
 		userID := c.Param("id")
 		uintUserID, err := strconv.ParseUint(userID, 10, 64)
 		if err != nil {
-			zap.S().Error("Get user data server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -64,14 +59,12 @@ func getUserData(userService services.UserService) gin.HandlerFunc {
 
 		res, err := userService.GetUserProfile(uint(uintUserID))
 		if err != nil {
-			zap.S().Error("Get user data server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
-		zap.S().Info("Get user data success")
 		c.JSON(http.StatusOK, gin.H{
 			"user": res,
 		})
@@ -82,7 +75,6 @@ func updateProfile(userService services.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
-			zap.S().Error("Update profile server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -94,7 +86,6 @@ func updateProfile(userService services.UserService) gin.HandlerFunc {
 		fmt.Println(err)
 
 		if err != nil {
-			zap.S().Error("Update profile server error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "bad request", "error": err.Error(),
 			})
@@ -103,14 +94,12 @@ func updateProfile(userService services.UserService) gin.HandlerFunc {
 
 		err = userService.UpdateUserProfile(&user, userID)
 		if err != nil {
-			zap.S().Error("Update profile server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
-		zap.S().Info("Update profile success")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "user profile is updated",
 		})
@@ -122,7 +111,6 @@ func topUpAmount(userService services.UserService) gin.HandlerFunc {
 		var req services.AmountRequest
 		err := c.BindJSON(&req)
 		if err != nil {
-			zap.S().Error("Update amount server error", zap.Error(err))
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "bad request", "error": err.Error(),
 			})
@@ -131,7 +119,6 @@ func topUpAmount(userService services.UserService) gin.HandlerFunc {
 
 		userID, err := middleware.GetUserId(c)
 		if err != nil {
-			zap.S().Error("Update amount server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
@@ -140,14 +127,12 @@ func topUpAmount(userService services.UserService) gin.HandlerFunc {
 
 		err = userService.TopUpAmount(&req, userID)
 		if err != nil {
-			zap.S().Error("Update amount server error", zap.Error(err))
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "server error", "error": err.Error(),
 			})
 			return
 		}
 
-		zap.S().Info("Update amount success")
 		c.JSON(http.StatusOK, gin.H{
 			"massage": "amount is updated",
 		})

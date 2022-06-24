@@ -57,7 +57,7 @@ func (s *chartService) GetMonthlyIncomesExpenses(userID uint) ([]MonthData, erro
 		monthDataArr = append(monthDataArr, dataItem)
 	}
 
-	// get all monthes 2
+	// get all monthes
 	for _, d := range soldData {
 		month := d.CreatedAt.Month().String()
 		if isMonthInSlice(month, monthDataArr) {
@@ -128,7 +128,7 @@ func (s *chartService) GetGoodsCategories(userID uint) ([]CategoryData, error) {
 		categoryDataArr = append(categoryDataArr, categoryItem)
 	}
 
-	// get all categories 2
+	// get all categories
 	for _, d := range soldData {
 		category := d.Good.Category
 		if isCategoryInSlice(category, categoryDataArr) {
