@@ -35,8 +35,6 @@ function Profile({
   soldGoodsPrice,
   topUpAmount
 }) {
-  ///
-  // модальне вікно оновлення
   const [modalUpd, setModalUpd] = useState(false);
 
   const editHandler = (e) => {
@@ -48,12 +46,12 @@ function Profile({
     setTimeout(() => {
       NotificationManager.success(
         "Success information update",
-        "Update user information"
+        "Update user information",
+        1000
       );
     }, 1000);
   };
-  // дані форми оновлення
-  // зміни в інпутах форми оновлення
+
   const formUpd = useFormik({
     initialValues: {
       firstName: "",

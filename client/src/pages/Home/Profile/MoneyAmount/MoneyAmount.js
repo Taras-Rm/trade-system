@@ -40,7 +40,7 @@ function MoneyAmount({ moneyAmount = 500, topUpAmount }) {
     setModal(false);
 
     setTimeout(() => {
-      NotificationManager.success("Success amount top up", "Money sended");
+      NotificationManager.success("Success amount top up", "Money sended", 1000);
     }, 1000);
   };
 

@@ -36,7 +36,6 @@ function GoodAd({
   const [modalUpd, setModalUpd] = useState(false);
 
   const onBackBtnClick = () => {
-    //dispatch(clearGoodInfo());
     hist.goBack();
   };
 

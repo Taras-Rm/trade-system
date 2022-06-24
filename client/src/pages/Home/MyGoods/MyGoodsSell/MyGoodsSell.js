@@ -90,7 +90,7 @@ function MyGoodsSell({
   const onDeleteGoodClick = (goodId) => {
     deleteGood(goodId);
     setTimeout(() => {
-      NotificationManager.info("Good is successfully deleted", "Deleted good");
+      NotificationManager.info("Good is successfully deleted", "Deleted good", 1000);
     }, 1000);
   };
 
@@ -98,7 +98,8 @@ function MyGoodsSell({
     setTimeout(() => {
       NotificationManager.success(
         "Success information update",
-        "Update good information"
+        "Update good information",
+        1000
       );
     }, 500);
     stopUpdateGood();

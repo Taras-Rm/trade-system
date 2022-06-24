@@ -11,7 +11,7 @@ function AddGoods({ addGoods, loading, error }) {
     addGoods({ ...goodObj });
 
     setTimeout(() => {
-      NotificationManager.success('Ad is successfully created', 'Ad creation');
+      NotificationManager.success('Ad is successfully created', 'Ad creation', 1000);
     }, 500)
   };
 

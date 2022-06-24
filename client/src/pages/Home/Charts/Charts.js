@@ -20,8 +20,6 @@ function Charts({
     getChartsData();
   }, [getCategoryGoodsData, getChartsData]);
 
-  // let formatedChartsData = chartsData;
-
   // sort arr by month
   if (formatedChartsData) {
     formatedChartsData.sort(monthSorter);
