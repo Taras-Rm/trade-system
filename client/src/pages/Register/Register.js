@@ -40,7 +40,7 @@ function Register({
         <BigCard
           title="Manage your sales more effectively with TradeSystem"
           text="
-          On this platform you can sell your products. You can also buy the necessary goods and track income and expenses."
+          On this platform you can sell your products. You can also buy the necessary goods and track incomes and expenses."
           img={Img}
         />
       </div>

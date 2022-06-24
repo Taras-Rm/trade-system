@@ -19,16 +19,16 @@ function TradeInfo({
       <TableHead>
         <TableRow>
           <TableCell style={{ color: "white", fontSize: 20 }} align="center">
-            Count of selled goods
+            Count of sold goods
           </TableCell>
           <TableCell style={{ color: "white", fontSize: 20 }} align="center">
-            Count of buyed goods
+            Count of bought goods
           </TableCell>
           <TableCell style={{ color: "white", fontSize: 20 }} align="center">
-            Amount of money selled
+            The amount of money earned
           </TableCell>
           <TableCell style={{ color: "white", fontSize: 20 }} align="center">
-            Amount of money buyed
+            The amount of money spent
           </TableCell>
         </TableRow>
       </TableHead>

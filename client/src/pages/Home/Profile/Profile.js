@@ -19,6 +19,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import MoneyAmount from "./MoneyAmount/MoneyAmount";
+import { validationSchema } from "../../../components/UserUpdateForm/utils/validationSchema";
 
 function Profile({
   user,
@@ -34,11 +35,23 @@ function Profile({
   soldGoodsPrice,
   topUpAmount
 }) {
-  ///
-  // модальне вікно оновлення
   const [modalUpd, setModalUpd] = useState(false);
-  // дані форми оновлення
-  // зміни в інпутах форми оновлення
+
+  const editHandler = (e) => {
+    let data = formUpd.values;
+    updateProfileStart(data);
+
+    setModalUpd(false);
+
+    setTimeout(() => {
+      NotificationManager.success(
+        "Success information update",
+        "Update user information",
+        1000
+      );
+    }, 1000);
+  };
+
   const formUpd = useFormik({
     initialValues: {
       firstName: "",
@@ -46,7 +59,11 @@ function Profile({
       age: "",
       phone: "",
     },
-    //validationSchema: validationSchema,
+    validationSchema: validationSchema,
+    onSubmit: ({ resetForm }) => {
+      editHandler();
+      resetForm();
+    },
   });
   ///
 
@@ -60,19 +77,7 @@ function Profile({
     });
   };
 
-  const editHandler = (e) => {
-    let data = formUpd.values;
-    updateProfileStart(data);
-
-    setModalUpd(false);
-
-    setTimeout(() => {
-      NotificationManager.success(
-        "Success information update",
-        "Update user information"
-      );
-    }, 1000);
-  };
+  
 
   useEffect(() => {
     getProfileStart();
@@ -155,7 +160,7 @@ function Profile({
         </>
       )}
       <MyModal visible={modalUpd} setVisible={setModalUpd}>
-        <UserUpdateForm handler={editHandler} formData={formUpd} />
+        <UserUpdateForm onSubmit={formUpd.handleSubmit} formData={formUpd} />
       </MyModal>
     </div>
   );

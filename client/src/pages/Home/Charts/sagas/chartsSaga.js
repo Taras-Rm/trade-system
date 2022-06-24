@@ -6,9 +6,6 @@ export default function* watcherChartsSaga() {
   yield takeLatest(GET_GOODS_CATEGORY_START, getCategoryGoodsData);
 
   yield takeLatest(GET_CHARTS_DATA_START, getChartsData);
-
-
-
 }
 
 function* getChartsData() {

@@ -7,20 +7,7 @@ export const validationSchema = () =>
   yup.object({
     firstName: yup.string().required("validation.FieldIsRequired").min(3, "Min length 3 letters"),
     lastName: yup.string().required("validation.FieldIsRequired").min(3, "Min length 3 letters"),
-    email: yup
-      .string()
-      .email("validation.EnterValidEmail")
-      .required("validation.FieldIsRequired"),
-    password: yup
-      .string()
-      .min(8, "validation.Min8Char")
-      .required("validation.FieldIsRequired"),
     age: yup.number().required("validation.FieldIsRequired"),
-    confirmPassword: yup
-      .string()
-      .min(8, "validation.Min8Char")
-      .required("validation.FieldIsRequired")
-      .oneOf([yup.ref("password"), null], "validation.PasswordsMustMatch"),
     phone: yup
       .string()
       .max(10, "validation.Max10Digits")

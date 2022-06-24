@@ -20,8 +20,6 @@ function Charts({
     getChartsData();
   }, [getCategoryGoodsData, getChartsData]);
 
-  // let formatedChartsData = chartsData;
-
   // sort arr by month
   if (formatedChartsData) {
     formatedChartsData.sort(monthSorter);
@@ -161,7 +159,7 @@ function Charts({
           <BarChart chartData={userDataBuyedAmount} />
         </div>
         <div style={{ width: "auto" }}>
-          <h4 className="charts_block__name">Buyed categories of goods</h4>
+          <h4 className="charts_block__name">Bought categories of goods</h4>
 
           <PieChart chartData={userCategoryBuyedCount} />
         </div>
